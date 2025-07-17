@@ -3875,6 +3875,59 @@
       })();
     </script>
   </div>
+  <div id="xpLevelProgress" style="display:none;" class="info-card">
+    <h2>⭐ XP & Level Progress</h2>
+    <div style="display:flex;align-items:center;gap:1em;justify-content:center;">
+      <div style="font-size:2em;">🏅</div>
+      <div>
+        <div>Level: <span id="xpLevel">1</span></div>
+        <div style="width:160px;height:18px;background:#eee;border-radius:8px;overflow:hidden;margin:0.3em 0;">
+          <div id="xpBar" style="height:100%;background:linear-gradient(90deg,#228B22,#7cfc00);width:0%;transition:width 0.4s;"></div>
+        </div>
+        <div style="font-size:0.95em;">XP: <span id="xpCurrent">0</span> / <span id="xpNext">100</span></div>
+      </div>
+    </div>
+    <div id="xpLastReason" style="text-align:center;font-size:0.95em;color:var(--diamond);margin-top:0.5em;"></div>
+    <script>
+      (function(){
+        let xp = parseInt(localStorage.getItem('xp')||'0',10);
+        let level = parseInt(localStorage.getItem('xpLevel')||'1',10);
+        const xpBar = document.getElementById('xpBar');
+        const xpLevel = document.getElementById('xpLevel');
+        const xpCurrent = document.getElementById('xpCurrent');
+        const xpNext = document.getElementById('xpNext');
+        const xpLastReason = document.getElementById('xpLastReason');
+        function xpForLevel(lvl) { return 100 + (lvl-1)*50; }
+        function update() {
+          xpLevel.textContent = level;
+          xpCurrent.textContent = xp;
+          xpNext.textContent = xpForLevel(level);
+          xpBar.style.width = Math.min(100,100*xp/xpForLevel(level))+'%';
+        }
+        window.addXP = function(amount, reason) {
+          xp += amount;
+          let leveled = false;
+          while (xp >= xpForLevel(level)) {
+            xp -= xpForLevel(level);
+            level++;
+            leveled = true;
+          }
+          localStorage.setItem('xp', xp);
+          localStorage.setItem('xpLevel', level);
+          update();
+          if (reason) {
+            xpLastReason.textContent = `+${amount} XP: ${reason}`;
+            setTimeout(()=>{xpLastReason.textContent='';}, 2500);
+          }
+          if (leveled) {
+            xpLastReason.textContent = `🎉 Level Up! You are now level ${level}!`;
+            setTimeout(()=>{xpLastReason.textContent='';}, 3000);
+          }
+        };
+        update();
+      })();
+    </script>
+  </div>
   <!-- NEW FEATURES END -->
   
   <script>
