@@ -1,0 +1,4002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vrishank | Minecraft & fooda</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #228B22;
+      --accent: #7cfc00;
+      --dark: #222;
+      --light: #fff;
+      --dirt: #8B4513;
+      --stone: #696969;
+      --wood: #8B4513;
+      --diamond: #00eaff;
+      --gold: #ffd700;
+      --bg-color: #fff;
+      --text-color: #222;
+      --card-bg: #fff;
+      --card-border: #8B4513;
+    }
+    
+    [data-theme="dark"] {
+      --bg-color: #000;
+      --text-color: #fff;
+      --card-bg: #000;
+      --card-border: #333;
+      --dirt: #000;
+      --wood: #000;
+      --primary: #000;
+      --accent: #000;
+      --diamond: #000;
+      --gold: #000;
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: repeating-linear-gradient(135deg, #ff3333 0 60px, #3366ff 60px 120px, #ffd700 120px 180px);
+      color: var(--text-color);
+      transition: all 0.3s ease;
+    }
+    
+    [data-theme="dark"] body {
+      background: #000;
+    }
+    
+    .dark-mode-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: var(--primary);
+      border: 3px solid var(--gold);
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5em;
+      z-index: 1000;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    
+    .dark-mode-toggle:hover {
+      transform: scale(1.1);
+      background: var(--accent);
+      color: var(--dark);
+    }
+    
+    .navbar {
+      background: var(--dirt);
+      color: var(--light);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2em;
+      padding: 0.7em 0;
+      font-size: 1.1em;
+      font-weight: 700;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 4px solid var(--wood);
+    }
+    .navbar a {
+      color: var(--light);
+      text-decoration: none;
+      padding: 0.4em 1.2em;
+      border-radius: 6px;
+      transition: all 0.2s;
+      border: 2px solid transparent;
+    }
+    .navbar a.active, .navbar a:hover {
+      background: var(--accent);
+      color: var(--dark);
+      border-color: var(--gold);
+      transform: translateY(-2px);
+    }
+    .hero {
+      background: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/4/4a/Grass_Block_JE5_BE3.png') repeat;
+      padding: 3em 1em 2em 1em;
+      text-align: center;
+      border-bottom: 6px solid var(--wood);
+      position: relative;
+      box-shadow: inset 0 0 50px rgba(0,0,0,0.1);
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/5e/Dirt_JE5_BE3.png') repeat;
+      opacity: 0.1;
+      pointer-events: none;
+    }
+    .hero-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 20px;
+      border: 6px solid var(--gold);
+      background: #fff;
+      margin-bottom: 1em;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      object-fit: cover;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-title {
+      font-family: 'Press Start 2P', cursive;
+      color: var(--diamond);
+      font-size: 2.2em;
+      margin-bottom: 0.3em;
+      letter-spacing: 2px;
+      text-shadow: 3px 3px #000, 0 0 10px #fff;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-desc {
+      font-size: 1.2em;
+      color: #333;
+      margin-bottom: 1.5em;
+      background: rgba(255,255,255,0.9);
+      padding: 1em;
+      border-radius: 8px;
+      border: 3px solid var(--wood);
+      position: relative;
+      z-index: 2;
+    }
+    .controls-hint {
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 0.5em 1em;
+      border-radius: 6px;
+      font-size: 0.9em;
+      margin-top: 1em;
+      border: 2px solid var(--gold);
+      position: relative;
+      z-index: 2;
+    }
+    .main-content {
+      max-width: 900px;
+      margin: 2em auto 0 auto;
+      padding: 0 1em 2em 1em;
+    }
+    .info-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      border: 4px solid var(--card-border);
+      max-width: 500px;
+      margin: 1.5em auto;
+      padding: 1.5em 1.2em;
+      text-align: left;
+      position: relative;
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/5e/Dirt_JE5_BE3.png');
+      background-size: 50px;
+      background-repeat: repeat;
+      background-blend-mode: overlay;
+      transition: all 0.3s ease;
+    }
+    .info-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.95);
+      border-radius: 8px;
+      z-index: 1;
+    }
+    [data-theme="dark"] .info-card::before {
+      background: rgba(0,0,0,0.95);
+    }
+    .info-card > * {
+      position: relative;
+      z-index: 2;
+    }
+    .info-card h2 {
+      font-family: 'Press Start 2P', cursive;
+      color: var(--primary);
+      font-size: 1.1em;
+      margin-top: 0;
+      margin-bottom: 0.7em;
+      letter-spacing: 1px;
+      text-shadow: 1px 1px #fff;
+    }
+    .info-img {
+      width: 60px;
+      height: 60px;
+      border-radius: 10px;
+      margin-right: 1em;
+      object-fit: cover;
+      vertical-align: middle;
+      border: 3px solid var(--wood);
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .project-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      margin-right: 0.7em;
+      object-fit: cover;
+      vertical-align: middle;
+      border: 2px solid var(--primary);
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .tour-guide {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5em;
+      margin: 1.5em auto;
+      max-width: 500px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      border: 4px solid var(--diamond);
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/5e/Dirt_JE5_BE3.png');
+      background-size: 40px;
+      background-repeat: repeat;
+      background-blend-mode: overlay;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .tour-guide::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.95);
+      border-radius: 8px;
+      z-index: 1;
+    }
+    [data-theme="dark"] .tour-guide::before {
+      background: rgba(0,0,0,0.95);
+    }
+    .tour-guide > * {
+      position: relative;
+      z-index: 2;
+    }
+    .tour-step {
+      display: flex;
+      align-items: center;
+      margin: 1em 0;
+      padding: 0.8em;
+      background: rgba(255,255,255,0.8);
+      border-radius: 8px;
+      border: 2px solid var(--wood);
+    }
+    [data-theme="dark"] .tour-step {
+      background: rgba(0,0,0,0.8);
+    }
+    .tour-step-number {
+      width: 30px;
+      height: 30px;
+      background: var(--diamond);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      margin-right: 1em;
+      border: 2px solid var(--gold);
+    }
+    .news-section {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5em;
+      margin: 1.5em auto;
+      max-width: 500px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      border: 4px solid var(--card-border);
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/5e/Dirt_JE5_BE3.png');
+      background-size: 40px;
+      background-repeat: repeat;
+      background-blend-mode: overlay;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .news-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.95);
+      border-radius: 8px;
+      z-index: 1;
+    }
+    [data-theme="dark"] .news-section::before {
+      background: rgba(0,0,0,0.95);
+    }
+    .news-item {
+      border-bottom: 2px solid var(--wood);
+      padding: 1em 0;
+      position: relative;
+      z-index: 2;
+    }
+    .news-item:last-child {
+      border-bottom: none;
+    }
+    .news-date {
+      color: var(--diamond);
+      font-size: 0.9em;
+      font-weight: bold;
+    }
+    .achievements-section {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5em;
+      margin: 1.5em auto;
+      max-width: 500px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      border: 4px solid var(--gold);
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/5e/Dirt_JE5_BE3.png');
+      background-size: 40px;
+      background-repeat: repeat;
+      background-blend-mode: overlay;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .achievements-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.95);
+      border-radius: 8px;
+      z-index: 1;
+    }
+    [data-theme="dark"] .achievements-section::before {
+      background: rgba(0,0,0,0.95);
+    }
+    .achievement {
+      display: flex;
+      align-items: center;
+      margin: 1em 0;
+      padding: 0.8em;
+      background: rgba(255,255,255,0.8);
+      border-radius: 8px;
+      border: 2px solid var(--wood);
+      position: relative;
+      z-index: 2;
+    }
+    [data-theme="dark"] .achievement {
+      background: rgba(0,0,0,0.8);
+    }
+    .achievement-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      margin-right: 1em;
+      font-size: 1.2em;
+      border: 2px solid var(--gold);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1em;
+      margin: 1em 0;
+    }
+    .social-link {
+      width: 50px;
+      height: 50px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-decoration: none;
+      font-size: 1.5em;
+      transition: all 0.2s;
+      border: 3px solid var(--wood);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    .social-link:hover {
+      background: var(--accent);
+      color: var(--dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+    }
+    .newsletter-section {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5em;
+      margin: 1.5em auto;
+      max-width: 500px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      border: 4px solid var(--diamond);
+      text-align: center;
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/5e/Dirt_JE5_BE3.png');
+      background-size: 40px;
+      background-repeat: repeat;
+      background-blend-mode: overlay;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .newsletter-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.95);
+      border-radius: 8px;
+      z-index: 1;
+    }
+    [data-theme="dark"] .newsletter-section::before {
+      background: rgba(0,0,0,0.95);
+    }
+    .newsletter-input {
+      display: flex;
+      gap: 0.5em;
+      margin-top: 1em;
+      position: relative;
+      z-index: 2;
+    }
+    .newsletter-input input {
+      flex: 1;
+      padding: 0.8em;
+      border: 3px solid var(--wood);
+      border-radius: 6px;
+      font-family: inherit;
+      background: rgba(255,255,255,0.9);
+    }
+    [data-theme="dark"] .newsletter-input input {
+      background: rgba(0,0,0,0.9);
+      color: white;
+    }
+    .newsletter-input button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.8em 1.5em;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      border: 2px solid var(--gold);
+      transition: all 0.2s;
+    }
+    .newsletter-input button:hover {
+      background: var(--accent);
+      color: var(--dark);
+      transform: translateY(-1px);
+    }
+    .footer {
+      background: var(--dirt);
+      color: var(--light);
+      text-align: center;
+      padding: 1.2em 0 1em 0;
+      font-size: 1em;
+      margin-top: 2em;
+      letter-spacing: 1px;
+      border-top: 4px solid var(--wood);
+      box-shadow: 0 -4px 8px rgba(0,0,0,0.3);
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2em;
+      margin: 1em 0;
+      flex-wrap: wrap;
+    }
+    .footer-links a {
+      color: var(--light);
+      text-decoration: none;
+      transition: color 0.2s;
+      padding: 0.3em 0.8em;
+      border-radius: 4px;
+      border: 1px solid transparent;
+    }
+    .footer-links a:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+    @media (max-width: 700px) {
+      .main-content { padding: 0 0.5em 2em 0.5em; }
+      .newsletter-input { flex-direction: column; }
+    }
+    @media (max-width: 500px) {
+      .hero-title { font-size: 1.2em; }
+      .info-card { min-width: 90vw; max-width: 98vw; }
+    }
+    
+    /* Interactive Features */
+    .sound-toggle {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 50px;
+      height: 50px;
+      background: var(--primary);
+      border: 3px solid var(--gold);
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5em;
+      z-index: 1000;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    
+    .sound-toggle:hover {
+      transform: scale(1.1);
+      background: var(--accent);
+      color: var(--dark);
+    }
+    
+    /* Inventory System */
+    .inventory {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5em;
+      margin: 1.5em auto;
+      max-width: 500px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      border: 4px solid var(--diamond);
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/5e/Dirt_JE5_BE3.png');
+      background-size: 40px;
+      background-repeat: repeat;
+      background-blend-mode: overlay;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .inventory::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.95);
+      border-radius: 8px;
+      z-index: 1;
+    }
+    
+    [data-theme="dark"] .inventory::before {
+      background: rgba(0,0,0,0.95);
+    }
+    
+    .inventory > * {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .inventory-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5em;
+      margin-top: 1em;
+    }
+    
+    .inventory-slot {
+      width: 60px;
+      height: 60px;
+      border: 3px solid var(--wood);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2em;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+    
+    [data-theme="dark"] .inventory-slot {
+      background: rgba(0,0,0,0.8);
+    }
+    
+    .inventory-slot:hover {
+      transform: scale(1.1);
+      border-color: var(--gold);
+    }
+    
+    .inventory-slot .tooltip {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.9);
+      color: white;
+      padding: 0.5em;
+      border-radius: 4px;
+      font-size: 0.8em;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    
+    .inventory-slot:hover .tooltip {
+      opacity: 1;
+    }
+    
+    /* Builds Gallery */
+    .builds-gallery {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5em;
+      margin: 1.5em auto;
+      max-width: 500px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      border: 4px solid var(--gold);
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/5e/Dirt_JE5_BE3.png');
+      background-size: 40px;
+      background-repeat: repeat;
+      background-blend-mode: overlay;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .builds-gallery::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.95);
+      border-radius: 8px;
+      z-index: 1;
+    }
+    
+    [data-theme="dark"] .builds-gallery::before {
+      background: rgba(0,0,0,0.95);
+    }
+    
+    .builds-gallery > * {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .build-item {
+      display: flex;
+      align-items: center;
+      margin: 1em 0;
+      padding: 0.8em;
+      background: rgba(255,255,255,0.8);
+      border-radius: 8px;
+      border: 2px solid var(--wood);
+      position: relative;
+      z-index: 2;
+    }
+    
+    [data-theme="dark"] .build-item {
+      background: rgba(0,0,0,0.8);
+    }
+    
+    .build-image {
+      width: 80px;
+      height: 80px;
+      border-radius: 8px;
+      margin-right: 1em;
+      object-fit: cover;
+      border: 3px solid var(--wood);
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    
+    /* Crafting Recipes */
+    .crafting-section {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5em;
+      margin: 1.5em auto;
+      max-width: 500px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      border: 4px solid var(--diamond);
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/5e/Dirt_JE5_BE3.png');
+      background-size: 40px;
+      background-repeat: repeat;
+      background-blend-mode: overlay;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .crafting-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.95);
+      border-radius: 8px;
+      z-index: 1;
+    }
+    
+    [data-theme="dark"] .crafting-section::before {
+      background: rgba(0,0,0,0.95);
+    }
+    
+    .crafting-section > * {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .recipe {
+      display: flex;
+      align-items: center;
+      margin: 1em 0;
+      padding: 0.8em;
+      background: rgba(255,255,255,0.8);
+      border-radius: 8px;
+      border: 2px solid var(--wood);
+      position: relative;
+      z-index: 2;
+    }
+    
+    [data-theme="dark"] .recipe {
+      background: rgba(0,0,0,0.8);
+    }
+    
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.3em;
+      margin-right: 1em;
+    }
+    
+    .recipe-slot {
+      width: 30px;
+      height: 30px;
+      border: 2px solid var(--wood);
+      border-radius: 4px;
+      background: rgba(255,255,255,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2em;
+    }
+    
+    [data-theme="dark"] .recipe-slot {
+      background: rgba(0,0,0,0.6);
+    }
+    
+    /* Weather Effects */
+    .weather-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 999;
+      overflow: hidden;
+    }
+    
+    /* Minecraft Mobs Background */
+    .mob-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+    
+    .mob {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      animation: mob-walk 20s linear infinite;
+      opacity: 0.3;
+      filter: brightness(0.8);
+    }
+    
+    .mob.creeper {
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Creeper_JE3_BE2.png');
+      animation-duration: 25s;
+    }
+    
+    .mob.zombie {
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Zombie_JE3_BE2.png');
+      animation-duration: 30s;
+    }
+    
+    .mob.skeleton {
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Skeleton_JE3_BE2.png');
+      animation-duration: 22s;
+    }
+    
+    .mob.spider {
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Spider_JE3_BE2.png');
+      animation-duration: 18s;
+    }
+    
+    .mob.enderman {
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Enderman_JE3_BE2.png');
+      animation-duration: 35s;
+    }
+    
+    .mob.slime {
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Slime_JE3_BE2.png');
+      animation-duration: 15s;
+    }
+    
+    .mob.cow {
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Cow_JE3_BE2.png');
+      animation-duration: 28s;
+    }
+    
+    .mob.pig {
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Pig_JE3_BE2.png');
+      animation-duration: 20s;
+    }
+    
+    .mob.sheep {
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Sheep_JE3_BE2.png');
+      animation-duration: 24s;
+    }
+    
+    .mob.chicken {
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Chicken_JE3_BE2.png');
+      animation-duration: 16s;
+    }
+    
+    @keyframes mob-walk {
+      0% {
+        transform: translateX(-100px) translateY(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.3;
+      }
+      90% {
+        opacity: 0.3;
+      }
+      100% {
+        transform: translateX(calc(100vw + 100px)) translateY(0);
+        opacity: 0;
+      }
+    }
+    
+    .rain {
+      position: absolute;
+      width: 2px;
+      height: 20px;
+      background: linear-gradient(transparent, rgba(0,0,255,0.3));
+      animation: rain 0.5s linear infinite;
+    }
+    
+    @keyframes rain {
+      0% { transform: translateY(-20px); }
+      100% { transform: translateY(100vh); }
+    }
+    
+    .snow {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: white;
+      border-radius: 50%;
+      animation: snow 3s linear infinite;
+    }
+    
+    @keyframes snow {
+      0% { transform: translateY(-4px) rotate(0deg); }
+      100% { transform: translateY(100vh) rotate(360deg); }
+    }
+    
+    /* Loading Screen */
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease;
+    }
+    
+    .loading-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .loading-text {
+      font-family: 'Press Start 2P', cursive;
+      color: #fff;
+      font-size: 1.5em;
+      margin-bottom: 2em;
+      text-align: center;
+    }
+    
+    .loading-bar {
+      width: 300px;
+      height: 20px;
+      background: #333;
+      border: 2px solid #fff;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    
+    .loading-progress {
+      height: 100%;
+      background: linear-gradient(90deg, #228B22, #7cfc00);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    
+    /* Guestbook */
+    .guestbook {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5em;
+      margin: 1.5em auto;
+      max-width: 500px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      border: 4px solid var(--gold);
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/5e/Dirt_JE5_BE3.png');
+      background-size: 40px;
+      background-repeat: repeat;
+      background-blend-mode: overlay;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .guestbook::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.95);
+      border-radius: 8px;
+      z-index: 1;
+    }
+    
+    [data-theme="dark"] .guestbook::before {
+      background: rgba(0,0,0,0.95);
+    }
+    
+    .guestbook > * {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .guestbook-form {
+      margin-top: 1em;
+    }
+    
+    .guestbook-form input,
+    .guestbook-form textarea {
+      width: 100%;
+      padding: 0.8em;
+      margin: 0.5em 0;
+      border: 3px solid var(--wood);
+      border-radius: 6px;
+      font-family: inherit;
+      background: rgba(255,255,255,0.9);
+      box-sizing: border-box;
+    }
+    
+    [data-theme="dark"] .guestbook-form input,
+    [data-theme="dark"] .guestbook-form textarea {
+      background: rgba(0,0,0,0.9);
+      color: white;
+    }
+    
+    .guestbook-form button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.8em 1.5em;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      border: 2px solid var(--gold);
+      transition: all 0.2s;
+    }
+    
+    .guestbook-form button:hover {
+      background: var(--accent);
+      color: var(--dark);
+      transform: translateY(-1px);
+    }
+    
+    .guestbook-entry {
+      background: rgba(255,255,255,0.8);
+      border-radius: 8px;
+      padding: 1em;
+      margin: 1em 0;
+      border: 2px solid var(--wood);
+    }
+    
+    [data-theme="dark"] .guestbook-entry {
+      background: rgba(0,0,0,0.8);
+    }
+    
+    /* Easter Eggs */
+    .konami-code {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.9);
+      color: white;
+      padding: 2em;
+      border-radius: 12px;
+      border: 4px solid var(--gold);
+      z-index: 10000;
+      display: none;
+      text-align: center;
+      font-family: 'Press Start 2P', cursive;
+    }
+    
+    /* 3D Effects */
+    .block-3d {
+      transform: perspective(1000px) rotateX(15deg) rotateY(15deg);
+      transition: transform 0.3s ease;
+    }
+    
+    .block-3d:hover {
+      transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1.1);
+    }
+    
+    /* Mini-Game Section */
+    .minigame-section {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5em;
+      margin: 1.5em auto;
+      max-width: 500px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      border: 4px solid var(--diamond);
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/5e/Dirt_JE5_BE3.png');
+      background-size: 40px;
+      background-repeat: repeat;
+      background-blend-mode: overlay;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .minigame-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.95);
+      border-radius: 8px;
+      z-index: 1;
+    }
+    
+    [data-theme="dark"] .minigame-section::before {
+      background: rgba(0,0,0,0.95);
+    }
+    
+    .minigame-section > * {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5em;
+      margin: 1em 0;
+    }
+    
+    .game-cell {
+      width: 60px;
+      height: 60px;
+      border: 3px solid var(--wood);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2em;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+    
+    [data-theme="dark"] .game-cell {
+      background: rgba(0,0,0,0.8);
+    }
+    
+    .game-cell:hover {
+      transform: scale(1.1);
+      border-color: var(--gold);
+    }
+    
+    .game-cell.matched {
+      background: var(--accent);
+      color: var(--dark);
+    }
+    
+    .game-stats {
+      display: flex;
+      justify-content: space-between;
+      margin: 1em 0;
+      font-weight: bold;
+    }
+    
+    /* Timeline Section */
+    .timeline-section {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5em;
+      margin: 1.5em auto;
+      max-width: 500px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      border: 4px solid var(--gold);
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/5e/Dirt_JE5_BE3.png');
+      background-size: 40px;
+      background-repeat: repeat;
+      background-blend-mode: overlay;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .timeline-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.95);
+      border-radius: 8px;
+      z-index: 1;
+    }
+    
+    [data-theme="dark"] .timeline-section::before {
+      background: rgba(0,0,0,0.95);
+    }
+    
+    .timeline-section > * {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .timeline-item {
+      display: flex;
+      align-items: center;
+      margin: 1em 0;
+      padding: 0.8em;
+      background: rgba(255,255,255,0.8);
+      border-radius: 8px;
+      border: 2px solid var(--wood);
+      position: relative;
+      z-index: 2;
+    }
+    
+    [data-theme="dark"] .timeline-item {
+      background: rgba(0,0,0,0.8);
+    }
+    
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      background: var(--diamond);
+      border-radius: 50%;
+      border: 3px solid var(--gold);
+    }
+    
+    .timeline-date {
+      font-weight: bold;
+      color: var(--diamond);
+      margin-right: 1em;
+      min-width: 80px;
+    }
+    
+    /* Progress Tracking */
+    .progress-section {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5em;
+      margin: 1.5em auto;
+      max-width: 500px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      border: 4px solid var(--primary);
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/5e/Dirt_JE5_BE3.png');
+      background-size: 40px;
+      background-repeat: repeat;
+      background-blend-mode: overlay;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .progress-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.95);
+      border-radius: 8px;
+      z-index: 1;
+    }
+    
+    [data-theme="dark"] .progress-section::before {
+      background: rgba(0,0,0,0.95);
+    }
+    
+    .progress-section > * {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 20px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 0.5em 0;
+      border: 2px solid var(--wood);
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      width: 0%;
+      transition: width 0.5s ease;
+      position: relative;
+    }
+    
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      animation: shimmer 2s infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    
+    /* Music Player */
+    .music-player {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1em;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      border: 4px solid var(--gold);
+      z-index: 1000;
+      transition: all 0.3s ease;
+      max-width: 200px;
+    }
+    
+    .music-player::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.95);
+      border-radius: 8px;
+      z-index: 1;
+    }
+    
+    [data-theme="dark"] .music-player::before {
+      background: rgba(0,0,0,0.95);
+    }
+    
+    .music-player > * {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .music-controls {
+      display: flex;
+      gap: 0.5em;
+      margin-top: 0.5em;
+    }
+    
+    .music-btn {
+      width: 30px;
+      height: 30px;
+      border: 2px solid var(--wood);
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    
+    .music-btn:hover {
+      background: var(--accent);
+      color: var(--dark);
+      transform: scale(1.1);
+    }
+    
+    /* Particle Effects */
+    .particle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 1001;
+      animation: particle-float 3s ease-out forwards;
+    }
+    
+    @keyframes particle-float {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) scale(0);
+        opacity: 0;
+      }
+    }
+    
+    /* Day/Night Cycle */
+    .day-night-toggle {
+      position: fixed;
+      top: 20px;
+      left: 80px;
+      width: 50px;
+      height: 50px;
+      background: var(--primary);
+      border: 3px solid var(--gold);
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5em;
+      z-index: 1000;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    
+    .day-night-toggle:hover {
+      transform: scale(1.1);
+      background: var(--accent);
+      color: var(--dark);
+    }
+    
+    [data-time="night"] body {
+      background: repeating-linear-gradient(135deg, #1a1a2e 0 60px, #16213e 60px 120px, #0f3460 120px 180px);
+    }
+    
+    [data-time="night"] .hero {
+      background: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Stone_JE5_BE3.png') repeat;
+    }
+    
+    /* Achievement Popup */
+    .achievement-popup {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1em;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      border: 4px solid var(--gold);
+      z-index: 10000;
+      transform: translateX(400px);
+      transition: transform 0.5s ease;
+      max-width: 300px;
+    }
+    
+    .achievement-popup.show {
+      transform: translateX(0);
+    }
+    
+    .achievement-popup::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.95);
+      border-radius: 8px;
+      z-index: 1;
+    }
+    
+    [data-theme="dark"] .achievement-popup::before {
+      background: rgba(0,0,0,0.95);
+    }
+    
+    .achievement-popup > * {
+      position: relative;
+      z-index: 2;
+    }
+    
+    /* Server List */
+    .server-list {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5em;
+      margin: 1.5em auto;
+      max-width: 500px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      border: 4px solid var(--diamond);
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/5e/Dirt_JE5_BE3.png');
+      background-size: 40px;
+      background-repeat: repeat;
+      background-blend-mode: overlay;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .server-list::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.95);
+      border-radius: 8px;
+      z-index: 1;
+    }
+    
+    [data-theme="dark"] .server-list::before {
+      background: rgba(0,0,0,0.95);
+    }
+    
+    .server-list > * {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .server-item {
+      display: flex;
+      align-items: center;
+      margin: 1em 0;
+      padding: 0.8em;
+      background: rgba(255,255,255,0.8);
+      border-radius: 8px;
+      border: 2px solid var(--wood);
+      position: relative;
+      z-index: 2;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    [data-theme="dark"] .server-item {
+      background: rgba(0,0,0,0.8);
+    }
+    
+    .server-item:hover {
+      transform: scale(1.02);
+      border-color: var(--gold);
+    }
+    
+    .server-status {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 1em;
+      background: #4CAF50;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    /* Admin Panel */
+    .admin-login {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 2em;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      border: 4px solid var(--gold);
+      z-index: 10000;
+      display: none;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+    }
+    
+    .admin-login::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.95);
+      border-radius: 8px;
+      z-index: 1;
+    }
+    
+    [data-theme="dark"] .admin-login::before {
+      background: rgba(0,0,0,0.95);
+    }
+    
+    .admin-login > * {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .admin-login h2 {
+      font-family: 'Press Start 2P', cursive;
+      color: var(--primary);
+      margin-bottom: 1em;
+    }
+    
+    .admin-login input {
+      width: 100%;
+      padding: 1em;
+      margin: 0.5em 0;
+      border: 3px solid var(--wood);
+      border-radius: 6px;
+      font-family: inherit;
+      background: rgba(255,255,255,0.9);
+      box-sizing: border-box;
+    }
+    
+    [data-theme="dark"] .admin-login input {
+      background: rgba(0,0,0,0.9);
+      color: white;
+    }
+    
+    .admin-login button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 1em 2em;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      border: 2px solid var(--gold);
+      transition: all 0.2s;
+      margin: 0.5em;
+    }
+    
+    .admin-login button:hover {
+      background: var(--accent);
+      color: var(--dark);
+      transform: translateY(-1px);
+    }
+    
+    .admin-panel {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--card-bg);
+      z-index: 9999;
+      display: none;
+      overflow-y: auto;
+      padding: 2em;
+    }
+    
+    .admin-panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.95);
+      z-index: 1;
+    }
+    
+    [data-theme="dark"] .admin-panel::before {
+      background: rgba(0,0,0,0.95);
+    }
+    
+    .admin-panel > * {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .admin-header {
+      text-align: center;
+      margin-bottom: 2em;
+      padding-bottom: 1em;
+      border-bottom: 3px solid var(--wood);
+    }
+    
+    .admin-header h1 {
+      font-family: 'Press Start 2P', cursive;
+      color: var(--primary);
+      margin-bottom: 0.5em;
+    }
+    
+    .admin-section {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5em;
+      margin: 1em 0;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      border: 4px solid var(--diamond);
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/5e/Dirt_JE5_BE3.png');
+      background-size: 40px;
+      background-repeat: repeat;
+      background-blend-mode: overlay;
+      position: relative;
+    }
+    
+    .admin-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.95);
+      border-radius: 8px;
+      z-index: 1;
+    }
+    
+    [data-theme="dark"] .admin-section::before {
+      background: rgba(0,0,0,0.95);
+    }
+    
+    .admin-section > * {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .admin-section h3 {
+      font-family: 'Press Start 2P', cursive;
+      color: var(--primary);
+      margin-bottom: 1em;
+      font-size: 1.2em;
+    }
+    
+    .admin-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1em;
+      margin: 1em 0;
+    }
+    
+    .stat-card {
+      background: rgba(255,255,255,0.8);
+      border-radius: 8px;
+      padding: 1em;
+      border: 2px solid var(--wood);
+      text-align: center;
+    }
+    
+    [data-theme="dark"] .stat-card {
+      background: rgba(0,0,0,0.8);
+    }
+    
+    .stat-number {
+      font-size: 2em;
+      font-weight: bold;
+      color: var(--diamond);
+    }
+    
+    .admin-actions {
+      display: flex;
+      gap: 1em;
+      flex-wrap: wrap;
+      margin: 1em 0;
+    }
+    
+    .admin-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.8em 1.5em;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      border: 2px solid var(--gold);
+      transition: all 0.2s;
+    }
+    
+    .admin-btn:hover {
+      background: var(--accent);
+      color: var(--dark);
+      transform: translateY(-1px);
+    }
+    
+    .admin-btn.danger {
+      background: #ff4444;
+      border-color: #cc0000;
+    }
+    
+    .admin-btn.danger:hover {
+      background: #ff6666;
+    }
+    
+    .admin-list {
+      max-height: 300px;
+      overflow-y: auto;
+      border: 2px solid var(--wood);
+      border-radius: 6px;
+      padding: 1em;
+      background: rgba(255,255,255,0.8);
+    }
+    
+    [data-theme="dark"] .admin-list {
+      background: rgba(0,0,0,0.8);
+    }
+    
+    .admin-list-item {
+      padding: 0.5em;
+      border-bottom: 1px solid var(--wood);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .admin-list-item:last-child {
+      border-bottom: none;
+    }
+    
+    .admin-toggle {
+      position: fixed;
+      top: 20px;
+      right: 80px;
+      width: 50px;
+      height: 50px;
+      background: var(--primary);
+      border: 3px solid var(--gold);
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5em;
+      z-index: 1000;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    
+    .admin-toggle:hover {
+      transform: scale(1.1);
+      background: var(--accent);
+      color: var(--dark);
+    }
+    
+    /* Block Breaker Game */
+    .block-breaker {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5em;
+      margin:1.5em auto;
+      max-width: 500px;
+      box-shadow: 0 4px 16px rgba(0.15);
+      border:4px solid var(--diamond);
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/5e/Dirt_JE5_BE3.png');
+      background-size: 40px;
+      background-repeat: repeat;
+      background-blend-mode: overlay;
+      position: relative;
+      transition: all0.3 ease;
+    }
+    
+    .block-breaker::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.95);
+      border-radius: 8px;
+      z-index: 1;
+    }
+    
+    [data-theme="dark"] .block-breaker::before {
+      background: rgba(0,0,0,0.95);
+    }
+    
+    .block-breaker > * {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .breaker-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 0.3em;
+      margin: 10;
+    }
+    
+    .breaker-block {
+      width: 40px;
+      height: 40px;
+      border: 2px solid var(--wood);
+      border-radius: 4px;
+      background: rgba(255,255,255,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5em;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+    
+    [data-theme="dark"] .breaker-block {
+      background: rgba(0,0,0,0.8);
+    }
+    
+    .breaker-block:hover {
+      transform: scale(1.1);
+      border-color: var(--gold);
+    }
+    
+    .breaker-block.broken {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+    
+    .breaker-stats {
+      display: flex;
+      justify-content: space-between;
+      margin:1;
+      font-weight: bold;
+    }
+    
+    /* Pet System */
+    .pet-system {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5em;
+      margin:1.5em auto;
+      max-width: 500px;
+      box-shadow: 0 4px 16px rgba(0.15);
+      border: 4px solid var(--gold);
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/5e/Dirt_JE5_BE3.png');
+      background-size: 40px;
+      background-repeat: repeat;
+      background-blend-mode: overlay;
+      position: relative;
+      transition: all0.3 ease;
+    }
+    
+    .pet-system::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.95);
+      border-radius: 8px;
+      z-index: 1;
+    }
+    
+    [data-theme="dark"] .pet-system::before {
+      background: rgba(0,0,0,0.95);
+    }
+    
+    .pet-system > * {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .pet-display {
+      text-align: center;
+      margin: 10;
+    }
+    
+    .pet-sprite {
+      font-size: 4em;
+      margin: 0.5em;
+      cursor: pointer;
+      transition: all0.3 ease;
+    }
+    
+    .pet-sprite:hover {
+      transform: scale(1.2);
+    }
+    
+    .pet-stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 10;
+    }
+    
+    .pet-stat {
+      text-align: center;
+    }
+    
+    .pet-actions {
+      display: flex;
+      gap: 0.5em;
+      justify-content: center;
+      margin: 10;
+    }
+    
+    .pet-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.5em;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      border: 2px solid var(--gold);
+      transition: all0.2s;
+    }
+    
+    .pet-btn:hover {
+      background: var(--accent);
+      color: var(--dark);
+      transform: translateY(-1px);
+    }
+    
+    /* Shop System */
+    .shop-system {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5em;
+      margin:1.5em auto;
+      max-width: 500px;
+      box-shadow: 0 4px 16px rgba(0.15);
+      border:4px solid var(--diamond);
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/5e/Dirt_JE5_BE3.png');
+      background-size: 40px;
+      background-repeat: repeat;
+      background-blend-mode: overlay;
+      position: relative;
+      transition: all0.3 ease;
+    }
+    
+    .shop-system::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.95);
+      border-radius: 8px;
+      z-index: 1;
+    }
+    
+    [data-theme="dark"] .shop-system::before {
+      background: rgba(0,0,0,0.95);
+    }
+    
+    .shop-system > * {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .shop-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1em;
+    }
+    
+    .shop-item {
+      display: flex;
+      align-items: center;
+      margin: 1em 0;
+      padding: 0.8em;
+      background: rgba(255,255,255,0.8);
+      border-radius: 8px;
+      border: 2px solid var(--wood);
+      position: relative;
+      z-index:2;
+    }
+    
+    [data-theme="dark"] .shop-item {
+      background: rgba(0,0,0,0.8);
+    }
+    
+    .shop-item-icon {
+      font-size:2em;
+      margin-right: 1em;
+    }
+    
+    .shop-item-info {
+      flex:1;
+    }
+    
+    .shop-item-price {
+      font-weight: bold;
+      color: var(--diamond);
+    }
+    
+    .buy-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.5em;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      border: 2px solid var(--gold);
+      transition: all0.2s;
+    }
+    
+    .buy-btn:hover {
+      background: var(--accent);
+      color: var(--dark);
+      transform: translateY(-1px);
+    }
+    
+    .buy-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    /* Quest System */
+    .quest-system {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5em;
+      margin:1.5em auto;
+      max-width: 500px;
+      box-shadow: 0 4px 16px rgba(0.15);
+      border: 4px solid var(--gold);
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/5e/Dirt_JE5_BE3.png');
+      background-size: 40px;
+      background-repeat: repeat;
+      background-blend-mode: overlay;
+      position: relative;
+      transition: all0.3 ease;
+    }
+    
+    .quest-system::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.95);
+      border-radius: 8px;
+      z-index: 1;
+    }
+    
+    [data-theme="dark"] .quest-system::before {
+      background: rgba(0,0,0,0.95);
+    }
+    
+    .quest-system > * {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .quest-item {
+      display: flex;
+      align-items: center;
+      margin: 1em 0;
+      padding: 0.8em;
+      background: rgba(255,255,255,0.8);
+      border-radius: 8px;
+      border: 2px solid var(--wood);
+      position: relative;
+      z-index:2;
+    }
+    
+    [data-theme="dark"] .quest-item {
+      background: rgba(0,0,0,0.8);
+    }
+    
+    .quest-icon {
+      font-size:2em;
+      margin-right: 1em;
+    }
+    
+    .quest-info {
+      flex:1;
+    }
+    
+    .quest-progress {
+      width: 100%;
+      height: 10px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 5px;
+      overflow: hidden;
+      margin: 0.5em 0;
+      border: 1px solid var(--wood);
+    }
+    
+    .quest-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      width: 0%;
+      transition: width0.5 ease;
+    }
+    
+    .quest-reward {
+      font-weight: bold;
+      color: var(--diamond);
+    }
+    
+    .quest-complete {
+      background: var(--accent);
+      color: var(--dark);
+    }
+    
+    /* Floating Pet */
+    .floating-pet {
+      position: fixed;
+      bottom: 100px;
+      right: 20px;
+      font-size: 3em;
+      z-index: 1000;
+      animation: pet-bounce 2nite;
+      filter: drop-shadow(0 4px 8pxrgba(0,0,0,0.3));
+    }
+    
+    @keyframes pet-bounce {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    /* Notification System */
+    .notification {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1em;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      border: 4px solid var(--gold);
+      z-index: 10000;
+      transform: translateX(-50%) translateY(-100px);
+      transition: transform 0.5s ease;
+      max-width:400;
+      text-align: center;
+    }
+    
+    .notification.show {
+      transform: translateX(-50%) translateY(0);
+    }
+    
+    .notification::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.95);
+      border-radius: 8px;
+      z-index: 1;
+    }
+    
+    [data-theme="dark"] .notification::before {
+      background: rgba(0,0,0,0.95);
+    }
+    
+    .notification > * {
+      position: relative;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div class="loading-screen" id="loadingScreen">
+    <div class="loading-text">Loading Vrishank's World...</div>
+    <div class="loading-bar">
+      <div class="loading-progress" id="loadingProgress"></div>
+    </div>
+  </div>
+  
+  <!-- Weather Effects -->
+  <div class="weather-container" id="weatherContainer"></div>
+  
+  <!-- Minecraft Mobs Background -->
+  <div class="mob-background" id="mobBackground"></div>
+  
+  <!-- Easter Egg -->
+  <div class="konami-code" id="konamiCode">
+    🎉 KONAMI CODE ACTIVATED! 🎉<br>
+    You found the secret! Vrishank approves! ⛏️
+  </div>
+  
+  <div class="dark-mode-toggle" id="darkModeToggle">🌙</div>
+  <div class="sound-toggle" id="soundToggle">🔊</div>
+  <div class="day-night-toggle" id="dayNightToggle">☀️</div>
+  <div class="admin-toggle" id="adminToggle">👑</div>
+  <nav class="navbar">
+    <a href="#" id="nav-home" class="active">🏠 Home</a>
+    <a href="#about" id="nav-about">👤 About Me</a>
+    <a href="#fooda" id="nav-fooda">🍎 fooda</a>
+    <a href="#tour" id="nav-tour">🗺️ Tour</a>
+    <a href="#news" id="nav-news">📰 News</a>
+    <a href="#contact" id="nav-contact">📞 Contact</a>
+    <div class="dropdown" style="position:relative;">
+      <a href="#" id="nav-funextras" style="padding-right:2em;">🎉 Fun & Extras ▼</a>
+      <div id="funExtrasMenu" style="display:none; position:absolute; top:2.5em; left:0; background:var(--dirt); color:var(--light); border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.2); min-width:220px; z-index:1001;">
+        <a href="#" class="fun-link" data-target="avatarBuilder">🧑‍🎨 Avatar Builder</a>
+        <a href="#" class="fun-link" data-target="themePicker">🌍 Theme Picker</a>
+        <a href="#" class="fun-link" data-target="quizGame">❓ Quiz Game</a>
+        <a href="#" class="fun-link" data-target="parkourGame">🏃 Parkour Mini-Game</a>
+        <a href="#" class="fun-link" data-target="recipeGenerator">🍽️ Healthy Recipe Generator</a>
+        <a href="#" class="fun-link" data-target="factOfDay">📅 Minecraft Fact of the Day</a>
+        <a href="#" class="fun-link" data-target="leaderboard">🏆 Leaderboard</a>
+        <a href="#" class="fun-link" data-target="pollsVoting">🗳️ Polls & Voting</a>
+        <a href="#" class="fun-link" data-target="animatedPet">🐾 Animated Pet</a>
+        <a href="#" class="fun-link" data-target="backgroundMusic">🎶 Background Music</a>
+        <a href="#" class="fun-link" data-target="dailyRewards">🎁 Daily Login Rewards</a>
+        <a href="#" class="fun-link" data-target="unlockableContent">🔓 Unlockable Content</a>
+        <a href="#" class="fun-link" data-target="foodFacts">🥗 Food Facts</a>
+        <a href="#" class="fun-link" data-target="codingCorner">💻 Coding Corner</a>
+        <a href="#" class="fun-link" data-target="shareButton">🔗 Share</a>
+        <a href="#" class="fun-link" data-target="languageSelector">🌐 Language Selector</a>
+      </div>
+    </div>
+  </nav>
+  <div id="page-hero" class="hero">
+    <div class="hero-title">Vrishanks Minecraft World</div>
+    <div class="hero-desc">🏗️ <b>Founder of fooda</b> | ⛏️ Minecraft Fan | 🍎 Healthy Living Advocate<br>🌍 Discover more about me, my company, and <a href="https://aihealthy.org" target="_blank">aihealthy.org</a>!</div>
+    <div class="controls-hint">
+      💡 <b>Controls:</b> Use A/D or Left/Right to navigate sections! W/S to scroll! Press SPACE to explore!
+    </div>
+  </div>
+  <div class="main-content">
+    <div id="page-home">
+      <div class="info-card">
+        <h2>🎮 Welcome to My World!</h2>
+        <div>
+          ⛏️ I'm Vrishank! I love playing Minecraft, building epic structures, playing chess, and helping people eat healthy. 🏗️ Explore my site to learn more about me and my adventures in both the digital and real world!
+        </div>
+        <div style="text-align: center; margin-top: 1;">
+          <span style="font-size: 2; margin: 0.5em;">⛏️</span>
+          <span style="font-size: 2; margin: 0.5em;">🏗️</span>
+          <span style="font-size: 2; margin: 0.5em;">🍎</span>
+          <span style="font-size: 2; margin: 0.5em;">♟️</span>
+          <span style="font-size: 2; margin: 0.5em;">💻</span>
+          <span style="font-size: 2; margin: 0.5em;">📚</span>
+          <span style="font-size: 2; margin: 0.5em;">🌟</span>
+          <span style="font-size: 2; margin: 0.5em;">🎯</span>
+          <span style="font-size: 2; margin: 0.5em;">💡</span>
+        </div>
+      </div>
+      <div class="info-card">
+        <h2>🍎 About fooda</h2>
+        <div>
+          <b>fooda</b> is my company dedicated to making healthy food choices fun and accessible for everyone! 🌱 We use technology and creativity to inspire healthy living for all ages, just like how Minecraft inspires creativity in building!
+        </div>
+        <div style="text-align: center; margin-top: 1;">
+          <span style="font-size: 15; margin: 0.3em;">🌱</span>
+          <span style="font-size: 15; margin: 0.3em;">🌱</span>
+          <span style="font-size: 15; margin: 0.3em;">🌱</span>
+          <span style="font-size: 15; margin: 0.3em;">��</span>
+          <span style="font-size: 15; margin: 0.3em;">🌱</span>
+          <span style="font-size: 15; margin: 0.3em;">🖤</span>
+        </div>
+      </div>
+    </div>
+    <div id="page-about" style="display:none;">
+      <div class="info-card">
+        <h2>👤 About Me</h2>
+        <div>
+          <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/7/7c/Steve_JE2_BE2.png" class="info-img" alt="Vrishank Avatar">
+          <b>Name:</b> Vrishank<br>
+          <b>Age:</b> 8<br>
+          <b>Interests:</b> ⛏️ Minecraft, ♟️ chess, 💻 coding, 🍎 healthy food, and helping others.<br>
+          <b>Mission:</b> To make healthy food fun and easy for everyone, and to build awesome things in Minecraft! 🏗️
+        </div>
+      </div>
+      
+      <!-- Inventory System -->
+      <div class="inventory">
+        <h2>🎒 Vrishank's Inventory</h2>
+        <p>Click on items to see what I'm carrying!</p>
+        <div class="inventory-grid">
+          <div class="inventory-slot" data-item="diamond-pickaxe">
+            ⛏️
+            <div class="tooltip">Diamond Pickaxe - My favorite tool!</div>
+          </div>
+          <div class="inventory-slot" data-item="chess-piece">
+            ♟️
+            <div class="tooltip">Chess Piece - Strategic thinking!</div>
+          </div>
+          <div class="inventory-slot" data-item="golden-apple">
+            🍎
+            <div class="tooltip">Golden Apple - Healthy living!</div>
+          </div>
+          <div class="inventory-slot" data-item="book">
+            📚
+            <div class="tooltip">Book - Always learning!</div>
+          </div>
+          <div class="inventory-slot" data-item="compass">
+            🧭
+            <div class="tooltip">Compass - Finding my way!</div>
+          </div>
+          <div class="inventory-slot" data-item="torch">
+            🔦
+            <div class="tooltip">Torch - Lighting the way!</div>
+          </div>
+          <div class="inventory-slot" data-item="crafting-table">
+            🏗️
+            <div class="tooltip">Crafting Table - Building dreams!</div>
+          </div>
+          <div class="inventory-slot" data-item="heart">
+            ❤️
+            <div class="tooltip">Heart - Helping others!</div>
+          </div>
+          <div class="inventory-slot" data-item="emerald-block">
+            💎
+            <div class="tooltip">Emerald Block - Valuable treasure!</div>
+          </div>
+          <div class="inventory-slot" data-item="sculk-block">
+            🌌
+            <div class="tooltip">Sculk Block - Mysterious and glowing!</div>
+          </div>
+          <div class="inventory-slot" data-item="blackstone">
+            🖤
+            <div class="tooltip">Blackstone - Dark and strong!</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Builds Gallery -->
+      <div class="builds-gallery">
+        <h2>🏗️ My Minecraft Builds</h2>
+        <div class="build-item">
+          <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/88a/Stone_Bricks_JE3.png" class="build-image" alt="Castle Build">
+          <div>
+            <strong>🏰 Epic Castle</strong><br>
+            My biggest build yet! A massive castle with towers, bridges, and secret passages. Took me weeks to complete!
+          </div>
+        </div>
+        <div class="build-item">
+          <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8/Redstone_Torch_JE3.png" class="build-image" alt="Redstone Machine">
+          <div>
+            <strong>⚡ Redstone Factory</strong><br>
+            A complex redstone machine that automatically sorts items. Like coding in Minecraft!
+          </div>
+        </div>
+        <div class="build-item">
+          <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/6/Apple_JE3.png" class="build-image" alt="Garden">
+          <div>
+            <strong>🌱 Healthy Garden</strong><br>
+            A beautiful garden with all kinds of healthy foods. Just like fooda promotes!
+          </div>
+        </div>
+        <div class="build-item">
+          <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Diamond_Block_JE3.png" class="build-image" alt="Diamond Palace">
+          <div>
+            <strong>💎 Diamond Palace</strong><br>
+            My most luxurious build! A palace made entirely of diamond blocks. So shiny!
+          </div>
+        </div>
+        <div class="build-item">
+          <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Gold_Block_JE3.png" class="build-image" alt="Golden Tower">
+          <div>
+            <strong>🏆 Golden Tower</strong><br>
+            A tall tower reaching the clouds! Made with gold blocks and redstone lighting.
+          </div>
+        </div>
+        <div class="build-item">
+          <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/Sculk_JE3.png" class="build-image" alt="Sculk Cave">
+          <div>
+            <strong>🌌 Sculk Cave</strong><br>
+            A mysterious cave with glowing sculk blocks! Found in the deep dark biome.
+          </div>
+        </div>
+      </div>
+      
+      <!-- Crafting Recipes -->
+      <div class="crafting-section">
+        <h2>⚒️ My Project Recipes</h2>
+        <div class="recipe">
+          <div class="recipe-grid">
+            <div class="recipe-slot">💻</div>
+            <div class="recipe-slot">🍎</div>
+            <div class="recipe-slot">❤️</div>
+            <div class="recipe-slot">🌱</div>
+            <div class="recipe-slot">💡</div>
+            <div class="recipe-slot">🏗️</div>
+            <div class="recipe-slot">📚</div>
+            <div class="recipe-slot">🌟</div>
+            <div class="recipe-slot">🎯</div>
+          </div>
+          <div>
+            <strong>🍎 fooda Company</strong><br>
+            Crafted with: Coding + Healthy Food + Love + Growth + Innovation + Building + Learning + Dreams + Goals
+          </div>
+        </div>
+        <div class="recipe">
+          <div class="recipe-grid">
+            <div class="recipe-slot">⛏️</div>
+            <div class="recipe-slot">🏗️</div>
+            <div class="recipe-slot">🎮</div>
+            <div class="recipe-slot">♟️</div>
+            <div class="recipe-slot">💻</div>
+            <div class="recipe-slot">📚</div>
+            <div class="recipe-slot">🌟</div>
+            <div class="recipe-slot">🎯</div>
+            <div class="recipe-slot">❤️</div>
+          </div>
+          <div>
+            <strong>🎮 Vrishank's Skills</strong><br>
+            Crafted with: Mining + Building + Gaming + Chess + Coding + Learning + Creativity + Focus + Passion
+          </div>
+        </div>
+        <div class="recipe">
+          <div class="recipe-grid">
+            <div class="recipe-slot">💎</div>
+            <div class="recipe-slot">🌌</div>
+            <div class="recipe-slot">🖤</div>
+            <div class="recipe-slot">🔥</div>
+            <div class="recipe-slot">⚡</div>
+            <div class="recipe-slot">🏰</div>
+            <div class="recipe-slot">🌱</div>
+            <div class="recipe-slot">🍎</div>
+            <div class="recipe-slot">🌟</div>
+          </div>
+          <div>
+            <strong>🏗️ Epic Minecraft Builds</strong><br>
+            Crafted with: Emerald + Sculk + Blackstone + Nether + Redstone + Castles + Gardens + Food + Dreams
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="page-fooda" style="display:none;">
+      <div class="info-card">
+        <h2>🍎 About fooda</h2>
+        <div>
+          <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/2/2b/Golden_Apple_JE2_BE2.png" class="project-logo" alt="fooda logo">
+          <b>fooda</b> is my company dedicated to making healthy food choices fun and accessible for everyone! 🌱 We use technology and creativity to inspire healthy living for all ages, just like how Minecraft inspires creativity in building!
+        </div>
+      </div>
+      <div class="achievements-section">
+        <h2>🏆 fooda Achievements</h2>
+        <div class="achievement">
+          <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Trophy_JE1_BE1.png" class="achievement-icon" alt="Trophy" style="object-fit: contain; padding: 5px;">
+          <div>
+            <strong>🏆 Young Entrepreneur Award</strong><br>
+            Started fooda at age 8 - like crafting your first tool!
+          </div>
+        </div>
+        <div class="achievement">
+          <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/6/6e/Apple_JE3_BE2.png" class="achievement-icon" alt="Apple" style="object-fit: contain; padding: 5px;">
+          <div>
+            <strong>🍎 Healthy Living Advocate</strong><br>
+            Helping families eat better - like finding golden apples!
+          </div>
+        </div>
+        <div class="achievement">
+          <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Redstone_Torch_JE3_BE2.png" class="achievement-icon" alt="Innovation" style="object-fit: contain; padding: 5px;">
+          <div>
+            <strong>💡 Innovation in Health</strong><br>
+            Using technology for good - like redstone engineering!
+          </div>
+        </div>
+        <div class="achievement">
+          <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Book_JE3_BE2.png" class="achievement-icon" alt="Education" style="object-fit: contain; padding: 5px;">
+          <div>
+            <strong>📚 Educational Pioneer</strong><br>
+            Teaching kids about healthy eating through fun activities!
+          </div>
+        </div>
+        <div class="achievement">
+          <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Compass_JE3_BE2.png" class="achievement-icon" alt="Leadership" style="object-fit: contain; padding: 5px;">
+          <div>
+            <strong>🧭 Future Leader</strong><br>
+            Leading the way in healthy food innovation for kids!
+          </div>
+        </div>
+      </div>
+      <div class="newsletter-section">
+        <h2>📬 Join the fooda Community</h2>
+        <p>Stay updated with healthy living tips and fooda news! 🌱</p>
+        <div class="newsletter-input">
+          <input type="email" id="newsletterEmail" placeholder="Enter your email">
+          <button onclick="subscribeNewsletter()">Subscribe</button>
+        </div>
+      </div>
+    </div>
+    <div id="page-tour" style="display:none;">
+      <div class="tour-guide">
+        <h2>🗺️ Welcome to Vrishank's World!</h2>
+        <div style="text-align: center; margin-bottom: 1em;">
+          <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Map_JE3_BE2.png" alt="Map" style="width: 60px; height: 60px; border-radius: 8px; border: 3px solid var(--wood);">
+          <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Compass_JE3_BE2.png" alt="Compass" style="width: 60px; height: 60px; border-radius: 8px; border: 3px solid var(--wood); margin-left: 0.5em;">
+        </div>
+        <div class="tour-step">
+          <div class="tour-step-number">1</div>
+          <div>
+            <strong>🏠 Home</strong><br>
+            Start here to learn about me and fooda!
+            <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/House_JE1_BE1.png" alt="Home" style="width: 30px; height: 30px; border-radius: 4px; border: 2px solid var(--wood); margin-left: 0.5em; vertical-align: middle;">
+          </div>
+        </div>
+        <div class="tour-step">
+          <div class="tour-step-number">2</div>
+          <div>
+            <strong>👤 About Me</strong><br>
+            Learn about Vrishank - Minecraft fan, chess player, and entrepreneur!
+            <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/7/7c/Steve_JE2_BE2.png" alt="Vrishank" style="width: 30px; height: 30px; border-radius: 4px; border: 2px solid var(--wood); margin-left: 0.5em; vertical-align: middle;">
+          </div>
+        </div>
+        <div class="tour-step">
+          <div class="tour-step-number">3</div>
+          <div>
+            <strong>🍎 fooda</strong><br>
+            Discover my company and achievements!
+            <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/2/2b/Golden_Apple_JE2_BE2.png" alt="fooda" style="width: 30px; height: 30px; border-radius: 4px; border: 2px solid var(--wood); margin-left: 0.5em; vertical-align: middle;">
+          </div>
+        </div>
+        <div class="tour-step">
+          <div class="tour-step-number">4</div>
+          <div>
+            <strong>📰 News</strong><br>
+            Latest updates about fooda and my projects!
+            <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Newspaper_JE1_BE1.png" alt="News" style="width: 30px; height: 30px; border-radius: 4px; border: 2px solid var(--wood); margin-left: 0.5em; vertical-align: middle;">
+          </div>
+        </div>
+        <div class="tour-step">
+          <div class="tour-step-number">5</div>
+          <div>
+            <strong>📞 Contact</strong><br>
+            Get in touch and visit aihealthy.org!
+            <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Phone_JE1_BE1.png" alt="Contact" style="width: 30px; height: 30px; border-radius: 4px; border: 2px solid var(--wood); margin-left: 0.5em; vertical-align: middle;">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="page-news" style="display:none;">
+      <div class="news-section">
+        <h2>📰 Latest fooda News</h2>
+        <div class="news-item">
+          <div class="news-date">🎄 December 2024</div>
+          <strong>🏗️ fooda Launches New Website</strong><br>
+          Our official website is now live! Learn more about healthy living and our mission. ⛏️
+          <div style="text-align: center; margin-top: 0.5em;">
+            <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Computer_JE1_BE1.png" alt="Website Launch" style="width: 50px; height: 50px; border-radius: 6px; border: 2px solid var(--wood); margin: 0.2em;">
+            <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Globe_JE1_BE1.png" alt="Online" style="width: 50px; height: 50px; border-radius: 6px; border: 2px solid var(--wood); margin: 0.2em;">
+          </div>
+        </div>
+        <div class="news-item">
+          <div class="news-date">🍂 November 2024</div>
+          <strong>🤝 Partnership with aihealthy.org</strong><br>
+          fooda teams up with aihealthy.org to bring AI-powered healthy living tips to everyone! 🌟
+          <div style="text-align: center; margin-top: 0.5em;">
+            <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Handshake_JE1_BE1.png" alt="Partnership" style="width: 50px; height: 50px; border-radius: 6px; border: 2px solid var(--wood); margin: 0.2em;">
+            <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Brain_JE1_BE1.png" alt="AI" style="width: 50px; height: 50px; border-radius: 6px; border: 2px solid var(--wood); margin: 0.2em;">
+          </div>
+        </div>
+        <div class="news-item">
+          <div class="news-date">🎃 October 2024</div>
+          <strong>⭐ Young Entrepreneur Spotlight</strong><br>
+          Vrishank featured for starting fooda at age 8 and promoting healthy eating! 🏆
+          <div style="text-align: center; margin-top: 0.5em;">
+            <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Star_JE1_BE1.png" alt="Spotlight" style="width: 50px; height: 50px; border-radius: 6px; border: 2px solid var(--wood); margin: 0.2em;">
+            <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Crown_JE1_BE1.png" alt="Achievement" style="width: 50px; height: 50px; border-radius: 6px; border: 2px solid var(--wood); margin: 0.2em;">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="page-contact" style="display:none;">
+      <div class="info-card">
+        <h2>📞 Connect With Us</h2>
+        <div class="social-links">
+          <a href="mailto:vrishankjo@gmail.com" class="social-link">
+            <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Paper_JE3_BE2.png" alt="Email" style="width: 30px; height: 30px; object-fit: contain;">
+          </a>
+          <a href="#" class="social-link">
+            <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Compass_JE3_BE2.png" alt="Social" style="width: 30px; height: 30px; object-fit: contain;">
+          </a>
+          <a href="#" class="social-link">
+            <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Book_JE3_BE2.png" alt="Website" style="width: 30px; height: 30px; object-fit: contain;">
+          </a>
+          <a href="https://aihealthy.org" class="social-link">
+            <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/6/6e/Apple_JE3_BE2.png" alt="aihealthy.org" style="width: 30px; height: 30px; object-fit: contain;">
+          </a>
+        </div>
+        <p style="text-align: center; margin-top: 1em;">
+          📧 Email: <a href="mailto:vrishankjo@gmail.com">vrishankjo@gmail.com</a><br>
+          🌐 Visit: <a href="https://aihealthy.org" target="_blank">aihealthy.org</a>
+        </p>
+      </div>
+      
+      <!-- Mini-Game -->
+      <div class="minigame-section">
+        <h2>🎮 Memory Match Game</h2>
+        <p>Match the Minecraft blocks! Click to reveal and find pairs.</p>
+        <div class="game-stats">
+          <span>Moves: <span id="moveCount">0</span></span>
+          <span>Pairs: <span id="pairCount">0</span>/8</span>
+        </div>
+        <div class="game-grid" id="gameGrid">
+          <!-- Game cells will be generated by JavaScript -->
+        </div>
+        <button onclick="resetGame()" style="margin-top: 1em; padding: 0.8em 1.5em; background: var(--primary); color: white; border: 2px solid var(--gold); border-radius: 6px; cursor: pointer;">🔄 New Game</button>
+      </div>
+      
+      <!-- Timeline -->
+      <div class="timeline-section">
+        <h2>📅 Vrishank's Journey</h2>
+        <div class="timeline-item">
+          <div class="timeline-date">2024</div>
+          <div>
+            <strong>🎯 Started fooda</strong><br>
+            Launched my healthy food company at age 8!
+            <div style="text-align: center; margin-top: 0.5em;">
+              <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/2/2b/Golden_Apple_JE2_BE2.png" alt="fooda" style="width: 40px; height: 40px; border-radius: 4px; border: 2px solid var(--wood);">
+            </div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">2023</div>
+          <div>
+            <strong>♟️ Chess Champion</strong><br>
+            Won my first chess tournament!
+            <div style="text-align: center; margin-top: 0.5em;">
+              <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Chess_Piece_JE1_BE1.png" alt="Chess" style="width: 40px; height: 40px; border-radius: 4px; border: 2px solid var(--wood);">
+            </div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">2022</div>
+          <div>
+            <strong>⛏️ Minecraft Master</strong><br>
+            Built my first epic castle in Minecraft!
+            <div style="text-align: center; margin-top: 0.5em;">
+              <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Stone_Bricks_JE3_BE2.png" alt="Castle" style="width: 40px; height: 40px; border-radius: 4px; border: 2px solid var(--wood);">
+            </div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">2021</div>
+          <div>
+            <strong>💻 First Code</strong><br>
+            Started learning to code and program!
+            <div style="text-align: center; margin-top: 0.5em;">
+              <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Computer_JE1_BE1.png" alt="Coding" style="width: 40px; height: 40px; border-radius: 4px; border: 2px solid var(--wood);">
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Progress Tracking -->
+      <div class="progress-section">
+        <h2>📊 My Progress</h2>
+        <div>
+          <strong>⛏️ Minecraft Building</strong>
+          <div style="display: flex; align-items: center; gap: 0.5em;">
+            <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Diamond_Pickaxe_JE3_BE2.png" alt="Minecraft" style="width: 30px; height: 30px; border-radius: 4px; border: 2px solid var(--wood);">
+            <div class="progress-bar">
+              <div class="progress-fill" id="minecraftProgress" style="width: 85%;"></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <strong>♟️ Chess Skills</strong>
+          <div style="display: flex; align-items: center; gap: 0.5em;">
+            <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Chess_Piece_JE1_BE1.png" alt="Chess" style="width: 30px; height: 30px; border-radius: 4px; border: 2px solid var(--wood);">
+            <div class="progress-bar">
+              <div class="progress-fill" id="chessProgress" style="width: 70%;"></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <strong>💻 Coding</strong>
+          <div style="display: flex; align-items: center; gap: 0.5em;">
+            <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Computer_JE1_BE1.png" alt="Coding" style="width: 30px; height: 30px; border-radius: 4px; border: 2px solid var(--wood);">
+            <div class="progress-bar">
+              <div class="progress-fill" id="codingProgress" style="width: 60%;"></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <strong>🍎 Healthy Living</strong>
+          <div style="display: flex; align-items: center; gap: 0.5em;">
+            <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/6/6e/Apple_JE3_BE2.png" alt="Health" style="width: 30px; height: 30px; border-radius: 4px; border: 2px solid var(--wood);">
+            <div class="progress-bar">
+              <div class="progress-fill" id="healthProgress" style="width: 90%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Server List -->
+      <div class="server-list">
+        <h2>🌐 My Favorite Servers</h2>
+        <div class="server-item" onclick="joinServer('Hypixel')">
+          <div class="server-status"></div>
+          <div>
+            <strong>🏰 Hypixel</strong><br>
+            The biggest Minecraft server - minigames galore!
+          </div>
+          <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Castle_JE1_BE1.png" alt="Hypixel" style="width: 40px; height: 40px; border-radius: 6px; border: 2px solid var(--wood); margin-left: auto;">
+        </div>
+        <div class="server-item" onclick="joinServer('Mineplex')">
+          <div class="server-status"></div>
+          <div>
+            <strong>🎮 Mineplex</strong><br>
+            Classic minigames and fun with friends!
+          </div>
+          <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Game_Controller_JE1_BE1.png" alt="Mineplex" style="width: 40px; height: 40px; border-radius: 6px; border: 2px solid var(--wood); margin-left: auto;">
+        </div>
+        <div class="server-item" onclick="joinServer('CubeCraft')">
+          <div class="server-status"></div>
+          <div>
+            <strong>🎯 CubeCraft</strong><br>
+            Amazing parkour and survival games!
+          </div>
+          <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Target_JE1_BE1.png" alt="CubeCraft" style="width: 40px; height: 40px; border-radius: 6px; border: 2px solid var(--wood); margin-left: auto;">
+        </div>
+      </div>
+      
+      <!-- Guestbook -->
+      <div class="guestbook">
+        <h2>📖 Sign My Guestbook</h2>
+        <p>Leave a message in my Minecraft book! 📚</p>
+        <div style="text-align: center; margin-bottom: 1em;">
+          <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Book_JE3_BE2.png" alt="Guestbook" style="width: 60px; height: 60px; border-radius: 8px; border: 3px solid var(--wood);">
+          <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Quill_JE1_BE1.png" alt="Write" style="width: 60px; height: 60px; border-radius: 8px; border: 3px solid var(--wood); margin-left: 0.5em;">
+        </div>
+        <div class="guestbook-form">
+          <input type="text" id="guestName" placeholder="Your Minecraft name">
+          <textarea id="guestMessage" placeholder="Write your message here..." rows="4"></textarea>
+          <button onclick="addGuestbookEntry()">📝 Sign Book</button>
+        </div>
+        <div id="guestbookEntries">
+          <div class="guestbook-entry">
+            <strong>🏗️ Builder123</strong><br>
+            Amazing website! Love the Minecraft theme! ⛏️
+            <div style="text-align: center; margin-top: 0.5em;">
+              <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Thumbs_Up_JE1_BE1.png" alt="Like" style="width: 30px; height: 30px; border-radius: 4px; border: 2px solid var(--wood);">
+            </div>
+          </div>
+          <div class="guestbook-entry">
+            <strong>🍎 HealthyGamer</strong><br>
+            Great job with fooda! Keep promoting healthy living! 🌱
+            <div style="text-align: center; margin-top: 0.5em;">
+              <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/6/6e/Apple_JE3_BE2.png" alt="Healthy" style="width: 30px; height: 30px; border-radius: 4px; border: 2px solid var(--wood);">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Music Player -->
+  <div class="music-player" id="musicPlayer">
+    <div>🎵 Minecraft Music</div>
+    <div class="music-controls">
+      <div class="music-btn" id="playBtn">▶️</div>
+      <div class="music-btn" id="pauseBtn">⏸️</div>
+      <div class="music-btn" id="nextBtn">⏭️</div>
+    </div>
+  </div>
+  
+  <!-- Achievement Popup -->
+  <div class="achievement-popup" id="achievementPopup">
+    <div>🏆 Achievement Unlocked!</div>
+    <div id="achievementText">You found a secret!</div>
+  </div>
+  
+  <!-- Admin Login -->
+  <div class="admin-login" id="adminLogin">
+    <h2>👑 Admin Login</h2>
+    <p>Enter the secret password to access admin panel</p>
+    <p style="font-size: 0.9em; color: #666; margin-bottom: 1em;">💡 Hint: brother phone</p>
+    <input type="password" id="adminPassword" placeholder="Enter password">
+    <button onclick="loginAdmin()">🔐 Login</button>
+    <button onclick="closeAdminLogin()">❌ Cancel</button>
+  </div>
+  
+  <!-- Admin Panel -->
+  <div class="admin-panel" id="adminPanel">
+    <div class="admin-header">
+      <h1>👑 Vrishank's Admin Panel</h1>
+      <p>Welcome, Admin! Manage your website from here.</p>
+      <p style="font-size:1em; color:#228B22; margin:0.5em 0 1em 0;"><b>Admin Email:</b> <a href="mailto:vrishankjo@gmail.com" style="color:#228B22; text-decoration:underline;">vrishankjo@gmail.com</a></p>
+      <button class="admin-btn danger" onclick="logoutAdmin()">🚪 Logout</button>
+    </div>
+    
+    <div class="admin-section">
+      <h3>📊 Website Statistics</h3>
+      <div class="admin-stats">
+        <div class="stat-card">
+          <div class="stat-number" id="visitorCount">0</div>
+          <div>Total Visitors</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="guestbookCount">0</div>
+          <div>Guestbook Messages</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="newsletterCount">0</div>
+          <div>Newsletter Subscribers</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="achievementCount">0</div>
+          <div>Achievements Unlocked</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="admin-section">
+      <h3>📖 Guestbook Management</h3>
+      <div class="admin-actions">
+        <button class="admin-btn" onclick="viewAllMessages()">👁️ View All Messages</button>
+        <button class="admin-btn" onclick="exportMessages()">📥 Export Messages</button>
+        <button class="admin-btn danger" onclick="clearAllMessages()">🗑️ Clear All Messages</button>
+      </div>
+      <div class="admin-list" id="guestbookList">
+        <div class="admin-list-item">
+          <span>🏗️ Builder123</span>
+          <span>Amazing website! Love the Minecraft theme! ⛏️</span>
+        </div>
+        <div class="admin-list-item">
+          <span>🍎 HealthyGamer</span>
+          <span>Great job with fooda! Keep promoting healthy living! 🌱</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="admin-section">
+      <h3>📧 Newsletter Management</h3>
+      <div class="admin-actions">
+        <button class="admin-btn" onclick="viewSubscribers()">👥 View Subscribers</button>
+        <button class="admin-btn" onclick="sendNewsletter()">📤 Send Newsletter</button>
+        <button class="admin-btn" onclick="exportSubscribers()">📥 Export List</button>
+      </div>
+      <div class="admin-list" id="subscriberList">
+        <div class="admin-list-item">
+          <span>📧 test@example.com</span>
+          <span>Subscribed: Just now</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="admin-section">
+      <h3>🎮 Website Controls</h3>
+      <div class="admin-actions">
+        <button class="admin-btn" onclick="toggleMobs()">🐮 Toggle Mobs</button>
+        <button class="admin-btn" onclick="toggleWeather()">🌧️ Toggle Weather</button>
+        <button class="admin-btn" onclick="resetAllStats()">🔄 Reset Stats</button>
+        <button class="admin-btn" onclick="backupWebsite()">💾 Backup Website</button>
+      </div>
+    </div>
+    
+    <div class="admin-section">
+      <h3>⚙️ System Settings</h3>
+      <div class="admin-actions">
+        <button class="admin-btn" onclick="changePassword()">🔐 Change Password</button>
+        <button class="admin-btn" onclick="viewLogs()">📋 View Logs</button>
+        <button class="admin-btn" onclick="systemInfo()">💻 System Info</button>
+      </div>
+    </div>
+  </div>
+  
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="https://aihealthy.org">🌐 aihealthy.org</a>
+      <a href="mailto:vrishankjo@gmail.com">📧 Contact</a>
+      <a href="#privacy" id="privacyLink">🔒 Privacy Policy</a>
+    </div>
+    &copy; 2024 Vrishank | 🍎 fooda | <a href="https://aihealthy.org" style="color:#fff;text-decoration:underline;">aihealthy.org</a>
+  </footer>
+  
+  <!-- Privacy Policy Modal -->
+  <div id="privacyModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); z-index:20000; align-items:center; justify-content:center;">
+    <div style="background:#fff; color:#222; max-width:600px; margin:5vh auto; border-radius:12px; padding:2em; position:relative; box-shadow:0 8px 32px rgba(0,0,0,0.3);">
+      <button onclick="closePrivacy()" style="position:absolute; top:10px; right:10px; background:#eee; border:none; border-radius:50%; width:32px; height:32px; font-size:1.2em; cursor:pointer;">❌</button>
+      <h2 style="margin-top:0;">🔒 Privacy Policy</h2>
+      <p>Your privacy is important! This site does not collect or share your personal information with anyone. All guestbook messages and newsletter emails are stored only in your browser and are not sent to any server.</p>
+      <ul>
+        <li>We do not track you or use cookies for advertising.</li>
+        <li>Newsletter and guestbook data is not shared or sold.</li>
+        <li>For questions, contact <a href="mailto:vrishankjo@gmail.com">vrishankjo@gmail.com</a></li>
+      </ul>
+      <p>This is a demo site for fun and learning. For a real privacy policy, please contact the admin.</p>
+    </div>
+  </div>
+  
+  <!-- NEW FEATURES START -->
+  <div id="avatarBuilder" style="display:none;" class="info-card">
+    <h2>🧑‍🎨 Avatar Builder</h2>
+    <div style="display:flex; flex-direction:column; align-items:center; gap:1em;">
+      <div id="avatarPreview" style="font-size:4em; border:2px solid var(--diamond); border-radius:16px; padding:0.5em; background:#f9f9f9; margin-bottom:1em; width:120px; text-align:center;">🧑</div>
+      <div style="display:flex; gap:1em;">
+        <div>
+          <label>Skin:</label><br>
+          <select id="skinSelect">
+            <option value="🧑">Default</option>
+            <option value="🧔">Beard</option>
+            <option value="👩">Girl</option>
+            <option value="🧑🏾">Brown</option>
+            <option value="🧑🏻">Light</option>
+            <option value="🧑🏽">Tan</option>
+            <option value="🧑🏿">Dark</option>
+          </select>
+        </div>
+        <div>
+          <label>Hat:</label><br>
+          <select id="hatSelect">
+            <option value="">None</option>
+            <option value="🎩">Top Hat</option>
+            <option value="🧢">Cap</option>
+            <option value="👑">Crown</option>
+            <option value="⛑️">Helmet</option>
+            <option value="🎓">Grad Cap</option>
+          </select>
+        </div>
+        <div>
+          <label>Tool:</label><br>
+          <select id="toolSelect">
+            <option value="">None</option>
+            <option value="⛏️">Pickaxe</option>
+            <option value="🍎">Apple</option>
+            <option value="♟️">Chess</option>
+            <option value="💻">Laptop</option>
+            <option value="📚">Book</option>
+          </select>
+        </div>
+      </div>
+      <button id="saveAvatarBtn" style="margin-top:1em;">Save Avatar</button>
+      <div id="avatarSavedMsg" style="color:green; display:none;">Avatar saved!</div>
+    </div>
+    <script>
+      (function(){
+        const skin = document.getElementById('skinSelect');
+        const hat = document.getElementById('hatSelect');
+        const tool = document.getElementById('toolSelect');
+        const preview = document.getElementById('avatarPreview');
+        const saveBtn = document.getElementById('saveAvatarBtn');
+        const savedMsg = document.getElementById('avatarSavedMsg');
+        function updatePreview() {
+          preview.textContent = (hat.value ? hat.value : '') + skin.value + (tool.value ? tool.value : '');
+        }
+        skin.onchange = hat.onchange = tool.onchange = updatePreview;
+        saveBtn.onclick = function() {
+          localStorage.setItem('myAvatar', preview.textContent);
+          savedMsg.style.display = 'block';
+          setTimeout(()=>{savedMsg.style.display='none';},1500);
+        };
+        // Load saved avatar
+        if(localStorage.getItem('myAvatar')) {
+          const avatar = localStorage.getItem('myAvatar');
+          // Try to parse out skin/hat/tool
+          // Not perfect, but works for emoji combos
+          preview.textContent = avatar;
+        } else {
+          updatePreview();
+        }
+      })();
+    </script>
+  </div>
+  <div id="themePicker" style="display:none;" class="info-card">
+    <h2>🌍 Theme Picker</h2>
+    <div style="display:flex; flex-direction:column; align-items:center; gap:1em;">
+      <label for="biomeSelect">Choose a Minecraft Biome:</label>
+      <select id="biomeSelect" style="font-size:1.1em;">
+        <option value="default">Plains</option>
+        <option value="desert">Desert</option>
+        <option value="jungle">Jungle</option>
+        <option value="nether">Nether</option>
+        <option value="end">The End</option>
+        <option value="ocean">Ocean</option>
+        <option value="snowy">Snowy</option>
+        <option value="forest">Forest</option>
+      </select>
+      <button id="resetBiomeBtn">Reset to Default</button>
+    </div>
+    <script>
+      (function(){
+        const biomeSelect = document.getElementById('biomeSelect');
+        const resetBtn = document.getElementById('resetBiomeBtn');
+        const body = document.body;
+        const biomeBackgrounds = {
+          default: 'repeating-linear-gradient(135deg, #ff3333 0 60px, #3366ff 60px 120px, #ffd700 120px 180px)',
+          desert: 'repeating-linear-gradient(135deg, #f7e9a0 0 60px, #e2c275 60px 120px, #f4d35e 120px 180px)',
+          jungle: 'repeating-linear-gradient(135deg, #228B22 0 60px, #7cfc00 60px 120px, #006400 120px 180px)',
+          nether: 'repeating-linear-gradient(135deg, #7b1e1e 0 60px, #ff3333 60px 120px, #ff6600 120px 180px)',
+          end: 'repeating-linear-gradient(135deg, #cfcfcf 0 60px, #b4b4b4 60px 120px, #e6e6fa 120px 180px)',
+          ocean: 'repeating-linear-gradient(135deg, #00bfff 0 60px, #1e90ff 60px 120px, #87cefa 120px 180px)',
+          snowy: 'repeating-linear-gradient(135deg, #e0f7fa 0 60px, #b3e5fc 60px 120px, #fff 120px 180px)',
+          forest: 'repeating-linear-gradient(135deg, #228B22 0 60px, #556b2f 60px 120px, #8fbc8f 120px 180px)'
+        };
+        function setBiome(biome) {
+          body.style.background = biomeBackgrounds[biome] || biomeBackgrounds.default;
+          localStorage.setItem('biome', biome);
+        }
+        biomeSelect.onchange = function() {
+          setBiome(biomeSelect.value);
+        };
+        resetBtn.onclick = function() {
+          setBiome('default');
+          biomeSelect.value = 'default';
+        };
+        // Load saved biome
+        const savedBiome = localStorage.getItem('biome');
+        if (savedBiome && biomeBackgrounds[savedBiome]) {
+          setBiome(savedBiome);
+          biomeSelect.value = savedBiome;
+        }
+      })();
+    </script>
+  </div>
+  <div id="quizGame" style="display:none;" class="minigame-section">
+    <h2>❓ Minecraft Quiz Game</h2>
+    <div id="quizContainer" style="max-width:400px;margin:auto;"></div>
+    <button id="restartQuizBtn" style="display:none;margin-top:1em;">Restart Quiz</button>
+    <script>
+      (function(){
+        const questions = [
+          {
+            q: 'What is the rarest ore in Minecraft?',
+            options: ['Diamond', 'Emerald', 'Gold', 'Iron'],
+            answer: 1
+          },
+          {
+            q: 'Which mob explodes when it gets close to you?',
+            options: ['Zombie', 'Skeleton', 'Creeper', 'Spider'],
+            answer: 2
+          },
+          {
+            q: 'What do you need to go to the Nether?',
+            options: ['Ender Pearl', 'Obsidian Portal', 'Redstone', 'Lava Bucket'],
+            answer: 1
+          },
+          {
+            q: 'Which item lets you respawn in the Nether?',
+            options: ['Totem of Undying', 'Bed', 'Respawn Anchor', 'Beacon'],
+            answer: 2
+          },
+          {
+            q: 'What do you get from smelting sand?',
+            options: ['Glass', 'Clay', 'Stone', 'Brick'],
+            answer: 0
+          }
+        ];
+        let current = 0, score = 0, answered = false;
+        const quizContainer = document.getElementById('quizContainer');
+        const restartBtn = document.getElementById('restartQuizBtn');
+        function showQuestion() {
+          answered = false;
+          if (current >= questions.length) {
+            quizContainer.innerHTML = `<div style='font-size:1.2em;'><b>Quiz Complete!</b><br>Your Score: ${score} / ${questions.length}</div>`;
+            restartBtn.style.display = '';
+            return;
+          }
+          const q = questions[current];
+          let html = `<div style='margin-bottom:1em;'><b>Q${current+1}:</b> ${q.q}</div>`;
+          q.options.forEach((opt, i) => {
+            html += `<button class='quizOpt' data-idx='${i}' style='display:block;width:100%;margin:0.3em 0;padding:0.7em;font-size:1em;'>${opt}</button>`;
+          });
+          html += `<div id='quizFeedback' style='margin-top:1em;min-height:1.5em;'></div>`;
+          quizContainer.innerHTML = html;
+          document.querySelectorAll('.quizOpt').forEach(btn => {
+            btn.onclick = function() {
+              if (answered) return;
+              answered = true;
+              const idx = parseInt(this.getAttribute('data-idx'));
+              const feedback = document.getElementById('quizFeedback');
+              if (idx === q.answer) {
+                feedback.textContent = '✅ Correct!';
+                score++;
+              } else {
+                feedback.textContent = `❌ Wrong! Correct answer: ${q.options[q.answer]}`;
+              }
+              setTimeout(() => { current++; showQuestion(); }, 1200);
+            };
+          });
+          restartBtn.style.display = 'none';
+        }
+        restartBtn.onclick = function() {
+          current = 0; score = 0; showQuestion();
+        };
+        showQuestion();
+      })();
+    </script>
+  </div>
+  <div id="parkourGame" style="display:none;" class="minigame-section">
+    <h2>🏃 Parkour Mini-Game</h2>
+    <p>Jump and dodge in a Minecraft parkour challenge! (Coming soon)</p>
+  </div>
+  <div id="recipeGenerator" style="display:none;" class="info-card">
+    <h2>🍽️ Healthy Recipe Generator</h2>
+    <p>Get a random healthy recipe with a Minecraft twist! (Coming soon)</p>
+  </div>
+  <div id="factOfDay" style="display:none;" class="info-card">
+    <h2>📅 Minecraft Fact of the Day</h2>
+    <p>Discover a new fun fact every day! (Coming soon)</p>
+  </div>
+  <div id="leaderboard" style="display:none;" class="info-card">
+    <h2>🏆 Leaderboard</h2>
+    <p>See the top players and guestbook signers! (Coming soon)</p>
+  </div>
+  <div id="pollsVoting" style="display:none;" class="info-card">
+    <h2>🗳️ Polls & Voting</h2>
+    <p>Vote for your favorite mob, food, or build! (Coming soon)</p>
+  </div>
+  <div id="animatedPet" style="display:none;" class="info-card">
+    <h2>🐾 Animated Pet</h2>
+    <p>Adopt a virtual pet that follows your mouse! (Coming soon)</p>
+  </div>
+  <div id="backgroundMusic" style="display:none;" class="info-card">
+    <h2>🎶 Background Music</h2>
+    <p>Enjoy real Minecraft music tracks! (Coming soon)</p>
+  </div>
+  <div id="dailyRewards" style="display:none;" class="info-card">
+    <h2>🎁 Daily Login Rewards</h2>
+    <p>Get a reward for visiting every day! (Coming soon)</p>
+  </div>
+  <div id="unlockableContent" style="display:none;" class="info-card">
+    <h2>🔓 Unlockable Content</h2>
+    <p>Unlock new builds, facts, and recipes by playing! (Coming soon)</p>
+  </div>
+  <div id="foodFacts" style="display:none;" class="info-card">
+    <h2>🥗 Food Facts</h2>
+    <p>Hover over food items to learn healthy tips! (Coming soon)</p>
+  </div>
+  <div id="codingCorner" style="display:none;" class="info-card">
+    <h2>💻 Coding Corner</h2>
+    <p>Try simple code challenges and learn programming! (Coming soon)</p>
+  </div>
+  <div id="shareButton" style="display:none;" class="info-card">
+    <h2>🔗 Share</h2>
+    <p>Share your favorite build or achievement! (Coming soon)</p>
+  </div>
+  <div id="languageSelector" style="display:none;" class="info-card">
+    <h2>🌐 Language Selector</h2>
+    <p>Switch the site language for a wider reach! (Coming soon)</p>
+  </div>
+  <!-- NEW FEATURES END -->
+  
+  <script>
+    // Dark Mode Toggle
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+    
+    // Check for saved theme preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      body.setAttribute('data-theme', savedTheme);
+      updateToggleIcon();
+    }
+    
+    darkModeToggle.addEventListener('click', function() {
+      const currentTheme = body.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      body.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateToggleIcon();
+    });
+    
+    function updateToggleIcon() {
+      const currentTheme = body.getAttribute('data-theme');
+      darkModeToggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+    }
+    
+    // Navigation
+    const navHome = document.getElementById('nav-home');
+    const navAbout = document.getElementById('nav-about');
+    const navFooda = document.getElementById('nav-fooda');
+    const navTour = document.getElementById('nav-tour');
+    const navNews = document.getElementById('nav-news');
+    const navContact = document.getElementById('nav-contact');
+    const pageHome = document.getElementById('page-home');
+    const pageAbout = document.getElementById('page-about');
+    const pageFooda = document.getElementById('page-fooda');
+    const pageTour = document.getElementById('page-tour');
+    const pageNews = document.getElementById('page-news');
+    const pageContact = document.getElementById('page-contact');
+    
+    const pages = [pageHome, pageAbout, pageFooda, pageTour, pageNews, pageContact];
+    const navs = [navHome, navAbout, navFooda, navTour, navNews, navContact];
+    
+    function setActive(nav) {
+      navs.forEach(n => n.classList.remove('active'));
+      nav.classList.add('active');
+    }
+    
+    function showPage(page) {
+      pages.forEach(p => p.style.display = 'none');
+      page.style.display = '';
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+    
+    navHome.onclick = function() {
+      setActive(navHome);
+      showPage(pageHome);
+    };
+    navAbout.onclick = function() {
+      setActive(navAbout);
+      showPage(pageAbout);
+    };
+    navFooda.onclick = function() {
+      setActive(navFooda);
+      showPage(pageFooda);
+    };
+    navTour.onclick = function() {
+      setActive(navTour);
+      showPage(pageTour);
+    };
+    navNews.onclick = function() {
+      setActive(navNews);
+      showPage(pageNews);
+    };
+    navContact.onclick = function() {
+      setActive(navContact);
+      showPage(pageContact);
+    };
+    
+    // WASD Controls
+    document.addEventListener('keydown', function(e) {
+      if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
+      
+      let currentIndex = pages.findIndex(page => page.style.display !== 'none');
+      
+      switch(e.key.toLowerCase()) {
+        case 'w':
+        case 'arrowup':
+          // Scroll up
+          window.scrollBy(0, -100);
+          break;
+        case 's':
+        case 'arrowdown':
+          // Scroll down
+          window.scrollBy(0, 100);
+          break;
+        case 'a':
+        case 'arrowleft':
+          if (currentIndex > 0) {
+            setActive(navs[currentIndex - 1]);
+            showPage(pages[currentIndex - 1]);
+          }
+          break;
+        case 'd':
+        case 'arrowright':
+          if (currentIndex < pages.length - 1) {
+            setActive(navs[currentIndex + 1]);
+            showPage(pages[currentIndex + 1]);
+          }
+          break;
+        case ' ':
+          // Space bar - show random page
+          const randomIndex = Math.floor(Math.random() * pages.length);
+          setActive(navs[randomIndex]);
+          showPage(pages[randomIndex]);
+          break;
+      }
+    });
+    
+    // Loading Screen
+    window.addEventListener('load', function() {
+      const loadingScreen = document.getElementById('loadingScreen');
+      const loadingProgress = document.getElementById('loadingProgress');
+      
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += Math.random() * 15;
+        if (progress > 100) progress = 100;
+        loadingProgress.style.width = progress + '%';
+        
+        if (progress >= 100) {
+          clearInterval(interval);
+          setTimeout(() => {
+            loadingScreen.classList.add('hidden');
+          }, 500);
+        }
+      }, 100);
+    });
+    
+    // Sound Toggle
+    let soundEnabled = true;
+    const soundToggle = document.getElementById('soundToggle');
+    
+    soundToggle.addEventListener('click', function() {
+      soundEnabled = !soundEnabled;
+      soundToggle.textContent = soundEnabled ? '🔊' : '🔇';
+      
+      if (soundEnabled) {
+        playSound('block_click');
+      }
+    });
+    
+    // Sound Effects
+    function playSound(soundType) {
+      if (!soundEnabled) return;
+      
+      // Create audio context for sound effects
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      switch(soundType) {
+        case 'block_click':
+          oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+          oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.1);
+          break;
+        case 'achievement':
+          oscillator.frequency.setValueAtTime(523, audioContext.currentTime);
+          oscillator.frequency.setValueAtTime(659, audioContext.currentTime + 0.1);
+          oscillator.frequency.setValueAtTime(784, audioContext.currentTime + 0.2);
+          break;
+        case 'crafting':
+          oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
+          oscillator.frequency.setValueAtTime(554, audioContext.currentTime + 0.1);
+          break;
+      }
+      
+      gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+      
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 0.2);
+    }
+    
+    // Inventory System
+    document.querySelectorAll('.inventory-slot').forEach(slot => {
+      slot.addEventListener('click', function() {
+        const item = this.getAttribute('data-item');
+        playSound('block_click');
+        
+        // Show item info
+        const tooltip = this.querySelector('.tooltip');
+        if (tooltip) {
+          alert(tooltip.textContent);
+        }
+      });
+    });
+    
+    // Weather Effects
+    function createWeatherEffect(type) {
+      const weatherContainer = document.getElementById('weatherContainer');
+      const effect = document.createElement('div');
+      effect.className = type;
+      effect.style.left = Math.random() * 100 + '%';
+      effect.style.animationDelay = Math.random() * 2 + 's';
+      weatherContainer.appendChild(effect);
+      
+      setTimeout(() => {
+        effect.remove();
+      }, 3000);
+    }
+    
+    // Random weather effects
+    setInterval(() => {
+      if (Math.random() < 0.1) { // 10% chance every few seconds
+        createWeatherEffect(Math.random() < 0.5 ? 'rain' : 'snow');
+      }
+    }, 5000);
+    
+    // Minecraft Mobs Background
+    const mobTypes = ['creeper', 'zombie', 'skeleton', 'spider', 'enderman', 'slime', 'cow', 'pig', 'sheep', 'chicken'];
+    
+    function createMob() {
+      const mobBackground = document.getElementById('mobBackground');
+      const mob = document.createElement('div');
+      const randomMob = mobTypes[Math.floor(Math.random() * mobTypes.length)];
+      
+      mob.className = `mob ${randomMob}`;
+      mob.style.top = Math.random() * (window.innerHeight - 100) + 'px';
+      mob.style.animationDelay = Math.random() * 5 + 's';
+      
+      mobBackground.appendChild(mob);
+      
+      // Remove mob after animation completes
+      setTimeout(() => {
+        if (mob.parentNode) {
+          mob.remove();
+        }
+      }, 40000);
+    }
+    
+    // Create mobs periodically
+    setInterval(() => {
+      if (Math.random() < 0.3) { // 30% chance every few seconds
+        createMob();
+      }
+    }, 8000);
+    
+    // Create initial mobs
+    for (let i = 0; i < 3; i++) {
+      setTimeout(() => createMob(), i * 2000);
+    }
+    
+    // Admin Panel System
+    let isAdminLoggedIn = false;
+    let adminPassword = '230309';
+    let websiteStats = {
+      visitors: 0,
+      guestbookMessages: 2,
+      newsletterSubscribers: 1,
+      achievementsUnlocked: 0
+    };
+    
+    // Store guestbook entries and subscribers
+    let guestbookEntries = [
+      { name: '🏗️ Builder123', message: 'Amazing website! Love the Minecraft theme! ⛏️' },
+      { name: '🍎 HealthyGamer', message: 'Great job with fooda! Keep promoting healthy living! 🌱' }
+    ];
+    let newsletterSubscribers = [
+      { email: 'test@example.com', time: 'Just now' }
+    ];
+    
+    // Admin Toggle Button
+    document.getElementById('adminToggle').addEventListener('click', function() {
+      if (!isAdminLoggedIn) {
+        document.getElementById('adminLogin').style.display = 'block';
+        playSound('block_click');
+      } else {
+        document.getElementById('adminPanel').style.display = 'block';
+        updateAdminStats();
+        playSound('achievement');
+      }
+    });
+    
+    // Admin Login
+    function loginAdmin() {
+      const password = document.getElementById('adminPassword').value;
+      
+      if (password === adminPassword) {
+        isAdminLoggedIn = true;
+        document.getElementById('adminLogin').style.display = 'none';
+        document.getElementById('adminPanel').style.display = 'block';
+        document.getElementById('adminPassword').value = '';
+        updateAdminStats();
+        playSound('achievement');
+        showAchievement('Admin Access!', 'Welcome to the admin panel! 👑');
+      } else {
+        alert('❌ Wrong password! Try again.');
+        playSound('block_click');
+      }
+    }
+    
+    function closeAdminLogin() {
+      document.getElementById('adminLogin').style.display = 'none';
+      document.getElementById('adminPassword').value = '';
+    }
+    
+    function logoutAdmin() {
+      isAdminLoggedIn = false;
+      document.getElementById('adminPanel').style.display = 'none';
+      playSound('block_click');
+    }
+    
+    function updateAdminStats() {
+      document.getElementById('visitorCount').textContent = websiteStats.visitors;
+      document.getElementById('guestbookCount').textContent = websiteStats.guestbookMessages;
+      document.getElementById('newsletterCount').textContent = websiteStats.newsletterSubscribers;
+      document.getElementById('achievementCount').textContent = websiteStats.achievementsUnlocked;
+      updateAdminGuestbookList();
+      updateAdminSubscriberList();
+    }
+    
+    function updateAdminGuestbookList() {
+      const list = document.getElementById('guestbookList');
+      if (!list) return;
+      if (guestbookEntries.length === 0) {
+        list.innerHTML = '<div class="admin-list-item">No messages</div>';
+        return;
+      }
+      list.innerHTML = '';
+      guestbookEntries.forEach(entry => {
+        const div = document.createElement('div');
+        div.className = 'admin-list-item';
+        div.innerHTML = `<span>${entry.name}</span><span>${entry.message}</span>`;
+        list.appendChild(div);
+      });
+    }
+    
+    function updateAdminSubscriberList() {
+      const list = document.getElementById('subscriberList');
+      if (!list) return;
+      if (newsletterSubscribers.length === 0) {
+        list.innerHTML = '<div class="admin-list-item">No subscribers</div>';
+        return;
+      }
+      list.innerHTML = '';
+      newsletterSubscribers.forEach(sub => {
+        const div = document.createElement('div');
+        div.className = 'admin-list-item';
+        div.innerHTML = `<span>📧 ${sub.email}</span><span>Subscribed: ${sub.time}</span>`;
+        list.appendChild(div);
+      });
+    }
+    
+    // Admin Functions
+    function viewAllMessages() {
+      alert('📖 All Guestbook Messages:\n\n🏗️ Builder123: Amazing website! Love the Minecraft theme! ⛏️\n🍎 HealthyGamer: Great job with fooda! Keep promoting healthy living! 🌱\n\n💡 In a real website, you\'d see all messages from a database!');
+    }
+    
+    function exportMessages() {
+      alert('📥 Messages exported! (Demo)\n\nIn a real website, this would download a CSV file with all guestbook messages.');
+    }
+    
+    function clearAllMessages() {
+      if (confirm('🗑️ Are you sure you want to clear all guestbook messages?')) {
+        document.getElementById('guestbookList').innerHTML = '<div class="admin-list-item">No messages</div>';
+        websiteStats.guestbookMessages = 0;
+        updateAdminStats();
+        alert('✅ All messages cleared!');
+      }
+    }
+    
+    function viewSubscribers() {
+      alert('👥 Newsletter Subscribers:\n\n📧 test@example.com - Subscribed: Just now\n\n💡 In a real website, you\'d see all subscribers from a database!');
+    }
+    
+    function sendNewsletter() {
+      alert('📤 Newsletter sent! (Demo)\n\nIn a real website, this would send an email to all subscribers with your latest news and updates.');
+    }
+    
+    function exportSubscribers() {
+      alert('📥 Subscriber list exported! (Demo)\n\nIn a real website, this would download a CSV file with all email addresses.');
+    }
+    
+    function toggleMobs() {
+      const mobBackground = document.getElementById('mobBackground');
+      if (mobBackground.style.display === 'none') {
+        mobBackground.style.display = 'block';
+        alert('🐮 Mobs enabled!');
+      } else {
+        mobBackground.style.display = 'none';
+        alert('🐮 Mobs disabled!');
+      }
+    }
+    
+    function toggleWeather() {
+      const weatherContainer = document.getElementById('weatherContainer');
+      if (weatherContainer.style.display === 'none') {
+        weatherContainer.style.display = 'block';
+        alert('🌧️ Weather effects enabled!');
+      } else {
+        weatherContainer.style.display = 'none';
+        alert('🌧️ Weather effects disabled!');
+      }
+    }
+    
+    function resetAllStats() {
+      if (confirm('🔄 Are you sure you want to reset all statistics?')) {
+        websiteStats = {
+          visitors: 0,
+          guestbookMessages: 0,
+          newsletterSubscribers: 0,
+          achievementsUnlocked: 0
+        };
+        updateAdminStats();
+        alert('✅ All statistics reset!');
+      }
+    }
+    
+    function backupWebsite() {
+      alert('💾 Website backup created! (Demo)\n\nIn a real website, this would create a backup of all your data and files.');
+    }
+    
+    function changePassword() {
+      const newPassword = prompt('🔐 Enter new admin password:');
+      if (newPassword && newPassword.length > 0) {
+        adminPassword = newPassword;
+        alert('✅ Password changed successfully!');
+      }
+    }
+    
+    function viewLogs() {
+      alert('📋 System Logs:\n\n[INFO] Website loaded successfully\n[INFO] Admin panel accessed\n[INFO] Guestbook message added\n[INFO] Newsletter subscription\n\n💡 In a real website, you\'d see detailed system logs here.');
+    }
+    
+    function systemInfo() {
+      alert('💻 System Information:\n\n🌐 Website: Vrishank\'s Minecraft World\n👑 Admin: Vrishank\n📅 Version: 1.0.0\n🎮 Theme: Minecraft\n🍎 Company: fooda\n\n💡 In a real website, you\'d see server and system details here.');
+    }
+    
+    // Track statistics
+    function incrementStat(stat) {
+      websiteStats[stat]++;
+      if (isAdminLoggedIn) {
+        updateAdminStats();
+      }
+    }
+    
+    // Newsletter Subscription
+    function subscribeNewsletter() {
+      const email = document.getElementById('newsletterEmail').value;
+      if (!email || !email.includes('@')) {
+        alert('Please enter a valid email address!');
+        return;
+      }
+      // Add to subscribers array
+      newsletterSubscribers.unshift({ email, time: new Date().toLocaleString() });
+      incrementStat('newsletterSubscribers');
+      updateAdminSubscriberList();
+      // Clear the input
+      document.getElementById('newsletterEmail').value = '';
+      playSound('achievement');
+      showAchievement('Newsletter Subscriber!', 'Welcome to the fooda community! 🍎');
+      // Show subscription info
+      setTimeout(() => {
+        alert(`📧 SUBSCRIPTION INFO:\n\nYou subscribed with: ${email}\n\n💡 Currently, this is just a demo. In a real website:\n\n1. You would receive a confirmation email\n2. The email would be stored in a database\n3. You'd get regular newsletters about healthy living\n4. You could unsubscribe anytime\n\nFor now, your email is just stored in the browser!`);
+      }, 1000);
+    }
+    
+    // Guestbook
+    function addGuestbookEntry() {
+      const name = document.getElementById('guestName').value;
+      const message = document.getElementById('guestMessage').value;
+      if (!name || !message) {
+        alert('Please fill in both name and message!');
+        return;
+      }
+      // Add to guestbook array
+      guestbookEntries.unshift({ name, message });
+      incrementStat('guestbookMessages');
+      updateAdminGuestbookList();
+      const entriesContainer = document.getElementById('guestbookEntries');
+      const newEntry = document.createElement('div');
+      newEntry.className = 'guestbook-entry';
+      newEntry.innerHTML = `<strong>${name}</strong><br>${message}`;
+      entriesContainer.insertBefore(newEntry, entriesContainer.firstChild);
+      // Clear form
+      document.getElementById('guestName').value = '';
+      document.getElementById('guestMessage').value = '';
+      playSound('achievement');
+      alert('Message added to guestbook! 📖');
+      // Show info about how to see messages
+      setTimeout(() => {
+        alert('💡 TIP: To see all guestbook messages, you can:\n\n1. Check your browser\'s developer console (F12)\n2. Look at the page source\n3. Use browser developer tools to inspect the guestbook section\n\nCurrently, messages are stored in the browser only. For a real website, you\'d need a server to store them permanently!');
+      }, 1000);
+    }
+    
+    // Konami Code Easter Egg
+    let konamiCode = [];
+    const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+    
+    document.addEventListener('keydown', function(e) {
+      konamiCode.push(e.code);
+      if (konamiCode.length > konamiSequence.length) {
+        konamiCode.shift();
+      }
+      
+      if (konamiCode.join(',') === konamiSequence.join(',')) {
+        const konamiModal = document.getElementById('konamiCode');
+        konamiModal.style.display = 'block';
+        playSound('achievement');
+        
+        setTimeout(() => {
+          konamiModal.style.display = 'none';
+        }, 3000);
+        
+        konamiCode = [];
+      }
+    });
+    
+    // Add sound effects to buttons
+    document.querySelectorAll('button, .navbar a, .social-link').forEach(element => {
+      element.addEventListener('click', function() {
+        playSound('block_click');
+      });
+    });
+    
+    // Add 3D effects to some elements
+    document.querySelectorAll('.info-card, .achievements-section, .tour-guide').forEach(element => {
+      element.classList.add('block-3d');
+    });
+    
+    // Day/Night Cycle
+    let isNight = false;
+    const dayNightToggle = document.getElementById('dayNightToggle');
+    
+    dayNightToggle.addEventListener('click', function() {
+      isNight = !isNight;
+      body.setAttribute('data-time', isNight ? 'night' : 'day');
+      dayNightToggle.textContent = isNight ? '🌙' : '☀️';
+      playSound('block_click');
+    });
+    
+    // Memory Game
+    let gameBoard = [];
+    let flippedCards = [];
+    let matchedPairs = 0;
+    let moveCount = 0;
+    
+    const gameItems = ['⛏️', '🏗️', '🍎', '♟️', '💻', '📚', '🌟', '🎯'];
+    
+    function initializeGame() {
+      const gameGrid = document.getElementById('gameGrid');
+      gameGrid.innerHTML = '';
+      
+      // Create pairs of items
+      gameBoard = [...gameItems, ...gameItems];
+      
+      // Shuffle the board
+      for (let i = gameBoard.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [gameBoard[i], gameBoard[j]] = [gameBoard[j], gameBoard[i]];
+      }
+      
+      // Create game cells
+      gameBoard.forEach((item, index) => {
+        const cell = document.createElement('div');
+        cell.className = 'game-cell';
+        cell.dataset.index = index;
+        cell.dataset.item = item;
+        cell.addEventListener('click', flipCard);
+        gameGrid.appendChild(cell);
+      });
+      
+      resetGameStats();
+    }
+    
+    function flipCard() {
+      if (flippedCards.length >= 2 || this.classList.contains('matched') || this.classList.contains('flipped')) {
+        return;
+      }
+      
+      this.classList.add('flipped');
+      this.textContent = this.dataset.item;
+      flippedCards.push(this);
+      
+      playSound('block_click');
+      
+      if (flippedCards.length === 2) {
+        moveCount++;
+        document.getElementById('moveCount').textContent = moveCount;
+        
+        setTimeout(checkMatch, 500);
+      }
+    }
+    
+    function checkMatch() {
+      const [card1, card2] = flippedCards;
+      
+      if (card1.dataset.item === card2.dataset.item) {
+        card1.classList.add('matched');
+        card2.classList.add('matched');
+        matchedPairs++;
+        document.getElementById('pairCount').textContent = matchedPairs;
+        playSound('achievement');
+        
+        if (matchedPairs === gameItems.length) {
+          showAchievement('Memory Master!', 'You matched all the blocks! 🧠');
+        }
+      } else {
+        card1.classList.remove('flipped');
+        card2.classList.remove('flipped');
+        card1.textContent = '';
+        card2.textContent = '';
+      }
+      
+      flippedCards = [];
+    }
+    
+    function resetGame() {
+      matchedPairs = 0;
+      moveCount = 0;
+      flippedCards = [];
+      resetGameStats();
+      initializeGame();
+      playSound('crafting');
+    }
+    
+    function resetGameStats() {
+      document.getElementById('moveCount').textContent = '0';
+      document.getElementById('pairCount').textContent = '0';
+    }
+    
+    // Initialize game on page load
+    initializeGame();
+    
+    // Music Player
+    let currentTrack = 0;
+    const tracks = [
+      { name: 'Minecraft Theme', emoji: '🎵' },
+      { name: 'Cave Sounds', emoji: '🕳️' },
+      { name: 'Village Music', emoji: '🏘️' },
+      { name: 'Nether Ambience', emoji: '🔥' }
+    ];
+    
+    document.getElementById('playBtn').addEventListener('click', function() {
+      playSound('crafting');
+      showAchievement('Music Lover!', 'Minecraft music is the best! 🎵');
+    });
+    
+    document.getElementById('pauseBtn').addEventListener('click', function() {
+      playSound('block_click');
+    });
+    
+    document.getElementById('nextBtn').addEventListener('click', function() {
+      currentTrack = (currentTrack + 1) % tracks.length;
+      const musicPlayer = document.getElementById('musicPlayer');
+      musicPlayer.querySelector('div').textContent = `${tracks[currentTrack].emoji} ${tracks[currentTrack].name}`;
+      playSound('crafting');
+    });
+    
+    // Server List
+    function joinServer(serverName) {
+      playSound('achievement');
+      showAchievement('Server Explorer!', `Joining ${serverName}! 🌐`);
+      setTimeout(() => {
+        alert(`Connecting to ${serverName}... (This is just a demo!)`);
+      }, 1000);
+    }
+    
+    // Achievement System
+    function showAchievement(title, description) {
+      const popup = document.getElementById('achievementPopup');
+      const titleEl = popup.querySelector('div');
+      const descEl = document.getElementById('achievementText');
+      
+      titleEl.textContent = title;
+      descEl.textContent = description;
+      
+      popup.classList.add('show');
+      playSound('achievement');
+      
+      setTimeout(() => {
+        popup.classList.remove('show');
+      }, 3000);
+    }
+    
+    // Particle Effects
+    function createParticle(x, y, emoji) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.textContent = emoji;
+      particle.style.left = x + 'px';
+      particle.style.top = y + 'px';
+      particle.style.fontSize = '20px';
+      document.body.appendChild(particle);
+      
+      setTimeout(() => {
+        particle.remove();
+      }, 3000);
+    }
+    
+    // Add particle effects to clicks
+    document.addEventListener('click', function(e) {
+      if (Math.random() < 0.3) { // 30% chance
+        const emojis = ['✨', '💎', '🌟', '💫', '⭐'];
+        const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+        createParticle(e.clientX, e.clientY, randomEmoji);
+      }
+    });
+    
+    // Random achievements
+    let achievementCount = 0;
+    setInterval(() => {
+      if (Math.random() < 0.05 && achievementCount < 5) { // 5% chance every few seconds
+        const achievements = [
+          { title: 'Explorer!', desc: 'You\'ve been exploring for a while! 🗺️' },
+          { title: 'Click Master!', desc: 'You love clicking things! 🖱️' },
+          { title: 'Minecraft Fan!', desc: 'You\'re a true Minecraft lover! ⛏️' },
+          { title: 'Website Visitor!', desc: 'Thanks for visiting my site! 🌟' },
+          { title: 'fooda Supporter!', desc: 'You support healthy living! 🍎' }
+        ];
+        
+        const achievement = achievements[achievementCount];
+        showAchievement(achievement.title, achievement.desc);
+        achievementCount++;
+        incrementStat('achievementsUnlocked');
+      }
+    }, 10000);
+    
+    // Progress bar animations
+    function animateProgressBars() {
+      const progressBars = document.querySelectorAll('.progress-fill');
+      progressBars.forEach(bar => {
+        const width = bar.style.width;
+        bar.style.width = '0%';
+        setTimeout(() => {
+          bar.style.width = width;
+        }, 500);
+      });
+    }
+    
+    // Animate progress bars when they come into view
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateProgressBars();
+          observer.unobserve(entry.target);
+        }
+      });
+    });
+    
+    document.querySelectorAll('.progress-section').forEach(section => {
+      observer.observe(section);
+    });
+    
+    document.getElementById('privacyLink').onclick = function(e) {
+      e.preventDefault();
+      document.getElementById('privacyModal').style.display = 'flex';
+    };
+    function closePrivacy() {
+      document.getElementById('privacyModal').style.display = 'none';
+    }
+    
+    // Fun & Extras Dropdown
+    const funExtrasBtn = document.getElementById('nav-funextras');
+    const funExtrasMenu = document.getElementById('funExtrasMenu');
+    const funLinks = document.querySelectorAll('.fun-link');
+    const funFeatureIds = [
+      'avatarBuilder','themePicker','quizGame','parkourGame','recipeGenerator','factOfDay','leaderboard','pollsVoting','animatedPet','backgroundMusic','dailyRewards','unlockableContent','foodFacts','codingCorner','shareButton','languageSelector'
+    ];
+    funExtrasBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      funExtrasMenu.style.display = funExtrasMenu.style.display === 'block' ? 'none' : 'block';
+    });
+    document.addEventListener('click', function(e) {
+      if (!funExtrasBtn.contains(e.target) && !funExtrasMenu.contains(e.target)) {
+        funExtrasMenu.style.display = 'none';
+      }
+    });
+    funLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        // Hide all pages and fun features
+        pages.forEach(p => p.style.display = 'none');
+        funFeatureIds.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.style.display = 'none';
+        });
+        // Show selected feature
+        const target = this.getAttribute('data-target');
+        const el = document.getElementById(target);
+        if (el) el.style.display = '';
+        setActive(funExtrasBtn);
+        funExtrasMenu.style.display = 'none';
+        window.scrollTo({top:0,behavior:'smooth'});
+      });
+    });
+  </script>
+</body>
+</html> 
