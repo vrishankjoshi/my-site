@@ -3768,6 +3768,55 @@
       })();
     </script>
   </div>
+  <div id="liveChat" style="display:none;" class="info-card">
+    <h2>💬 Live Guestbook / Chat</h2>
+    <div id="liveChatMessages" style="max-height:200px;overflow-y:auto;border:2px solid var(--wood);border-radius:8px;padding:0.7em;margin-bottom:0.7em;background:rgba(255,255,255,0.7);"></div>
+    <div style="display:flex;gap:0.5em;align-items:center;">
+      <input id="liveChatName" placeholder="Your name" style="flex:1;padding:0.5em;max-width:120px;">
+      <input id="liveChatInput" placeholder="Type a message..." style="flex:2;padding:0.5em;">
+      <button id="liveChatSendBtn" style="padding:0.5em 1.2em;">Send</button>
+    </div>
+    <script>
+      (function(){
+        const messagesDiv = document.getElementById('liveChatMessages');
+        const nameInput = document.getElementById('liveChatName');
+        const msgInput = document.getElementById('liveChatInput');
+        const sendBtn = document.getElementById('liveChatSendBtn');
+        let messages = JSON.parse(localStorage.getItem('liveChatMessages')||'[]');
+        function renderMessages() {
+          messagesDiv.innerHTML = messages.map(m => `<div style='margin-bottom:0.4em;'><b>${m.name}:</b> ${m.text}</div>`).join('');
+          messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+        function addMessage(name, text) {
+          messages.push({name, text});
+          if (messages.length > 50) messages = messages.slice(-50);
+          localStorage.setItem('liveChatMessages', JSON.stringify(messages));
+          renderMessages();
+        }
+        sendBtn.onclick = function() {
+          const name = nameInput.value.trim() || 'Guest';
+          const text = msgInput.value.trim();
+          if (!text) return;
+          addMessage(name, text);
+          msgInput.value = '';
+        };
+        msgInput.addEventListener('keydown', function(e){
+          if (e.key === 'Enter') sendBtn.onclick();
+        });
+        // Simulate random bot messages
+        const botNames = ['Steve','Alex','Creeper','Villager','Herobrine'];
+        const botMsgs = [
+          'Welcome to the chat!','What are you building today?','Anyone found diamonds?','Stay healthy!','Creeper... aww man!','Eat your veggies!','Let's go mining!','Who likes redstone?','Golden apples are the best!','Watch out for mobs at night!'
+        ];
+        setInterval(function(){
+          if (Math.random() < 0.15) {
+            addMessage(botNames[Math.floor(Math.random()*botNames.length)], botMsgs[Math.floor(Math.random()*botMsgs.length)]);
+          }
+        }, 12000);
+        renderMessages();
+      })();
+    </script>
+  </div>
   <!-- NEW FEATURES END -->
   
   <script>
