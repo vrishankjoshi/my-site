@@ -3357,17 +3357,42 @@
     <div id="leaderboardList" style="font-size:1.1em;"></div>
     <script>
       (function(){
-        // Demo: Use guestbookEntries if available
+        // Use guestbookEntries if available, else demo
         let entries = window.guestbookEntries || [
           { name: '🏗️ Builder123', message: 'Amazing website! Love the Minecraft theme! ⛏️' },
           { name: '🍎 HealthyGamer', message: 'Great job with fooda! Keep promoting healthy living! 🌱' }
         ];
-        let html = '<ol>';
-        entries.slice(0,5).forEach(e => {
-          html += `<li><b>${e.name}</b>: ${e.message}</li>`;
+        // Add likes from localStorage
+        let likes = JSON.parse(localStorage.getItem('guestbookLikes')||'{}');
+        // Count messages per user
+        let userCounts = {};
+        entries.forEach(e => {
+          userCounts[e.name] = (userCounts[e.name]||0)+1;
+        });
+        // Sort by likes, then by count, then by recency
+        let sorted = entries.map((e,i)=>({
+          ...e,
+          likes: likes[e.name+e.message]||0,
+          count: userCounts[e.name],
+          idx: i
+        }));
+        sorted.sort((a,b)=>b.likes-a.likes||b.count-a.count||a.idx-b.idx);
+        // Only top 5
+        let html = '<ol style="padding-left:1.2em;">';
+        sorted.slice(0,5).forEach(e => {
+          html += `<li style='margin-bottom:0.5em;'><b>${e.name}</b>: ${e.message}<br><button class='likeBtn' data-key='${encodeURIComponent(e.name+e.message)}' style='margin-top:0.2em;'>👍 ${e.likes}</button></li>`;
         });
         html += '</ol>';
         document.getElementById('leaderboardList').innerHTML = html;
+        // Like button logic
+        document.querySelectorAll('.likeBtn').forEach(btn => {
+          btn.onclick = function(){
+            const key = decodeURIComponent(this.getAttribute('data-key'));
+            likes[key] = (likes[key]||0)+1;
+            localStorage.setItem('guestbookLikes', JSON.stringify(likes));
+            this.textContent = `👍 ${likes[key]}`;
+          };
+        });
       })();
     </script>
   </div>
@@ -3397,11 +3422,51 @@
   </div>
   <div id="animatedPet" style="display:none;" class="info-card">
     <h2>�� Animated Pet</h2>
-    <div id="petSprite" style="font-size:3em;">🐶</div>
-    <p>Move your mouse or tap to see your pet follow!</p>
+    <div style="display:flex; flex-direction:column; align-items:center; gap:0.5em;">
+      <div>
+        <label for="petEmojiSelect">Choose your pet: </label>
+        <select id="petEmojiSelect">
+          <option value="🐶">Dog</option>
+          <option value="🐱">Cat</option>
+          <option value="🐰">Rabbit</option>
+          <option value="🐢">Turtle</option>
+          <option value="🐲">Dragon</option>
+          <option value="🐧">Penguin</option>
+          <option value="🦄">Unicorn</option>
+          <option value="🐺">Wolf</option>
+          <option value="🐼">Panda</option>
+          <option value="🐷">Pig</option>
+        </select>
+      </div>
+      <div>
+        <label for="petNameInput">Pet name: </label>
+        <input id="petNameInput" maxlength="12" style="width:100px;">
+      </div>
+      <div id="petSprite" style="font-size:3em; cursor:pointer; transition:transform 0.2s;">🐶</div>
+      <div id="petNameDisplay" style="font-size:1.1em; color:var(--primary);"></div>
+    </div>
+    <p style="text-align:center;">Move your mouse or tap to see your pet follow!<br>Click/tap your pet to make it bounce!</p>
     <script>
       (function(){
         const pet = document.getElementById('petSprite');
+        const select = document.getElementById('petEmojiSelect');
+        const nameInput = document.getElementById('petNameInput');
+        const nameDisplay = document.getElementById('petNameDisplay');
+        // Load from localStorage
+        let savedPet = localStorage.getItem('myPetEmoji') || '🐶';
+        let savedName = localStorage.getItem('myPetName') || '';
+        select.value = savedPet;
+        pet.textContent = savedPet;
+        nameInput.value = savedName;
+        nameDisplay.textContent = savedName ? `Name: ${savedName}` : '';
+        select.onchange = function(){
+          pet.textContent = select.value;
+          localStorage.setItem('myPetEmoji', select.value);
+        };
+        nameInput.oninput = function(){
+          nameDisplay.textContent = nameInput.value ? `Name: ${nameInput.value}` : '';
+          localStorage.setItem('myPetName', nameInput.value);
+        };
         function movePet(e) {
           let x = e.clientX || (e.touches && e.touches[0].clientX) || 100;
           let y = e.clientY || (e.touches && e.touches[0].clientY) || 100;
@@ -3411,6 +3476,11 @@
         }
         document.addEventListener('mousemove', movePet);
         document.addEventListener('touchmove', movePet);
+        // Bounce animation
+        pet.onclick = pet.ontouchstart = function(){
+          pet.style.transform = 'scale(1.3) rotate(-10deg)';
+          setTimeout(()=>{pet.style.transform='';},200);
+        };
       })();
     </script>
   </div>
