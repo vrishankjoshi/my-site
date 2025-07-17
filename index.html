@@ -3817,6 +3817,64 @@
       })();
     </script>
   </div>
+  <div id="pixelArtBoard" style="display:none;" class="info-card">
+    <h2>🎨 Pixel Art Board</h2>
+    <p>Click or tap to color a pixel! (Simulated collaboration: bots may color too!)</p>
+    <div id="pixelArtGrid" style="display:grid;grid-template-columns:repeat(16,1fr);gap:2px;max-width:320px;margin:0 auto 1em auto;"></div>
+    <div style="text-align:center;margin-bottom:0.5em;">
+      <label for="pixelColorPicker">Choose color: </label>
+      <input type="color" id="pixelColorPicker" value="#228B22">
+      <button id="pixelArtClearBtn">Clear</button>
+    </div>
+    <script>
+      (function(){
+        const gridSize = 16;
+        const grid = document.getElementById('pixelArtGrid');
+        const colorPicker = document.getElementById('pixelColorPicker');
+        const clearBtn = document.getElementById('pixelArtClearBtn');
+        let pixels = JSON.parse(localStorage.getItem('pixelArtBoard')||'null') || Array(gridSize*gridSize).fill('#fff');
+        function render() {
+          grid.innerHTML = '';
+          for(let i=0;i<pixels.length;i++) {
+            const cell = document.createElement('div');
+            cell.style.width = '18px';
+            cell.style.height = '18px';
+            cell.style.background = pixels[i];
+            cell.style.border = '1px solid #ccc';
+            cell.style.cursor = 'pointer';
+            cell.onclick = function(){
+              pixels[i] = colorPicker.value;
+              localStorage.setItem('pixelArtBoard', JSON.stringify(pixels));
+              render();
+            };
+            cell.ontouchstart = function(e){
+              e.preventDefault();
+              pixels[i] = colorPicker.value;
+              localStorage.setItem('pixelArtBoard', JSON.stringify(pixels));
+              render();
+            };
+            grid.appendChild(cell);
+          }
+        }
+        clearBtn.onclick = function(){
+          pixels = Array(gridSize*gridSize).fill('#fff');
+          localStorage.setItem('pixelArtBoard', JSON.stringify(pixels));
+          render();
+        };
+        // Simulate bot coloring
+        setInterval(function(){
+          if (Math.random() < 0.12) {
+            const idx = Math.floor(Math.random()*pixels.length);
+            const botColors = ['#FFD700','#7cfc00','#00eaff','#ff3333','#8B4513','#fff','#000','#ff69b4'];
+            pixels[idx] = botColors[Math.floor(Math.random()*botColors.length)];
+            localStorage.setItem('pixelArtBoard', JSON.stringify(pixels));
+            render();
+          }
+        }, 9000);
+        render();
+      })();
+    </script>
+  </div>
   <!-- NEW FEATURES END -->
   
   <script>
