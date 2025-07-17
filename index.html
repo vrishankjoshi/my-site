@@ -3626,8 +3626,144 @@
       (function(){
         const select = document.getElementById('langSelect');
         const msg = document.getElementById('langMsg');
+        // Simple translations for demo (main sections only)
+        const translations = {
+          en: {
+            nav: ["🏠 Home","👤 About Me","🍎 fooda","🗺️ Tour","📰 News","📞 Contact"],
+            heroTitle: "Vrishanks Minecraft World",
+            heroDesc: "🏗️ <b>Founder of fooda</b> | ⛏️ Minecraft Fan | 🍎 Healthy Living Advocate<br>🌍 Discover more about me, my company, and <a href=\"https://aihealthy.org\" target=\"_blank\">aihealthy.org</a>!",
+            aboutTitle: "👤 About Me",
+            aboutDesc: "<b>Name:</b> Vrishank<br><b>Age:</b> 8<br><b>Interests:</b> ⛏️ Minecraft, ♟️ chess, 💻 coding, 🍎 healthy food, and helping others.<br><b>Mission:</b> To make healthy food fun and easy for everyone, and to build awesome things in Minecraft! 🏗️",
+            foodaTitle: "🍎 About fooda",
+            foodaDesc: "<b>fooda</b> is my company dedicated to making healthy food choices fun and accessible for everyone! 🌱 We use technology and creativity to inspire healthy living for all ages, just like how Minecraft inspires creativity in building!"
+          },
+          hi: {
+            nav: ["🏠 होम","👤 मेरे बारे में","🍎 फूडा","🗺️ यात्रा","📰 समाचार","📞 संपर्क"],
+            heroTitle: "वृषांक की Minecraft दुनिया",
+            heroDesc: "🏗️ <b>फूडा के संस्थापक</b> | ⛏️ Minecraft प्रशंसक | 🍎 स्वस्थ जीवन के समर्थक<br>🌍 मेरे बारे में, मेरी कंपनी और <a href=\"https://aihealthy.org\" target=\"_blank\">aihealthy.org</a> जानें!",
+            aboutTitle: "👤 मेरे बारे में",
+            aboutDesc: "<b>नाम:</b> वृषांक<br><b>आयु:</b> 8<br><b>रुचियाँ:</b> ⛏️ Minecraft, ♟️ शतरंज, 💻 कोडिंग, 🍎 स्वस्थ भोजन, और दूसरों की मदद करना।<br><b>मिशन:</b> सभी के लिए स्वस्थ भोजन को मजेदार और आसान बनाना, और Minecraft में शानदार चीजें बनाना! 🏗️",
+            foodaTitle: "🍎 फूडा के बारे में",
+            foodaDesc: "<b>फूडा</b> मेरी कंपनी है जो सभी के लिए स्वस्थ भोजन को मजेदार और सुलभ बनाने के लिए समर्पित है! 🌱 हम तकनीक और रचनात्मकता का उपयोग करके सभी उम्र के लिए स्वस्थ जीवन को प्रेरित करते हैं, जैसे Minecraft रचनात्मकता को प्रेरित करता है!"
+          }
+        };
+        function setLang(lang) {
+          const t = translations[lang] || translations.en;
+          // Navbar
+          const navs = [
+            document.getElementById('nav-home'),
+            document.getElementById('nav-about'),
+            document.getElementById('nav-fooda'),
+            document.getElementById('nav-tour'),
+            document.getElementById('nav-news'),
+            document.getElementById('nav-contact')
+          ];
+          navs.forEach((n,i)=>{ if(n) n.innerHTML = t.nav[i]; });
+          // Hero
+          const heroTitle = document.querySelector('.hero-title');
+          if(heroTitle) heroTitle.textContent = t.heroTitle;
+          const heroDesc = document.querySelector('.hero-desc');
+          if(heroDesc) heroDesc.innerHTML = t.heroDesc;
+          // About
+          const aboutTitle = document.querySelector('#page-about .info-card h2');
+          if(aboutTitle) aboutTitle.textContent = t.aboutTitle;
+          const aboutDesc = document.querySelector('#page-about .info-card div');
+          if(aboutDesc) aboutDesc.innerHTML = t.aboutDesc;
+          // fooda
+          const foodaTitle = document.querySelector('#page-fooda .info-card h2');
+          if(foodaTitle) foodaTitle.textContent = t.foodaTitle;
+          const foodaDesc = document.querySelector('#page-fooda .info-card div');
+          if(foodaDesc) foodaDesc.innerHTML = t.foodaDesc;
+        }
         select.onchange = function() {
-          msg.textContent = 'Language switched to: ' + select.options[select.selectedIndex].text + ' (Demo only)';
+          setLang(select.value);
+          msg.textContent = 'Language switched to: ' + select.options[select.selectedIndex].text;
+        };
+        // Set default
+        setLang(select.value);
+      })();
+    </script>
+  </div>
+  <div id="aiRecipeGenerator" style="display:none;" class="info-card">
+    <h2>🤖🍽️ AI Recipe Generator</h2>
+    <p>Enter ingredients you have, and get a healthy Minecraft-inspired recipe idea!</p>
+    <div style="display:flex; flex-direction:column; align-items:center; gap:0.7em;">
+      <input id="aiRecipeInput" placeholder="e.g. apple, carrot, egg" style="width:90%;max-width:300px;padding:0.7em;">
+      <button id="aiRecipeBtn" style="padding:0.7em 2em;">Generate Recipe</button>
+      <div id="aiRecipeResult" style="font-size:1.1em; color:var(--primary); margin-top:0.7em;"></div>
+    </div>
+    <script>
+      (function(){
+        const ideas = [
+          { base: ["apple","carrot"], name: "Golden Apple Carrot Salad", desc: "Mix chopped apples and carrots with a drizzle of honey. Top with walnuts for a Minecraft-style golden crunch!" },
+          { base: ["egg","wheat"], name: "Eggy Bread Stack", desc: "Whisk eggs and dip bread slices, then cook for a Minecraft breakfast! Add berries for extra health." },
+          { base: ["potato","carrot"], name: "Hearty Veggie Stew", desc: "Dice potatoes and carrots, simmer with herbs for a stew worthy of a Minecraft adventurer." },
+          { base: ["pumpkin","egg"], name: "Pumpkin Pie Surprise", desc: "Mash pumpkin, mix with egg and a pinch of cinnamon, bake for a healthy Minecraft pie!" },
+          { base: ["beetroot","carrot"], name: "Red Power Salad", desc: "Slice beetroot and carrots, toss with lemon juice for a power-boosting salad." },
+          { base: ["melon","berry"], name: "Melon Berry Medley", desc: "Cube melon and mix with your favorite berries for a refreshing Minecraft snack." },
+          { base: ["fish","potato"], name: "Fisherman's Bake", desc: "Bake fish and potatoes with a sprinkle of herbs for a meal after a long Minecraft fishing trip." },
+          { base: ["bread","apple"], name: "Apple Toast", desc: "Top toasted bread with apple slices and a dash of cinnamon for a sweet Minecraft treat." },
+          { base: ["carrot","egg","wheat"], name: "Carrot Cake Bites", desc: "Mix grated carrot, egg, and wheat flour, bake as mini bites for a healthy Minecraft snack." },
+          { base: ["potato","egg"], name: "Potato Egg Hash", desc: "Cube potatoes, scramble with eggs, and cook for a hearty Minecraft breakfast." }
+        ];
+        const input = document.getElementById('aiRecipeInput');
+        const btn = document.getElementById('aiRecipeBtn');
+        const result = document.getElementById('aiRecipeResult');
+        function findRecipe(ingredients) {
+          const ing = ingredients.map(i=>i.trim().toLowerCase()).filter(Boolean);
+          // Find best match
+          let best = null, bestScore = 0;
+          for (const idea of ideas) {
+            let score = idea.base.filter(b => ing.includes(b)).length;
+            if (score > bestScore) { best = idea; bestScore = score; }
+          }
+          if (best && bestScore > 0) return `<b>${best.name}</b><br>${best.desc}`;
+          // Fallback random
+          const random = ideas[Math.floor(Math.random()*ideas.length)];
+          return `<b>${random.name}</b><br>${random.desc}`;
+        }
+        btn.onclick = function() {
+          const val = input.value.split(',');
+          if (!val.length || !val[0].trim()) {
+            result.innerHTML = 'Please enter at least one ingredient!';
+            return;
+          }
+          result.innerHTML = findRecipe(val);
+        };
+      })();
+    </script>
+  </div>
+  <div id="aiBuildIdeaGenerator" style="display:none;" class="info-card">
+    <h2>🤖🏗️ AI Minecraft Build Idea Generator</h2>
+    <p>Need inspiration? Click below to get a creative Minecraft build idea!</p>
+    <div style="display:flex; flex-direction:column; align-items:center; gap:0.7em;">
+      <button id="aiBuildIdeaBtn" style="padding:0.7em 2em;">Generate Build Idea</button>
+      <div id="aiBuildIdeaResult" style="font-size:1.1em; color:var(--primary); margin-top:0.7em;"></div>
+    </div>
+    <script>
+      (function(){
+        const ideas = [
+          { emoji: "🏰", idea: "Epic Castle", desc: "Build a massive castle with towers, a moat, and secret passages!" },
+          { emoji: "🌉", idea: "Suspension Bridge", desc: "Connect two mountains with a grand bridge using wood and stone." },
+          { emoji: "🌲", idea: "Treehouse Village", desc: "Create a network of treehouses connected by rope bridges in a jungle biome." },
+          { emoji: "🚂", idea: "Minecart Rollercoaster", desc: "Design a thrilling rollercoaster with twists, turns, and drops!" },
+          { emoji: "🏝️", idea: "Deserted Island Base", desc: "Survive and thrive on a small island—build a dock, farm, and lookout tower." },
+          { emoji: "🗼", idea: "Sky Tower", desc: "Reach for the clouds with a tall tower and glass observation deck." },
+          { emoji: "🦄", idea: "Fantasy Garden", desc: "Plant colorful flowers, build fountains, and add magical statues." },
+          { emoji: "🏟️", idea: "PvP Arena", desc: "Construct a battle arena with traps, stands, and secret tunnels." },
+          { emoji: "🏛️", idea: "Ancient Temple", desc: "Build a mysterious temple with hidden rooms and redstone puzzles." },
+          { emoji: "🚀", idea: "Space Rocket Base", desc: "Create a futuristic rocket launchpad and control center." },
+          { emoji: "🐉", idea: "Dragon Lair", desc: "Carve out a cave for a dragon, complete with treasure and lava pools." },
+          { emoji: "🏜️", idea: "Desert Pyramid", desc: "Build a giant pyramid with secret chambers and traps." },
+          { emoji: "🏠", idea: "Modern House", desc: "Design a sleek, modern home with big windows and a pool." },
+          { emoji: "🧙‍♂️", idea: "Wizard Tower", desc: "Build a spiraling tower with a library, potion lab, and observatory." },
+          { emoji: "🦇", idea: "Batcave Hideout", desc: "Dig a secret base under a mountain, complete with gadgets and vehicles." }
+        ];
+        const btn = document.getElementById('aiBuildIdeaBtn');
+        const result = document.getElementById('aiBuildIdeaResult');
+        btn.onclick = function() {
+          const idea = ideas[Math.floor(Math.random()*ideas.length)];
+          result.innerHTML = `<span style='font-size:1.5em;'>${idea.emoji}</span> <b>${idea.idea}</b><br>${idea.desc}`;
         };
       })();
     </script>
