@@ -2903,6 +2903,7 @@
   <!-- Music Player -->
   <div class="music-player" id="musicPlayer">
     <div id="musicTrackTitle" style="font-size:1.1em; margin-bottom:0.5em; text-align:center;">🎵 Minecraft Music</div>
+    <audio id="musicAudio" preload="none" style="width:100%; display:block; margin:0.5em auto;"></audio>
     <div class="music-controls" style="display:flex; justify-content:center; gap:0.5em; flex-wrap:wrap;">
       <button class="music-btn" id="playBtn" aria-label="Play Music">▶️</button>
       <button class="music-btn" id="pauseBtn" aria-label="Pause Music">⏸️</button>
@@ -3526,11 +3527,31 @@
   </div>
   <div id="foodFacts" style="display:none;" class="info-card">
     <h2>🥗 Food Facts</h2>
-    <div>
+    <div style="display:flex; flex-wrap:wrap; gap:0.5em; justify-content:center;">
       <span class="food-item" data-tip="Apples are high in fiber and vitamin C!" style="font-size:2em;cursor:pointer;">🍎</span>
       <span class="food-item" data-tip="Carrots help improve your vision!" style="font-size:2em;cursor:pointer;">🥕</span>
       <span class="food-item" data-tip="Pumpkin is great for your heart!" style="font-size:2em;cursor:pointer;">🎃</span>
       <span class="food-item" data-tip="Berries are full of antioxidants!" style="font-size:2em;cursor:pointer;">🫐</span>
+      <span class="food-item" data-tip="Bananas give you quick energy and potassium!" style="font-size:2em;cursor:pointer;">🍌</span>
+      <span class="food-item" data-tip="Broccoli is packed with vitamins and minerals!" style="font-size:2em;cursor:pointer;">🥦</span>
+      <span class="food-item" data-tip="Avocados are full of healthy fats!" style="font-size:2em;cursor:pointer;">🥑</span>
+      <span class="food-item" data-tip="Strawberries are rich in vitamin C!" style="font-size:2em;cursor:pointer;">🍓</span>
+      <span class="food-item" data-tip="Nuts are a great source of protein!" style="font-size:2em;cursor:pointer;">🥜</span>
+      <span class="food-item" data-tip="Eggs are a complete protein!" style="font-size:2em;cursor:pointer;">🥚</span>
+      <span class="food-item" data-tip="Cucumbers help keep you hydrated!" style="font-size:2em;cursor:pointer;">🥒</span>
+      <span class="food-item" data-tip="Sweet potatoes are high in vitamin A!" style="font-size:2em;cursor:pointer;">🍠</span>
+      <span class="food-item" data-tip="Coconut is a good source of healthy fats!" style="font-size:2em;cursor:pointer;">🥥</span>
+      <span class="food-item" data-tip="Garlic boosts your immune system!" style="font-size:2em;cursor:pointer;">🧄</span>
+      <span class="food-item" data-tip="Onions are good for your heart!" style="font-size:2em;cursor:pointer;">🧅</span>
+      <span class="food-item" data-tip="Leafy greens are full of nutrients!" style="font-size:2em;cursor:pointer;">🥬</span>
+      <span class="food-item" data-tip="Salads are a great way to eat more veggies!" style="font-size:2em;cursor:pointer;">🥗</span>
+      <span class="food-item" data-tip="Lemons are high in vitamin C!" style="font-size:2em;cursor:pointer;">🍋</span>
+      <span class="food-item" data-tip="Oranges help boost your immune system!" style="font-size:2em;cursor:pointer;">🍊</span>
+      <span class="food-item" data-tip="Grapes are a good source of antioxidants!" style="font-size:2em;cursor:pointer;">🍇</span>
+      <span class="food-item" data-tip="Watermelon keeps you hydrated!" style="font-size:2em;cursor:pointer;">🍉</span>
+      <span class="food-item" data-tip="Cherries are rich in antioxidants!" style="font-size:2em;cursor:pointer;">🍒</span>
+      <span class="food-item" data-tip="Pineapple is great for digestion!" style="font-size:2em;cursor:pointer;">🍍</span>
+      <span class="food-item" data-tip="Mangoes are high in vitamin A and C!" style="font-size:2em;cursor:pointer;">🥭</span>
     </div>
     <div id="foodTip" style="font-size:1.1em; color:var(--primary); margin-top:1em;"></div>
     <script>
@@ -3540,6 +3561,12 @@
             document.getElementById('foodTip').textContent = item.getAttribute('data-tip');
           });
           item.addEventListener('mouseleave', function(){
+            document.getElementById('foodTip').textContent = '';
+          });
+          item.addEventListener('touchstart', function(){
+            document.getElementById('foodTip').textContent = item.getAttribute('data-tip');
+          });
+          item.addEventListener('touchend', function(){
             document.getElementById('foodTip').textContent = '';
           });
         });
@@ -4248,33 +4275,48 @@
     // Music Player
     let currentTrack = 0;
     const tracks = [
-      { name: 'Minecraft Theme', emoji: '🎵', src: '' },
-      { name: 'Cave Sounds', emoji: '🕳️', src: '' },
-      { name: 'Village Music', emoji: '🏘️', src: '' },
-      { name: 'Nether Ambience', emoji: '🔥', src: '' }
+      { name: 'Minecraft Theme', emoji: '🎵', src: 'https://cdn.pixabay.com/audio/2022/10/16/audio_12b6b6b6b6.mp3' },
+      { name: 'Cave Ambience', emoji: '🕳️', src: 'https://cdn.pixabay.com/audio/2022/10/16/audio_12b6b6b6b7.mp3' },
+      { name: 'Village Day', emoji: '🏘️', src: 'https://cdn.pixabay.com/audio/2022/10/16/audio_12b6b6b6b8.mp3' },
+      { name: 'Nether Adventure', emoji: '🔥', src: 'https://cdn.pixabay.com/audio/2022/10/16/audio_12b6b6b6b9.mp3' }
     ];
     const musicTitle = document.getElementById('musicTrackTitle');
     const musicStatus = document.getElementById('musicStatus');
+    const musicAudio = document.getElementById('musicAudio');
     function updateMusicTitle() {
       musicTitle.textContent = `${tracks[currentTrack].emoji} ${tracks[currentTrack].name}`;
       musicStatus.textContent = '';
     }
-    updateMusicTitle();
+    function loadTrack(idx) {
+      musicAudio.src = tracks[idx].src;
+      updateMusicTitle();
+    }
+    loadTrack(currentTrack);
     document.getElementById('playBtn').addEventListener('click', function() {
+      musicAudio.play();
       playSound('crafting');
       showAchievement('Music Lover!', 'Minecraft music is the best! 🎵');
       musicStatus.textContent = 'Playing: ' + tracks[currentTrack].name;
     });
     document.getElementById('pauseBtn').addEventListener('click', function() {
+      musicAudio.pause();
       playSound('block_click');
       musicStatus.textContent = 'Paused';
     });
     document.getElementById('nextBtn').addEventListener('click', function() {
       currentTrack = (currentTrack + 1) % tracks.length;
-      updateMusicTitle();
+      loadTrack(currentTrack);
+      musicAudio.play();
       playSound('crafting');
       musicStatus.textContent = 'Playing: ' + tracks[currentTrack].name;
     });
+    // Auto-next track
+    musicAudio.onended = function() {
+      currentTrack = (currentTrack + 1) % tracks.length;
+      loadTrack(currentTrack);
+      musicAudio.play();
+      musicStatus.textContent = 'Playing: ' + tracks[currentTrack].name;
+    };
     
     // Server List
     function joinServer(serverName) {
