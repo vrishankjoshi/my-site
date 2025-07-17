@@ -2225,6 +2225,97 @@
       position: relative;
       z-index: 2;
     }
+    
+    @media (max-width: 900px) {
+      .main-content, .info-card, .inventory, .builds-gallery, .crafting-section, .achievements-section, .news-section, .tour-guide, .newsletter-section, .minigame-section, .timeline-section, .progress-section, .server-list, .guestbook, .admin-section, .block-breaker, .pet-system, .shop-system, .quest-system {
+        max-width: 98vw;
+        padding: 1em 0.5em;
+      }
+      .music-player {
+        max-width: 90vw;
+        left: 10px;
+        right: 10px;
+      }
+      .navbar {
+        flex-wrap: wrap;
+        gap: 1em;
+        font-size: 1em;
+        padding: 0.5em 0;
+      }
+      .footer-links {
+        gap: 1em;
+      }
+    }
+    @media (max-width: 700px) {
+      .main-content { padding: 0 0.2em 2em 0.2em; }
+      .info-card, .inventory, .builds-gallery, .crafting-section, .achievements-section, .news-section, .tour-guide, .newsletter-section, .minigame-section, .timeline-section, .progress-section, .server-list, .guestbook, .admin-section, .block-breaker, .pet-system, .shop-system, .quest-system {
+        min-width: 95vw;
+        max-width: 99vw;
+        padding: 1em 0.2em;
+      }
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5em;
+        font-size: 0.95em;
+      }
+      .hero-title { font-size: 1.1em; }
+      .music-player {
+        left: 5px;
+        right: 5px;
+        max-width: 98vw;
+        padding: 0.5em;
+      }
+      .footer {
+        font-size: 0.95em;
+        padding: 0.8em 0 0.8em 0;
+      }
+      .footer-links {
+        flex-direction: column;
+        gap: 0.5em;
+      }
+      .game-grid, .inventory-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .breaker-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    @media (max-width: 500px) {
+      .hero-title { font-size: 0.9em; }
+      .info-card, .inventory, .builds-gallery, .crafting-section, .achievements-section, .news-section, .tour-guide, .newsletter-section, .minigame-section, .timeline-section, .progress-section, .server-list, .guestbook, .admin-section, .block-breaker, .pet-system, .shop-system, .quest-system {
+        min-width: 99vw;
+        max-width: 100vw;
+        padding: 0.5em 0.1em;
+      }
+      .navbar {
+        font-size: 0.9em;
+        padding: 0.3em 0;
+      }
+      .music-player {
+        left: 2px;
+        right: 2px;
+        max-width: 100vw;
+        padding: 0.3em;
+      }
+      .game-cell, .inventory-slot, .breaker-block {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2em;
+      }
+      .build-image, .achievement-icon, .info-img, .project-logo {
+        width: 40px !important;
+        height: 40px !important;
+      }
+      .footer {
+        font-size: 0.85em;
+        padding: 0.5em 0 0.5em 0;
+      }
+      .footer-links {
+        flex-direction: column;
+        gap: 0.3em;
+      }
+    }
   </style>
 </head>
 <body>
@@ -2265,7 +2356,6 @@
         <a href="#" class="fun-link" data-target="avatarBuilder">🧑‍🎨 Avatar Builder</a>
         <a href="#" class="fun-link" data-target="themePicker">🌍 Theme Picker</a>
         <a href="#" class="fun-link" data-target="quizGame">❓ Quiz Game</a>
-        <a href="#" class="fun-link" data-target="parkourGame">🏃 Parkour Mini-Game</a>
         <a href="#" class="fun-link" data-target="recipeGenerator">🍽️ Healthy Recipe Generator</a>
         <a href="#" class="fun-link" data-target="factOfDay">📅 Minecraft Fact of the Day</a>
         <a href="#" class="fun-link" data-target="leaderboard">🏆 Leaderboard</a>
@@ -2812,12 +2902,43 @@
   
   <!-- Music Player -->
   <div class="music-player" id="musicPlayer">
-    <div>🎵 Minecraft Music</div>
-    <div class="music-controls">
-      <div class="music-btn" id="playBtn">▶️</div>
-      <div class="music-btn" id="pauseBtn">⏸️</div>
-      <div class="music-btn" id="nextBtn">⏭️</div>
+    <div id="musicTrackTitle" style="font-size:1.1em; margin-bottom:0.5em; text-align:center;">🎵 Minecraft Music</div>
+    <div class="music-controls" style="display:flex; justify-content:center; gap:0.5em; flex-wrap:wrap;">
+      <button class="music-btn" id="playBtn" aria-label="Play Music">▶️</button>
+      <button class="music-btn" id="pauseBtn" aria-label="Pause Music">⏸️</button>
+      <button class="music-btn" id="nextBtn" aria-label="Next Track">⏭️</button>
     </div>
+    <div id="musicStatus" style="font-size:0.95em; text-align:center; margin-top:0.5em; color:var(--diamond);"></div>
+    <style>
+      .music-player { min-width: 150px; }
+      .music-btn {
+        min-width: 36px;
+        min-height: 36px;
+        font-size: 1.3em;
+        border-radius: 50%;
+        border: 2px solid var(--wood);
+        background: var(--primary);
+        color: #fff;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        margin: 0 2px;
+      }
+      .music-btn:active {
+        background: var(--accent);
+        color: var(--dark);
+      }
+      @media (max-width: 700px) {
+        .music-player { max-width: 98vw; left: 5px; right: 5px; padding: 0.5em; }
+        .music-btn { min-width: 32px; min-height: 32px; font-size: 1.1em; }
+      }
+      @media (max-width: 500px) {
+        .music-player { max-width: 100vw; left: 2px; right: 2px; padding: 0.3em; }
+        .music-btn { min-width: 28px; min-height: 28px; font-size: 1em; }
+      }
+    </style>
   </div>
   
   <!-- Achievement Popup -->
@@ -3143,57 +3264,234 @@
       })();
     </script>
   </div>
-  <div id="parkourGame" style="display:none;" class="minigame-section">
-    <h2>🏃 Parkour Mini-Game</h2>
-    <p>Jump and dodge in a Minecraft parkour challenge! (Coming soon)</p>
-  </div>
   <div id="recipeGenerator" style="display:none;" class="info-card">
     <h2>🍽️ Healthy Recipe Generator</h2>
-    <p>Get a random healthy recipe with a Minecraft twist! (Coming soon)</p>
+    <p>Get a random healthy recipe with a Minecraft twist!</p>
+    <button id="generateRecipeBtn" style="margin-bottom:1em;">Generate Recipe</button>
+    <div id="recipeResult" style="font-size:1.1em; color:var(--primary);"></div>
+    <script>
+      (function(){
+        const recipes = [
+          { name: 'Golden Apple Salad', desc: 'Chopped apples, spinach, walnuts, and a drizzle of honey. Boosts your health like a golden apple!' },
+          { name: 'Redstone Energy Smoothie', desc: 'Blend strawberries, banana, and Greek yogurt for a power-up!' },
+          { name: 'Carrot Power Bowl', desc: 'Roasted carrots, quinoa, chickpeas, and a sprinkle of seeds.' },
+          { name: 'Minecraft Veggie Stew', desc: 'Mix carrots, potatoes, and peas in a hearty broth.' },
+          { name: 'Berry Block Parfait', desc: 'Layer blueberries, granola, and yogurt for a blocky treat.' },
+          { name: 'Creeper Green Juice', desc: 'Spinach, green apple, cucumber, and lemon.' },
+          { name: 'Nether Fruit Medley', desc: 'Watermelon, pomegranate, and mint.' },
+          { name: 'Healthy Pumpkin Pie', desc: 'Pumpkin puree, oats, cinnamon, and a touch of maple syrup.' }
+        ];
+        const btn = document.getElementById('generateRecipeBtn');
+        const result = document.getElementById('recipeResult');
+        btn.onclick = function() {
+          const r = recipes[Math.floor(Math.random()*recipes.length)];
+          result.innerHTML = `<b>${r.name}</b><br>${r.desc}`;
+        };
+      })();
+    </script>
   </div>
   <div id="factOfDay" style="display:none;" class="info-card">
     <h2>📅 Minecraft Fact of the Day</h2>
-    <p>Discover a new fun fact every day! (Coming soon)</p>
+    <div id="factDayText" style="font-size:1.1em; color:var(--diamond);"></div>
+    <script>
+      (function(){
+        const facts = [
+          'Creepers were created by accident when a pig model was coded wrong!',
+          'Endermen can pick up and move certain blocks.',
+          'The first version of Minecraft was created in just 6 days.',
+          'You can use a bucket to pick up fish in Minecraft.',
+          'Wolves will attack skeletons on sight.',
+          'You can dye a sheep any color and then shear it for colored wool.',
+          'The Wither is the only mob that can break obsidian.',
+          'A cake is the only food you can place in the world and eat from.'
+        ];
+        const idx = new Date().getDate() % facts.length;
+        document.getElementById('factDayText').textContent = facts[idx];
+      })();
+    </script>
   </div>
   <div id="leaderboard" style="display:none;" class="info-card">
     <h2>🏆 Leaderboard</h2>
-    <p>See the top players and guestbook signers! (Coming soon)</p>
+    <div id="leaderboardList" style="font-size:1.1em;"></div>
+    <script>
+      (function(){
+        // Demo: Use guestbookEntries if available
+        let entries = window.guestbookEntries || [
+          { name: '🏗️ Builder123', message: 'Amazing website! Love the Minecraft theme! ⛏️' },
+          { name: '🍎 HealthyGamer', message: 'Great job with fooda! Keep promoting healthy living! 🌱' }
+        ];
+        let html = '<ol>';
+        entries.slice(0,5).forEach(e => {
+          html += `<li><b>${e.name}</b>: ${e.message}</li>`;
+        });
+        html += '</ol>';
+        document.getElementById('leaderboardList').innerHTML = html;
+      })();
+    </script>
   </div>
   <div id="pollsVoting" style="display:none;" class="info-card">
     <h2>🗳️ Polls & Voting</h2>
-    <p>Vote for your favorite mob, food, or build! (Coming soon)</p>
+    <form id="mobPollForm" style="margin-bottom:1em;">
+      <label><input type="radio" name="mob" value="Creeper"> Creeper</label><br>
+      <label><input type="radio" name="mob" value="Enderman"> Enderman</label><br>
+      <label><input type="radio" name="mob" value="Wolf"> Wolf</label><br>
+      <label><input type="radio" name="mob" value="Villager"> Villager</label><br>
+      <label><input type="radio" name="mob" value="Pig"> Pig</label><br>
+      <button type="submit">Vote</button>
+    </form>
+    <div id="mobPollResult" style="font-size:1.1em; color:var(--diamond);"></div>
+    <script>
+      (function(){
+        const form = document.getElementById('mobPollForm');
+        const result = document.getElementById('mobPollResult');
+        form.onsubmit = function(e) {
+          e.preventDefault();
+          const mob = form.mob.value;
+          if (!mob) { result.textContent = 'Please select a mob!'; return; }
+          result.textContent = `You voted for: ${mob}! Thanks for voting!`;
+        };
+      })();
+    </script>
   </div>
   <div id="animatedPet" style="display:none;" class="info-card">
-    <h2>🐾 Animated Pet</h2>
-    <p>Adopt a virtual pet that follows your mouse! (Coming soon)</p>
+    <h2>�� Animated Pet</h2>
+    <div id="petSprite" style="font-size:3em;">🐶</div>
+    <p>Move your mouse or tap to see your pet follow!</p>
+    <script>
+      (function(){
+        const pet = document.getElementById('petSprite');
+        function movePet(e) {
+          let x = e.clientX || (e.touches && e.touches[0].clientX) || 100;
+          let y = e.clientY || (e.touches && e.touches[0].clientY) || 100;
+          pet.style.position = 'fixed';
+          pet.style.left = (x-30) + 'px';
+          pet.style.top = (y-30) + 'px';
+        }
+        document.addEventListener('mousemove', movePet);
+        document.addEventListener('touchmove', movePet);
+      })();
+    </script>
   </div>
   <div id="backgroundMusic" style="display:none;" class="info-card">
     <h2>🎶 Background Music</h2>
-    <p>Enjoy real Minecraft music tracks! (Coming soon)</p>
+    <p>Use the music player at the bottom left to play Minecraft-style music!</p>
   </div>
   <div id="dailyRewards" style="display:none;" class="info-card">
     <h2>🎁 Daily Login Rewards</h2>
-    <p>Get a reward for visiting every day! (Coming soon)</p>
+    <button id="claimRewardBtn">Claim Daily Reward</button>
+    <div id="rewardMsg" style="font-size:1.1em; color:var(--diamond);"></div>
+    <script>
+      (function(){
+        const btn = document.getElementById('claimRewardBtn');
+        const msg = document.getElementById('rewardMsg');
+        const today = new Date().toDateString();
+        if (localStorage.getItem('lastReward') === today) {
+          btn.disabled = true;
+          msg.textContent = 'You already claimed your reward today! Come back tomorrow!';
+        }
+        btn.onclick = function() {
+          localStorage.setItem('lastReward', today);
+          btn.disabled = true;
+          msg.textContent = '🎉 You claimed your daily reward! +1 Golden Apple!';
+        };
+      })();
+    </script>
   </div>
   <div id="unlockableContent" style="display:none;" class="info-card">
     <h2>🔓 Unlockable Content</h2>
-    <p>Unlock new builds, facts, and recipes by playing! (Coming soon)</p>
+    <button id="unlockBtn">Unlock Secret</button>
+    <div id="unlockMsg" style="font-size:1.1em; color:var(--diamond);"></div>
+    <script>
+      (function(){
+        const btn = document.getElementById('unlockBtn');
+        const msg = document.getElementById('unlockMsg');
+        btn.onclick = function() {
+          btn.disabled = true;
+          msg.innerHTML = '🎉 You unlocked a secret! <br><b>Did you know?</b> The Ender Dragon is the only boss mob that naturally spawns in Minecraft.';
+        };
+      })();
+    </script>
   </div>
   <div id="foodFacts" style="display:none;" class="info-card">
     <h2>🥗 Food Facts</h2>
-    <p>Hover over food items to learn healthy tips! (Coming soon)</p>
+    <div>
+      <span class="food-item" data-tip="Apples are high in fiber and vitamin C!" style="font-size:2em;cursor:pointer;">🍎</span>
+      <span class="food-item" data-tip="Carrots help improve your vision!" style="font-size:2em;cursor:pointer;">🥕</span>
+      <span class="food-item" data-tip="Pumpkin is great for your heart!" style="font-size:2em;cursor:pointer;">🎃</span>
+      <span class="food-item" data-tip="Berries are full of antioxidants!" style="font-size:2em;cursor:pointer;">🫐</span>
+    </div>
+    <div id="foodTip" style="font-size:1.1em; color:var(--primary); margin-top:1em;"></div>
+    <script>
+      (function(){
+        document.querySelectorAll('.food-item').forEach(item => {
+          item.addEventListener('mouseenter', function(){
+            document.getElementById('foodTip').textContent = item.getAttribute('data-tip');
+          });
+          item.addEventListener('mouseleave', function(){
+            document.getElementById('foodTip').textContent = '';
+          });
+        });
+      })();
+    </script>
   </div>
   <div id="codingCorner" style="display:none;" class="info-card">
     <h2>💻 Coding Corner</h2>
-    <p>Try simple code challenges and learn programming! (Coming soon)</p>
+    <div style="margin-bottom:1em;">What does this code print?</div>
+    <pre style="background:#eee; color:#222; padding:0.5em; border-radius:6px;">for(let i=1;i<=3;i++){console.log(i*i);}</pre>
+    <input id="codeAnswer" placeholder="Your answer (comma separated)" style="width:80%;margin-bottom:0.5em;">
+    <button id="checkCodeBtn">Check</button>
+    <div id="codeResult" style="font-size:1.1em; color:var(--diamond);"></div>
+    <script>
+      (function(){
+        const btn = document.getElementById('checkCodeBtn');
+        const input = document.getElementById('codeAnswer');
+        const result = document.getElementById('codeResult');
+        btn.onclick = function() {
+          const val = input.value.replace(/\s+/g,'');
+          if(val === '1,4,9') {
+            result.textContent = '✅ Correct! The code prints 1, 4, 9.';
+          } else {
+            result.textContent = '❌ Try again!';
+          }
+        };
+      })();
+    </script>
   </div>
   <div id="shareButton" style="display:none;" class="info-card">
     <h2>🔗 Share</h2>
-    <p>Share your favorite build or achievement! (Coming soon)</p>
+    <button id="copyLinkBtn">Copy Site Link</button>
+    <div id="copyMsg" style="font-size:1.1em; color:var(--diamond);"></div>
+    <script>
+      (function(){
+        const btn = document.getElementById('copyLinkBtn');
+        const msg = document.getElementById('copyMsg');
+        btn.onclick = function() {
+          navigator.clipboard.writeText(window.location.href).then(function(){
+            msg.textContent = 'Link copied! Share it with your friends!';
+          });
+        };
+      })();
+    </script>
   </div>
   <div id="languageSelector" style="display:none;" class="info-card">
     <h2>🌐 Language Selector</h2>
-    <p>Switch the site language for a wider reach! (Coming soon)</p>
+    <select id="langSelect">
+      <option value="en">English</option>
+      <option value="es">Español</option>
+      <option value="fr">Français</option>
+      <option value="de">Deutsch</option>
+      <option value="hi">हिन्दी</option>
+    </select>
+    <div id="langMsg" style="font-size:1.1em; color:var(--diamond); margin-top:1em;"></div>
+    <script>
+      (function(){
+        const select = document.getElementById('langSelect');
+        const msg = document.getElementById('langMsg');
+        select.onchange = function() {
+          msg.textContent = 'Language switched to: ' + select.options[select.selectedIndex].text + ' (Demo only)';
+        };
+      })();
+    </script>
   </div>
   <!-- NEW FEATURES END -->
   
@@ -3698,7 +3996,7 @@
     
     // Konami Code Easter Egg
     let konamiCode = [];
-    const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+    const konamiSequence = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
     
     document.addEventListener('keydown', function(e) {
       konamiCode.push(e.code);
@@ -3838,26 +4136,32 @@
     // Music Player
     let currentTrack = 0;
     const tracks = [
-      { name: 'Minecraft Theme', emoji: '🎵' },
-      { name: 'Cave Sounds', emoji: '🕳️' },
-      { name: 'Village Music', emoji: '🏘️' },
-      { name: 'Nether Ambience', emoji: '🔥' }
+      { name: 'Minecraft Theme', emoji: '🎵', src: '' },
+      { name: 'Cave Sounds', emoji: '🕳️', src: '' },
+      { name: 'Village Music', emoji: '🏘️', src: '' },
+      { name: 'Nether Ambience', emoji: '🔥', src: '' }
     ];
-    
+    const musicTitle = document.getElementById('musicTrackTitle');
+    const musicStatus = document.getElementById('musicStatus');
+    function updateMusicTitle() {
+      musicTitle.textContent = `${tracks[currentTrack].emoji} ${tracks[currentTrack].name}`;
+      musicStatus.textContent = '';
+    }
+    updateMusicTitle();
     document.getElementById('playBtn').addEventListener('click', function() {
       playSound('crafting');
       showAchievement('Music Lover!', 'Minecraft music is the best! 🎵');
+      musicStatus.textContent = 'Playing: ' + tracks[currentTrack].name;
     });
-    
     document.getElementById('pauseBtn').addEventListener('click', function() {
       playSound('block_click');
+      musicStatus.textContent = 'Paused';
     });
-    
     document.getElementById('nextBtn').addEventListener('click', function() {
       currentTrack = (currentTrack + 1) % tracks.length;
-      const musicPlayer = document.getElementById('musicPlayer');
-      musicPlayer.querySelector('div').textContent = `${tracks[currentTrack].emoji} ${tracks[currentTrack].name}`;
+      updateMusicTitle();
       playSound('crafting');
+      musicStatus.textContent = 'Playing: ' + tracks[currentTrack].name;
     });
     
     // Server List
@@ -3968,7 +4272,7 @@
     const funExtrasMenu = document.getElementById('funExtrasMenu');
     const funLinks = document.querySelectorAll('.fun-link');
     const funFeatureIds = [
-      'avatarBuilder','themePicker','quizGame','parkourGame','recipeGenerator','factOfDay','leaderboard','pollsVoting','animatedPet','backgroundMusic','dailyRewards','unlockableContent','foodFacts','codingCorner','shareButton','languageSelector'
+      'avatarBuilder','themePicker','quizGame','recipeGenerator','factOfDay','leaderboard','pollsVoting','animatedPet','backgroundMusic','dailyRewards','unlockableContent','foodFacts','codingCorner','shareButton','languageSelector'
     ];
     funExtrasBtn.addEventListener('click', function(e) {
       e.preventDefault();
