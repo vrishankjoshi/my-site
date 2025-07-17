@@ -3292,21 +3292,63 @@
   </div>
   <div id="factOfDay" style="display:none;" class="info-card">
     <h2>📅 Minecraft Fact of the Day</h2>
-    <div id="factDayText" style="font-size:1.1em; color:var(--diamond);"></div>
+    <div id="factDayText" style="font-size:1.2em; color:var(--diamond); margin-bottom:0.7em;"></div>
+    <button id="showAnotherFactBtn" style="margin-bottom:0.5em;">Show Another Fact</button>
     <script>
       (function(){
         const facts = [
-          'Creepers were created by accident when a pig model was coded wrong!',
-          'Endermen can pick up and move certain blocks.',
-          'The first version of Minecraft was created in just 6 days.',
-          'You can use a bucket to pick up fish in Minecraft.',
-          'Wolves will attack skeletons on sight.',
-          'You can dye a sheep any color and then shear it for colored wool.',
-          'The Wither is the only mob that can break obsidian.',
-          'A cake is the only food you can place in the world and eat from.'
+          { text: 'Creepers were created by accident when a pig model was coded wrong!', emoji: '💥' },
+          { text: 'Endermen can pick up and move certain blocks.', emoji: '👾' },
+          { text: 'The first version of Minecraft was created in just 6 days.', emoji: '⏱️' },
+          { text: 'You can use a bucket to pick up fish in Minecraft.', emoji: '🐟' },
+          { text: 'Wolves will attack skeletons on sight.', emoji: '🐺' },
+          { text: 'You can dye a sheep any color and then shear it for colored wool.', emoji: '🐑' },
+          { text: 'The Wither is the only mob that can break obsidian.', emoji: '💀' },
+          { text: 'A cake is the only food you can place in the world and eat from.', emoji: '🍰' },
+          { text: 'Villagers speak a language called "Villagerese".', emoji: '🗣️' },
+          { text: 'Pandas can sneeze and make other pandas jump!', emoji: '🐼' },
+          { text: 'You can ride a pig with a saddle and a carrot on a stick.', emoji: '🐖' },
+          { text: 'Ghasts are inspired by a cat\'s cry.', emoji: '😿' },
+          { text: 'You can sleep in a bed to skip the night.', emoji: '🛏️' },
+          { text: 'Axolotls in Minecraft are based on a real animal.', emoji: '🦎' },
+          { text: 'You can use a lead to walk almost any mob.', emoji: '🪢' }
         ];
-        const idx = new Date().getDate() % facts.length;
-        document.getElementById('factDayText').textContent = facts[idx];
+        const factText = document.getElementById('factDayText');
+        const btn = document.getElementById('showAnotherFactBtn');
+        function getTodayKey() {
+          const d = new Date();
+          return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
+        }
+        function showFact(idx) {
+          const f = facts[idx];
+          factText.innerHTML = `<span style='font-size:1.5em;'>${f.emoji}</span> ${f.text}`;
+        }
+        // Show a new fact each day
+        let todayKey = getTodayKey();
+        let stored = localStorage.getItem('mcFactOfDay');
+        let idx;
+        if (stored) {
+          try {
+            const parsed = JSON.parse(stored);
+            if (parsed.date === todayKey) {
+              idx = parsed.idx;
+            }
+          } catch(e) {}
+        }
+        if (typeof idx !== 'number') {
+          idx = Math.floor(Math.random()*facts.length);
+          localStorage.setItem('mcFactOfDay', JSON.stringify({date: todayKey, idx}));
+        }
+        showFact(idx);
+        // Show another fact button
+        btn.onclick = function() {
+          let newIdx;
+          do {
+            newIdx = Math.floor(Math.random()*facts.length);
+          } while (newIdx === idx && facts.length > 1);
+          idx = newIdx;
+          showFact(idx);
+        };
       })();
     </script>
   </div>
