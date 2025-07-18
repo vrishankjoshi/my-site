@@ -3928,6 +3928,236 @@
       })();
     </script>
   </div>
+  <div id="mcTip" style="display:none;" class="info-card">
+    <h2>📝 Random Minecraft Tip</h2>
+    <button id="mcTipBtn">Show Tip</button>
+    <div id="mcTipResult" style="margin-top:0.7em;font-size:1.1em;color:var(--primary);"></div>
+    <script>
+      (function(){
+        const tips = [
+          'Always carry a water bucket in caves!','Use torches to mark your path.','Creepers are silent—watch your back!','Use a shield to block skeleton arrows.','Breed animals for a steady food supply.','Enchant your gear for better protection.','Use beds to skip the night and set spawn.','Redstone can automate farms and doors.','Villagers can trade rare items.','Use F3 to see coordinates (Java Edition).'
+        ];
+        document.getElementById('mcTipBtn').onclick = function(){
+          document.getElementById('mcTipResult').textContent = tips[Math.floor(Math.random()*tips.length)];
+        };
+      })();
+    </script>
+  </div>
+  <div id="snackSpinner" style="display:none;" class="info-card">
+    <h2>🍏 Healthy Snack Spinner</h2>
+    <button id="snackSpinBtn">Spin for Snack</button>
+    <div id="snackSpinResult" style="margin-top:0.7em;font-size:1.3em;color:var(--primary);"></div>
+    <script>
+      (function(){
+        const snacks = [
+          '🍎 Apple slices with peanut butter','🥕 Carrot sticks','🍌 Banana','🥒 Cucumber rounds','🍓 Strawberries','🥜 Mixed nuts','🍊 Orange wedges','🥚 Boiled egg','🍇 Grapes','🥭 Mango cubes','🍉 Watermelon','🥑 Avocado toast','🍍 Pineapple chunks','🥥 Coconut pieces','🫐 Blueberries'
+        ];
+        document.getElementById('snackSpinBtn').onclick = function(){
+          document.getElementById('snackSpinResult').textContent = snacks[Math.floor(Math.random()*snacks.length)];
+        };
+      })();
+    </script>
+  </div>
+  <div id="quickPoll" style="display:none;" class="info-card">
+    <h2>📊 Quick Poll</h2>
+    <form id="quickPollForm">
+      <div>Favorite Minecraft block?</div>
+      <label><input type="radio" name="block" value="Diamond"> 💎 Diamond</label><br>
+      <label><input type="radio" name="block" value="Redstone"> 🔴 Redstone</label><br>
+      <label><input type="radio" name="block" value="Emerald"> 🟢 Emerald</label><br>
+      <label><input type="radio" name="block" value="Gold"> 🟡 Gold</label><br>
+      <label><input type="radio" name="block" value="Obsidian"> 🟣 Obsidian</label><br>
+      <button type="submit">Vote</button>
+    </form>
+    <div id="quickPollResult" style="margin-top:0.7em;font-size:1.1em;color:var(--primary);"></div>
+    <script>
+      (function(){
+        const form = document.getElementById('quickPollForm');
+        const result = document.getElementById('quickPollResult');
+        let votes = JSON.parse(localStorage.getItem('quickPollVotes')||'{}');
+        form.onsubmit = function(e){
+          e.preventDefault();
+          const val = form.block.value;
+          if (!val) { result.textContent = 'Please select a block!'; return; }
+          votes[val] = (votes[val]||0)+1;
+          localStorage.setItem('quickPollVotes', JSON.stringify(votes));
+          const total = Object.values(votes).reduce((a,b)=>a+b,0);
+          result.innerHTML = Object.entries(votes).map(([k,v])=>`${k}: ${v} (${Math.round(100*v/total)}%)`).join('<br>');
+        };
+      })();
+    </script>
+  </div>
+  <div id="motivationQuote" style="display:none;" class="info-card">
+    <h2>💡 Motivational Quote of the Day</h2>
+    <div id="motivationQuoteText" style="font-size:1.1em;color:var(--diamond);"></div>
+    <script>
+      (function(){
+        const quotes = [
+          'The best time to plant a tree was 20 years ago. The second best time is now.',
+          'You are braver than you believe, stronger than you seem, and smarter than you think.',
+          'Success is not the key to happiness. Happiness is the key to success.',
+          'Small steps every day lead to big results.',
+          'Eat well, move more, and be kind to yourself.',
+          'Every accomplishment starts with the decision to try.',
+          'Stay positive, work hard, make it happen.',
+          'Your health is your wealth.',
+          'Dream big, work hard, stay focused.'
+        ];
+        const idx = new Date().getDate() % quotes.length;
+        document.getElementById('motivationQuoteText').textContent = quotes[idx];
+      })();
+    </script>
+  </div>
+  <div id="simpleTimer" style="display:none;" class="info-card">
+    <h2>⏱️ Simple Timer / Stopwatch</h2>
+    <div style="font-size:2em;text-align:center;" id="timerDisplay">00:00</div>
+    <div style="display:flex;justify-content:center;gap:0.5em;">
+      <button id="timerStart">Start</button>
+      <button id="timerStop">Stop</button>
+      <button id="timerReset">Reset</button>
+    </div>
+    <script>
+      (function(){
+        let t=0, running=false, interval;
+        const disp = document.getElementById('timerDisplay');
+        function show(){
+          const m = String(Math.floor(t/60)).padStart(2,'0');
+          const s = String(t%60).padStart(2,'0');
+          disp.textContent = `${m}:${s}`;
+        }
+        document.getElementById('timerStart').onclick = function(){
+          if (running) return;
+          running = true;
+          interval = setInterval(()=>{t++;show();},1000);
+        };
+        document.getElementById('timerStop').onclick = function(){
+          running = false; clearInterval(interval);
+        };
+        document.getElementById('timerReset').onclick = function(){
+          t=0; show();
+        };
+        show();
+      })();
+    </script>
+  </div>
+  <div id="themeSwitcher" style="display:none;" class="info-card">
+    <h2>🎨 Color Theme Switcher</h2>
+    <div style="display:flex;gap:0.5em;justify-content:center;">
+      <button class="themeBtn" data-theme="forest">Forest</button>
+      <button class="themeBtn" data-theme="desert">Desert</button>
+      <button class="themeBtn" data-theme="nether">Nether</button>
+    </div>
+    <script>
+      (function(){
+        const themes = {
+          forest: 'repeating-linear-gradient(135deg, #228B22 0 60px, #7cfc00 60px 120px, #006400 120px 180px)',
+          desert: 'repeating-linear-gradient(135deg, #f7e9a0 0 60px, #e2c275 60px 120px, #f4d35e 120px 180px)',
+          nether: 'repeating-linear-gradient(135deg, #7b1e1e 0 60px, #ff3333 60px 120px, #ff6600 120px 180px)'
+        };
+        document.querySelectorAll('.themeBtn').forEach(btn=>{
+          btn.onclick = function(){
+            document.body.style.background = themes[btn.getAttribute('data-theme')];
+          };
+        });
+      })();
+    </script>
+  </div>
+  <div id="confettiDemo" style="display:none;" class="info-card">
+    <h2>🎉 Confetti Demo</h2>
+    <button id="confettiBtn">Celebrate!</button>
+    <script>
+      (function(){
+        document.getElementById('confettiBtn').onclick = function(){
+          for(let i=0;i<40;i++){
+            const c = document.createElement('div');
+            c.textContent = ['✨','🎉','⭐','💎','🌟'][Math.floor(Math.random()*5)];
+            c.style.position = 'fixed';
+            c.style.left = Math.random()*100+'vw';
+            c.style.top = '-30px';
+            c.style.fontSize = '2em';
+            c.style.zIndex = 10001;
+            c.style.transition = 'top 1.5s linear';
+            document.body.appendChild(c);
+            setTimeout(()=>{c.style.top = '100vh';},10);
+            setTimeout(()=>{c.remove();},1600);
+          }
+        };
+      })();
+    </script>
+  </div>
+  <div id="funFactPopup" style="display:none;" class="info-card">
+    <h2>🎈 Fun Fact Popups</h2>
+    <button id="funFactBtn">Show Fun Fact</button>
+    <div id="funFactResult" style="margin-top:0.7em;font-size:1.1em;color:var(--primary);"></div>
+    <script>
+      (function(){
+        const facts = [
+          'Minecraft was created in just 6 days!','Honey blocks can reduce fall damage.','You can dye a sheep any color.','Eating healthy helps you build better in real life!','Pumpkins can be worn as helmets in Minecraft.','Carrots on a stick control pigs.','Golden apples give you special powers!','Broccoli is a real-life superfood!','Redstone is like electricity in Minecraft.'
+        ];
+        document.getElementById('funFactBtn').onclick = function(){
+          document.getElementById('funFactResult').textContent = facts[Math.floor(Math.random()*facts.length)];
+        };
+        // Occasional popup
+        setInterval(function(){
+          if (Math.random()<0.08) {
+            alert(facts[Math.floor(Math.random()*facts.length)]);
+          }
+        }, 30000);
+      })();
+    </script>
+  </div>
+  <div id="emojiReactions" style="display:none;" class="info-card">
+    <h2>😀 Emoji Reaction Bar</h2>
+    <div id="emojiBar" style="font-size:2em;display:flex;gap:0.5em;justify-content:center;"></div>
+    <script>
+      (function(){
+        const emojis = ['👍','❤️','😂','😮','😢','🔥','💡'];
+        const bar = document.getElementById('emojiBar');
+        let counts = JSON.parse(localStorage.getItem('emojiReactions')||'{}');
+        emojis.forEach(e=>{
+          const btn = document.createElement('button');
+          btn.textContent = e;
+          btn.style.fontSize = '1.2em';
+          btn.style.border = 'none';
+          btn.style.background = 'none';
+          btn.style.cursor = 'pointer';
+          btn.onclick = function(){
+            counts[e] = (counts[e]||0)+1;
+            localStorage.setItem('emojiReactions', JSON.stringify(counts));
+            btn.textContent = e+' '+counts[e];
+          };
+          btn.textContent = e+' '+(counts[e]||0);
+          bar.appendChild(btn);
+        });
+      })();
+    </script>
+  </div>
+  <div id="soundToggleDemo" style="display:none;" class="info-card">
+    <h2>🔊 Sound Effects</h2>
+    <button id="soundToggleBtn">Toggle Sound: On</button>
+    <button id="soundDemoBtn">Play Sound</button>
+    <script>
+      (function(){
+        let soundOn = true;
+        document.getElementById('soundToggleBtn').onclick = function(){
+          soundOn = !soundOn;
+          this.textContent = 'Toggle Sound: '+(soundOn?'On':'Off');
+        };
+        document.getElementById('soundDemoBtn').onclick = function(){
+          if (!soundOn) return;
+          const ctx = new (window.AudioContext||window.webkitAudioContext)();
+          const o = ctx.createOscillator();
+          const g = ctx.createGain();
+          o.connect(g); g.connect(ctx.destination);
+          o.type = 'triangle';
+          o.frequency.value = 523;
+          g.gain.value = 0.1;
+          o.start();
+          setTimeout(()=>{o.stop();ctx.close();},200);
+        };
+      })();
+    </script>
+  </div>
   <!-- NEW FEATURES END -->
   
   <script>
