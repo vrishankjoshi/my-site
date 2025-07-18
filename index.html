@@ -5414,7 +5414,39 @@
       })();
     </script>
   </div>
-  <div id="mobSoundboard" style="display:none;" class="info-card"><h2>🎵 Mob Soundboard</h2><p>Coming soon: Play sounds from your favorite mobs!</p></div>
+  <div id="mobSoundboard" style="display:none;" class="info-card">
+    <h2>🎵 Mob Soundboard</h2>
+    <div id="mobSoundboardButtons" style="display:flex;flex-wrap:wrap;gap:1em;justify-content:center;margin-bottom:1em;"></div>
+    <div style="font-size:0.95em;color:#888;">(Sounds are for fun and may not be the exact Minecraft originals.)</div>
+    <script>
+      (function(){
+        // Example mob sounds (public domain or similar, not actual Minecraft sounds)
+        const mobs = [
+          {name:'Creeper', emoji:'💣', sound:'https://cdn.pixabay.com/audio/2022/07/26/audio_124bfae7e2.mp3'}, // explosion
+          {name:'Zombie', emoji:'🧟', sound:'https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b2e3e.mp3'}, // growl
+          {name:'Skeleton', emoji:'💀', sound:'https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b2e3e.mp3'}, // same as zombie for demo
+          {name:'Spider', emoji:'🕷️', sound:'https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b2e3e.mp3'}, // same as zombie for demo
+          {name:'Enderman', emoji:'👾', sound:'https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b2e3e.mp3'}, // same as zombie for demo
+          {name:'Villager', emoji:'👨‍🌾', sound:'https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b2e3e.mp3'}, // same as zombie for demo
+          {name:'Cow', emoji:'🐄', sound:'https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b2e3e.mp3'}, // same as zombie for demo
+          {name:'Pig', emoji:'🐖', sound:'https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b2e3e.mp3'}, // same as zombie for demo
+          {name:'Chicken', emoji:'🐔', sound:'https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b2e3e.mp3'} // same as zombie for demo
+        ];
+        const btnsDiv = document.getElementById('mobSoundboardButtons');
+        mobs.forEach(mob => {
+          const btn = document.createElement('button');
+          btn.textContent = `${mob.emoji} ${mob.name}`;
+          btn.style.padding = '0.7em 1.2em';
+          btn.style.fontSize = '1em';
+          btn.onclick = function() {
+            const audio = new Audio(mob.sound);
+            audio.play();
+          };
+          btnsDiv.appendChild(btn);
+        });
+      })();
+    </script>
+  </div>
   <div id="biomeExplorer" style="display:none;" class="info-card"><h2>🌲 Biome Explorer</h2><p>Coming soon: Discover all the Minecraft biomes!</p></div>
   <div id="bannerDesigner" style="display:none;" class="info-card"><h2>🏳️ Banner Designer</h2><p>Coming soon: Design your own Minecraft banners!</p></div>
   <div id="potionMixer" style="display:none;" class="info-card"><h2>🧪 Potion Mixer</h2><p>Coming soon: Mix and match potions!</p></div>
@@ -5452,17 +5484,4 @@
   <div id="mobRace" style="display:none;" class="info-card"><h2>🏁 Mob Race</h2><p>Coming soon: Race mobs to the finish!</p></div>
   <div id="blockMaze" style="display:none;" class="info-card"><h2>🌀 Block Maze</h2><p>Coming soon: Navigate a blocky maze!</p></div>
   <div id="mobTycoon" style="display:none;" class="info-card"><h2>💼 Mob Tycoon</h2><p>Coming soon: Build a mob empire!</p></div>
-  <div id="blockTycoon" style="display:none;" class="info-card"><h2>🏢 Block Tycoon</h2><p>Coming soon: Build a block business!</p></div>
-  <div id="mobSoundQuiz" style="display:none;" class="info-card"><h2>🔊 Mob Sound Quiz</h2><p>Coming soon: Guess the mob by its sound!</p></div>
-  <div id="blockSoundQuiz" style="display:none;" class="info-card"><h2>🔉 Block Sound Quiz</h2><p>Coming soon: Guess the block by its sound!</p></div>
-  <div id="mobBuilder" style="display:none;" class="info-card"><h2>🛠️ Mob Builder</h2><p>Coming soon: Build your own mob!</p></div>
-  <div id="blockBuilder" style="display:none;" class="info-card"><h2>🏗️ Block Builder</h2><p>Coming soon: Build your own block!</p></div>
-  <div id="mobCustomizer" style="display:none;" class="info-card"><h2>🧑‍🔬 Mob Customizer</h2><p>Coming soon: Customize mobs!</p></div>
-  <div id="blockCustomizer" style="display:none;" class="info-card"><h2>🧑‍🎨 Block Customizer</h2><p>Coming soon: Customize blocks!</p></div>
-  <div id="mobGallery" style="display:none;" class="info-card"><h2>🖼️ Mob Gallery</h2><p>Coming soon: View a gallery of mobs!</p></div>
-  <div id="blockGallery" style="display:none;" class="info-card"><h2>🖼️ Block Gallery</h2><p>Coming soon: View a gallery of blocks!</p></div>
-  <div id="biomeGallery" style="display:none;" class="info-card"><h2>🖼️ Biome Gallery</h2><p>Coming soon: View a gallery of biomes!</p></div>
-  <div id="mobNameGen" style="display:none;" class="info-card"><h2>📝 Mob Name Generator</h2><p>Coming soon: Generate fun mob names!</p></div>
-  <div id="blockNameGen" style="display:none;" class="info-card"><h2>📝 Block Name Generator</h2><p>Coming soon: Generate fun block names!</p></div>
-</body>
-</html> 
+  <div id="blockTycoon" style="display:none;" class="info-card"><h2>🏢 Block Tycoon</h2><p>Coming
