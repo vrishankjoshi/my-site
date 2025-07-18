@@ -5219,5 +5219,72 @@
     <div id="buildsGalleryContainer"></div>
     <div id="buildsLeaderboardContainer"></div>
   </div>
+
+  <!-- Project Submission Form -->
+  <section id="submission-section" style="max-width:500px;margin:2em auto;padding:2em;border:1px solid #ccc;border-radius:8px;">
+    <h2>Submit Your Minecraft Project</h2>
+    <form id="project-form">
+      <label for="name">Your Name:</label><br>
+      <input type="text" id="name" name="name" required style="width:100%;margin-bottom:1em;"><br>
+      <label for="title">Project Title:</label><br>
+      <input type="text" id="title" name="title" required style="width:100%;margin-bottom:1em;"><br>
+      <label for="description">Project Description:</label><br>
+      <textarea id="description" name="description" required style="width:100%;margin-bottom:1em;"></textarea><br>
+      <label for="link">Project Link (optional):</label><br>
+      <input type="url" id="link" name="link" style="width:100%;margin-bottom:1em;"><br>
+      <button type="submit">Submit Project</button>
+    </form>
+    <div id="form-message" style="color:green;margin-top:1em;"></div>
+  </section>
+
+  <!-- Projects Display Section -->
+  <section id="projects-section" style="max-width:700px;margin:2em auto;">
+    <h2>Submitted Projects</h2>
+    <div id="projects-list"></div>
+  </section>
+
+  <script>
+    // Helper: Get projects from localStorage
+    function getProjects() {
+      return JSON.parse(localStorage.getItem('minecraftProjects') || '[]');
+    }
+    // Helper: Save projects to localStorage
+    function saveProjects(projects) {
+      localStorage.setItem('minecraftProjects', JSON.stringify(projects));
+    }
+    // Render projects
+    function renderProjects() {
+      const projects = getProjects();
+      const list = document.getElementById('projects-list');
+      if (projects.length === 0) {
+        list.innerHTML = '<p>No projects submitted yet. Be the first!</p>';
+        return;
+      }
+      list.innerHTML = projects.map((p, i) => `
+        <div style="border:1px solid #ddd;padding:1em;margin-bottom:1em;border-radius:6px;">
+          <strong>${p.title}</strong> by <em>${p.name}</em><br>
+          <p>${p.description}</p>
+          ${p.link ? `<a href="${p.link}" target="_blank">Project Link</a><br>` : ''}
+        </div>
+      `).join('');
+    }
+    // Handle form submission
+    document.getElementById('project-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const title = document.getElementById('title').value.trim();
+      const description = document.getElementById('description').value.trim();
+      const link = document.getElementById('link').value.trim();
+      if (!name || !title || !description) return;
+      const projects = getProjects();
+      projects.push({ name, title, description, link });
+      saveProjects(projects);
+      document.getElementById('form-message').textContent = 'Project submitted!';
+      this.reset();
+      renderProjects();
+    });
+    // Initial render
+    renderProjects();
+  </script>
 </body>
 </html> 
