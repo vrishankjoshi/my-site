@@ -5021,5 +5021,171 @@
     <div class="info-card" style="text-align:center;"><h2>🎉 All Fun & Extras</h2><p>Explore all the extra features and games!</p></div>
     <div id="funExtrasGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1em;"></div>
   </div>
+  <div id="shareBuild" style="display:none;" class="info-card">
+    <h2>📸 Share Your Minecraft Build</h2>
+    <form id="shareBuildForm" style="display:flex;flex-direction:column;gap:0.7em;align-items:center;">
+      <input id="buildTitle" placeholder="Build Title" maxlength="32" style="width:90%;max-width:300px;">
+      <textarea id="buildDesc" placeholder="Describe your build (mention Minecraft)" maxlength="120" style="width:90%;max-width:300px;height:60px;"></textarea>
+      <input type="file" id="buildImage" accept="image/*" style="width:90%;max-width:300px;">
+      <button type="submit">Share Build</button>
+      <div id="shareBuildMsg" style="color:var(--diamond);"></div>
+    </form>
+    <script>
+      (function(){
+        const form = document.getElementById('shareBuildForm');
+        const msg = document.getElementById('shareBuildMsg');
+        form.onsubmit = function(e){
+          e.preventDefault();
+          const title = form.buildTitle.value.trim();
+          const desc = form.buildDesc.value.trim();
+          const file = form.buildImage.files[0];
+          if (!title || !desc || !file) { msg.textContent = 'Please fill all fields and select an image.'; return; }
+          // Simple Minecraft check
+          if (!/minecraft/i.test(title+desc) && !/block|craft|redstone|creeper|steve|alex/i.test(title+desc)) {
+            msg.textContent = 'Please mention Minecraft or a Minecraft term in your title/description.';
+            return;
+          }
+          const reader = new FileReader();
+          reader.onload = function(ev){
+            let builds = JSON.parse(localStorage.getItem('buildGallery')||'[]');
+            const build = {
+              id: Date.now()+Math.random().toString(36).slice(2),
+              title, desc,
+              img: ev.target.result,
+              votes: 0,
+              uploader: localStorage.getItem('username')||'You',
+              time: Date.now(),
+              voters: [],
+              coinsAwarded: false
+            };
+            builds.unshift(build);
+            localStorage.setItem('buildGallery', JSON.stringify(builds));
+            msg.textContent = 'Build shared! Check the gallery.';
+            form.reset();
+          };
+          reader.readAsDataURL(file);
+        };
+      })();
+    </script>
+  </div>
+  <div id="buildGallery" style="display:none;" class="info-card">
+    <h2>🏆 Build Gallery</h2>
+    <div id="buildGalleryList" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1em;"></div>
+    <script>
+      (function(){
+        const list = document.getElementById('buildGalleryList');
+        function render() {
+          let builds = JSON.parse(localStorage.getItem('buildGallery')||'[]');
+          // Add demo builds if empty
+          if (builds.length === 0) builds = [
+            {id:'demo1',title:'Epic Castle',desc:'A huge Minecraft castle! minecraft',img:'https://static.wikia.nocookie.net/minecraft_gamepedia/images/88a/Stone_Bricks_JE3.png',votes:42,uploader:'Steve',time:Date.now()-86400000,voters:[],coinsAwarded:false},
+            {id:'demo2',title:'Redstone Factory',desc:'Automatic item sorter. minecraft',img:'https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8/Redstone_Torch_JE3.png',votes:35,uploader:'Alex',time:Date.now()-43200000,voters:[],coinsAwarded:false}
+          ];
+          list.innerHTML = '';
+          builds.forEach((b,i)=>{
+            const div = document.createElement('div');
+            div.className = 'info-card';
+            div.innerHTML = `<img src="${b.img}" alt="Build" style="width:100%;max-width:180px;max-height:120px;object-fit:cover;border-radius:8px;margin-bottom:0.5em;"><br><b>${b.title}</b><br>${b.desc}<br><span style='font-size:0.95em;color:var(--diamond);'>By: ${b.uploader}</span><br><button class='voteBtn' data-id='${b.id}'>👍 Vote (${b.votes})</button>`;
+            list.appendChild(div);
+          });
+          // Voting logic
+          document.querySelectorAll('.voteBtn').forEach(btn=>{
+            btn.onclick = function(){
+              const id = btn.getAttribute('data-id');
+              let builds = JSON.parse(localStorage.getItem('buildGallery')||'[]');
+              let build = builds.find(b=>b.id===id);
+              if (!build) return;
+              let voted = (build.voters||[]).includes(localStorage.getItem('username')||'You');
+              if (voted) { alert('You already voted for this build!'); return; }
+              build.votes++;
+              build.voters = build.voters||[];
+              build.voters.push(localStorage.getItem('username')||'You');
+              // Award coins if 100 votes in 24h
+              if (!build.coinsAwarded && build.votes>=100 && (Date.now()-build.time)<86400000) {
+                let coins = parseInt(localStorage.getItem('coins')||'0',10);
+                coins += 100;
+                localStorage.setItem('coins', coins);
+                build.coinsAwarded = true;
+                alert('🎉 100 votes! You earned 100 coins!');
+              }
+              localStorage.setItem('buildGallery', JSON.stringify(builds));
+              render();
+            };
+          });
+        }
+        render();
+      })();
+    </script>
+  </div>
+  <div id="coinShop" style="display:none;" class="info-card">
+    <h2>🛒 Virtual Shop</h2>
+    <div style="font-size:1.1em;margin-bottom:0.5em;">Your Coins: <span id="coinBalance">0</span></div>
+    <div id="shopItems" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1em;"></div>
+    <script>
+      (function(){
+        const items = [
+          {id:'hat',name:'Cool Hat',cost:50,desc:'Add a hat to your avatar!'},
+          {id:'badge',name:'Master Builder Badge',cost:100,desc:'Show off your building skills!'},
+          {id:'petSkin',name:'Pet Skin: Ender Cat',cost:80,desc:'Change your pet to an Ender Cat!'},
+          {id:'theme',name:'Unlock Nether Theme',cost:60,desc:'Use the Nether color theme!'},
+          {id:'effect',name:'Confetti Effect',cost:40,desc:'Celebrate with confetti!'}
+        ];
+        const shop = document.getElementById('shopItems');
+        const coinBal = document.getElementById('coinBalance');
+        let coins = parseInt(localStorage.getItem('coins')||'0',10);
+        let owned = JSON.parse(localStorage.getItem('shopOwned')||'[]');
+        function render() {
+          coinBal.textContent = coins;
+          shop.innerHTML = '';
+          items.forEach(item=>{
+            const div = document.createElement('div');
+            div.className = 'info-card';
+            const has = owned.includes(item.id);
+            div.innerHTML = `<b>${item.name}</b><br>${item.desc}<br>Cost: <span style='color:var(--diamond);'>${item.cost} coins</span><br><button class='buyBtn' data-id='${item.id}' ${has?'disabled':''}>${has?'Owned':'Buy'}</button>`;
+            shop.appendChild(div);
+          });
+          document.querySelectorAll('.buyBtn').forEach(btn=>{
+            btn.onclick = function(){
+              const id = btn.getAttribute('data-id');
+              const item = items.find(i=>i.id===id);
+              if (!item) return;
+              if (owned.includes(id)) return;
+              if (coins<item.cost) { alert('Not enough coins!'); return; }
+              coins -= item.cost;
+              owned.push(id);
+              localStorage.setItem('coins', coins);
+              localStorage.setItem('shopOwned', JSON.stringify(owned));
+              render();
+              alert('Purchased! Enjoy your new item.');
+            };
+          });
+        }
+        render();
+      })();
+    </script>
+  </div>
+  <div id="coinLeaderboard" style="display:none;" class="info-card">
+    <h2>🏅 Coin Leaderboard</h2>
+    <div id="coinLeaders" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1em;"></div>
+    <script>
+      (function(){
+        // Demo users
+        let demo = [];
+        for(let i=1;i<=100;i++){
+          demo.push({name:'User'+i,coins:1000-Math.floor(i*7.5),avatar:'😀'});
+        }
+        // Current user
+        let coins = parseInt(localStorage.getItem('coins')||'0',10);
+        let username = localStorage.getItem('username')||'You';
+        demo.unshift({name:username,coins,avatar:'😎'});
+        demo.sort((a,b)=>b.coins-a.coins);
+        const leaders = document.getElementById('coinLeaders');
+        leaders.innerHTML = '';
+        demo.slice(0,100).forEach((u,i)=>{
+          leaders.innerHTML += `<div class='info-card' style='text-align:center;'><div style='font-size:2em;'>${u.avatar}</div><b>${u.name}</b><br>Coins: <span style='color:var(--diamond);'>${u.coins}</span><br>Rank: #${i+1}</div>`;
+        });
+      })();
+    </script>
+  </div>
 </body>
 </html> 
