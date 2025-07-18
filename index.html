@@ -5339,7 +5339,81 @@
     renderProjects();
   </script>
 
-  <div id="blockQuiz" style="display:none;" class="info-card"><h2>🧱 Block Quiz</h2><p>Coming soon: Test your Minecraft block knowledge!</p></div>
+  <div id="blockQuiz" style="display:none;" class="info-card">
+    <h2>🧱 Block Quiz</h2>
+    <div id="blockQuizGame">
+      <div id="blockQuizQuestion" style="font-size:2.5em;margin-bottom:0.5em;"></div>
+      <div id="blockQuizOptions" style="display:flex;flex-direction:column;gap:0.5em;margin-bottom:1em;"></div>
+      <div id="blockQuizFeedback" style="font-size:1.1em;margin-bottom:1em;"></div>
+      <button id="blockQuizNextBtn" style="display:none;">Next</button>
+    </div>
+    <script>
+      (function(){
+        const blocks = [
+          {emoji:'🟫', name:'Dirt'},
+          {emoji:'🟩', name:'Grass Block'},
+          {emoji:'⬛', name:'Coal Block'},
+          {emoji:'🟦', name:'Diamond Block'},
+          {emoji:'🟨', name:'Gold Block'},
+          {emoji:'🟥', name:'Redstone Block'},
+          {emoji:'🟪', name:'Obsidian'},
+          {emoji:'🟧', name:'Pumpkin'},
+          {emoji:'🟫', name:'Wood'},
+          {emoji:'🟦', name:'Lapis Block'},
+          {emoji:'🟩', name:'Emerald Block'},
+          {emoji:'⬜', name:'Iron Block'},
+          {emoji:'🟫', name:'Planks'},
+          {emoji:'🟧', name:'Copper Block'},
+          {emoji:'🟪', name:'Amethyst Block'}
+        ];
+        function shuffle(arr) {
+          for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+          }
+        }
+        const questionDiv = document.getElementById('blockQuizQuestion');
+        const optionsDiv = document.getElementById('blockQuizOptions');
+        const feedbackDiv = document.getElementById('blockQuizFeedback');
+        const nextBtn = document.getElementById('blockQuizNextBtn');
+        let answer = '';
+        function newQuestion() {
+          feedbackDiv.textContent = '';
+          nextBtn.style.display = 'none';
+          optionsDiv.innerHTML = '';
+          // Pick a random block
+          const block = blocks[Math.floor(Math.random()*blocks.length)];
+          answer = block.name;
+          questionDiv.textContent = block.emoji;
+          // Pick 3 wrong answers
+          let wrongs = blocks.filter(b=>b.name!==answer);
+          shuffle(wrongs);
+          const options = [answer, wrongs[0].name, wrongs[1].name, wrongs[2].name];
+          shuffle(options);
+          options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.textContent = opt;
+            btn.style.padding = '0.7em 1.2em';
+            btn.style.fontSize = '1em';
+            btn.onclick = function() {
+              if (opt === answer) {
+                feedbackDiv.textContent = '✅ Correct!';
+                feedbackDiv.style.color = 'green';
+              } else {
+                feedbackDiv.textContent = `❌ Oops! The answer was: ${answer}`;
+                feedbackDiv.style.color = 'red';
+              }
+              nextBtn.style.display = 'inline-block';
+              Array.from(optionsDiv.children).forEach(b=>b.disabled=true);
+            };
+            optionsDiv.appendChild(btn);
+          });
+        }
+        nextBtn.onclick = newQuestion;
+        newQuestion();
+      })();
+    </script>
+  </div>
   <div id="mobSoundboard" style="display:none;" class="info-card"><h2>🎵 Mob Soundboard</h2><p>Coming soon: Play sounds from your favorite mobs!</p></div>
   <div id="biomeExplorer" style="display:none;" class="info-card"><h2>🌲 Biome Explorer</h2><p>Coming soon: Discover all the Minecraft biomes!</p></div>
   <div id="bannerDesigner" style="display:none;" class="info-card"><h2>🏳️ Banner Designer</h2><p>Coming soon: Design your own Minecraft banners!</p></div>
