@@ -2350,6 +2350,7 @@
     <a href="#tour" id="nav-tour">🗺️ Tour</a>
     <a href="#news" id="nav-news">📰 News</a>
     <a href="#contact" id="nav-contact">📞 Contact</a>
+    <a href="#" id="nav-builds">🛠️ Builds</a>
     <div class="dropdown" style="position:relative;">
       <a href="#" id="nav-funextras" style="padding-right:2em;">🎉 Fun & Extras ▼</a>
       <div id="funExtrasMenu" style="display:none; position:absolute; top:2.5em; left:0; background:var(--dirt); color:var(--light); border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.2); min-width:220px; z-index:1001;">
@@ -4204,6 +4205,7 @@
     const navTour = document.getElementById('nav-tour');
     const navNews = document.getElementById('nav-news');
     const navContact = document.getElementById('nav-contact');
+    const navBuilds = document.getElementById('nav-builds');
     const pageHome = document.getElementById('page-home');
     const pageAbout = document.getElementById('page-about');
     const pageFooda = document.getElementById('page-fooda');
@@ -4212,7 +4214,7 @@
     const pageContact = document.getElementById('page-contact');
     
     const pages = [pageHome, pageAbout, pageFooda, pageTour, pageNews, pageContact];
-    const navs = [navHome, navAbout, navFooda, navTour, navNews, navContact];
+    const navs = [navHome, navAbout, navFooda, navTour, navNews, navContact, navBuilds];
     
     function setActive(nav) {
       navs.forEach(n => n.classList.remove('active'));
@@ -4248,6 +4250,30 @@
     navContact.onclick = function() {
       setActive(navContact);
       showPage(pageContact);
+    };
+    navBuilds.onclick = function(e) {
+      e.preventDefault();
+      // Hide all pages and fun features
+      pages.forEach(p => p.style.display = 'none');
+      funFeatureIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+      });
+      document.getElementById('funExtrasPage').style.display = 'none';
+      // Show builds page
+      document.getElementById('buildsPage').style.display = '';
+      // Move build sections into buildsPage
+      const share = document.getElementById('shareBuild');
+      const gallery = document.getElementById('buildGallery');
+      const leaderboard = document.getElementById('coinLeaderboard');
+      document.getElementById('buildsShareContainer').appendChild(share);
+      document.getElementById('buildsGalleryContainer').appendChild(gallery);
+      document.getElementById('buildsLeaderboardContainer').appendChild(leaderboard);
+      share.style.display = 'block';
+      gallery.style.display = 'block';
+      leaderboard.style.display = 'block';
+      setActive(document.getElementById('nav-builds'));
+      window.scrollTo({top:0,behavior:'smooth'});
     };
     
     // WASD Controls
@@ -5186,6 +5212,12 @@
         });
       })();
     </script>
+  </div>
+  <div id="buildsPage" style="display:none;max-width:900px;margin:2em auto;">
+    <div class="info-card" style="text-align:center;"><h2>🛠️ Minecraft Builds & Leaderboard</h2><p>Share your builds, vote for others, and climb the leaderboard!</p></div>
+    <div id="buildsShareContainer"></div>
+    <div id="buildsGalleryContainer"></div>
+    <div id="buildsLeaderboardContainer"></div>
   </div>
 </body>
 </html> 
