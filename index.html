@@ -2377,7 +2377,8 @@
         <a href="#" class="fun-link" data-target="confettiDemo">🎉 Confetti</a>
         <a href="#" class="fun-link" data-target="funFactPopup">🎈 Fun Fact</a>
         <a href="#" class="fun-link" data-target="emojiReactions">😀 Emoji Bar</a>
-        <a href="#" class="fun-link" data-target="soundToggleDemo">🔊 Sound Effects</a>
+        <a href="#" class="fun-link" data-target="soundToggleDemo">�� Sound Effects</a>
+        <a href="#" class="fun-link" id="funExtrasMoreBtn">➕ More...</a>
       </div>
     </div>
   </nav>
@@ -4992,6 +4993,33 @@
         window.scrollTo({top:0,behavior:'smooth'});
       });
     });
+    // More... button shows all fun & extras
+    document.getElementById('funExtrasMoreBtn').addEventListener('click', function(e){
+      e.preventDefault();
+      pages.forEach(p => p.style.display = 'none');
+      funFeatureIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+      });
+      funExtrasMenu.style.display = 'none';
+      // Show all fun/extra features in a grid
+      const grid = document.getElementById('funExtrasGrid');
+      grid.innerHTML = '';
+      funFeatureIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.style.display = 'block';
+          grid.appendChild(el);
+        }
+      });
+      document.getElementById('funExtrasPage').style.display = '';
+      setActive(funExtrasBtn);
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
   </script>
+  <div id="funExtrasPage" style="display:none;max-width:900px;margin:2em auto;">
+    <div class="info-card" style="text-align:center;"><h2>🎉 All Fun & Extras</h2><p>Explore all the extra features and games!</p></div>
+    <div id="funExtrasGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1em;"></div>
+  </div>
 </body>
 </html> 
