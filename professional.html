@@ -111,6 +111,54 @@
   </style>
 </head>
 <body>
+  <button id="darkModeToggle" style="position:fixed;top:20px;right:20px;z-index:2000;padding:0.7em 1.2em;font-size:1.1em;background:#222;color:#fff;border:none;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);cursor:pointer;transition:background 0.2s;">🌙</button>
+  <script>
+    const toggle = document.getElementById('darkModeToggle');
+    toggle.onclick = function() {
+      document.body.classList.toggle('dark-mode');
+      localStorage.setItem('profDarkMode', document.body.classList.contains('dark-mode'));
+    };
+    // On load, check localStorage
+    if (localStorage.getItem('profDarkMode') === 'true') {
+      document.body.classList.add('dark-mode');
+    }
+  </script>
+  <style>
+    body.dark-mode {
+      background: #181c22;
+      color: #f7f9fa;
+    }
+    body.dark-mode .navbar {
+      background: #222e3a;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+    }
+    body.dark-mode .navbar a {
+      color: #fff;
+    }
+    body.dark-mode .navbar a.active, body.dark-mode .navbar a:hover {
+      background: #0057b8;
+      color: #fff;
+    }
+    body.dark-mode .hero {
+      background: #23272f;
+      color: #f7f9fa;
+      border-bottom: 6px solid #0057b8;
+    }
+    body.dark-mode .section {
+      background: #23272f;
+      color: #f7f9fa;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+    }
+    body.dark-mode .footer {
+      background: #222e3a;
+      color: #fff;
+      border-top: 4px solid #0057b8;
+    }
+    body.dark-mode .contact-link {
+      color: #7cfc00;
+    }
+  </style>
   <nav class="navbar">
     <a href="#hero" class="active">Home</a>
     <a href="#about">About</a>

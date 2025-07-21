@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome | Vrishank's Site</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #e9f2fb 0%, #fff 100%);
+      font-family: 'Montserrat', Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+      padding: 3em 2em;
+      text-align: center;
+      max-width: 350px;
+      width: 100%;
+    }
+    h1 {
+      font-size: 2em;
+      color: #0057b8;
+      margin-bottom: 1.5em;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      margin: 1em 0;
+      padding: 1em;
+      font-size: 1.2em;
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-kid {
+      background: #7cfc00;
+      color: #222;
+    }
+    .btn-kid:hover {
+      background: #228B22;
+      color: #fff;
+    }
+    .btn-parent {
+      background: #0057b8;
+      color: #fff;
+    }
+    .btn-parent:hover {
+      background: #003a75;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Are you a kid or a parent?</h1>
+    <button class="btn btn-kid" onclick="window.location.href='index.html'">Kid</button>
+    <button class="btn btn-parent" onclick="window.location.href='professional.html'">Parent</button>
+  </div>
+</body>
+</html> 
