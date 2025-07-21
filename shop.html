@@ -4,11 +4,134 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shop | Vrishank's Minecraft World</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Montserrat', Arial, sans-serif; background: #f8f8f8; color: #222; margin: 0; }
-    .navbar { background: #228B22; color: #fff; padding: 1em; display: flex; gap: 2em; }
-    .navbar a { color: #fff; text-decoration: none; font-weight: bold; }
-    .info-card { background: #fff; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.15); border: 4px solid #8B4513; max-width: 500px; margin: 2em auto; padding: 1.5em 1.2em; text-align: left; }
+    :root {
+      --primary: #228B22;
+      --accent: #7cfc00;
+      --dark: #222;
+      --light: #fff;
+      --dirt: #8B4513;
+      --stone: #696969;
+      --wood: #8B4513;
+      --diamond: #00eaff;
+      --gold: #ffd700;
+      --bg-color: #fff;
+      --text-color: #222;
+      --card-bg: #fff;
+      --card-border: #8B4513;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: repeating-linear-gradient(135deg, #ff3333 0 60px, #3366ff 60px 120px, #ffd700 120px 180px);
+      color: var(--text-color);
+      transition: all 0.3s ease;
+    }
+    .navbar {
+      background: var(--dirt);
+      color: var(--light);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2em;
+      padding: 0.7em 0;
+      font-size: 1.1em;
+      font-weight: 700;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 4px solid var(--wood);
+    }
+    .navbar a {
+      color: var(--light);
+      text-decoration: none;
+      padding: 0.4em 1.2em;
+      border-radius: 6px;
+      transition: all 0.2s;
+      border: 2px solid transparent;
+    }
+    .navbar a.active, .navbar a:hover {
+      background: var(--accent);
+      color: var(--dark);
+      border-color: var(--gold);
+      transform: translateY(-2px);
+    }
+    .info-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      border: 4px solid var(--card-border);
+      max-width: 500px;
+      margin: 2em auto;
+      padding: 1.5em 1.2em;
+      text-align: left;
+      position: relative;
+      background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/5e/Dirt_JE5_BE3.png');
+      background-size: 50px;
+      background-repeat: repeat;
+      background-blend-mode: overlay;
+      transition: all 0.3s ease;
+    }
+    .info-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.95);
+      border-radius: 8px;
+      z-index: 1;
+    }
+    .info-card > * { position: relative; z-index: 2; }
+    .info-card h2 {
+      font-family: 'Press Start 2P', cursive;
+      color: var(--primary);
+      font-size: 1.1em;
+      margin-top: 0;
+      margin-bottom: 0.7em;
+      letter-spacing: 1px;
+      text-shadow: 1px 1px #fff;
+    }
+    .shop-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+      gap: 1em;
+    }
+    .shop-item {
+      background: var(--card-bg);
+      border-radius: 10px;
+      border: 2px solid var(--wood);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 1em;
+      text-align: center;
+      position: relative;
+      min-height: 140px;
+    }
+    .shop-item .buyBtn {
+      margin-top: 0.7em;
+      background: var(--primary);
+      color: white;
+      border: 2px solid var(--gold);
+      border-radius: 6px;
+      padding: 0.5em 1.2em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .shop-item .buyBtn:disabled {
+      background: #ccc;
+      color: #888;
+      border-color: #aaa;
+      cursor: not-allowed;
+    }
+    .shop-item .buyBtn:hover:not(:disabled) {
+      background: var(--accent);
+      color: var(--dark);
+    }
   </style>
 </head>
 <body>
@@ -20,16 +143,23 @@
   <div class="info-card">
     <h2>🛒 Virtual Shop</h2>
     <div style="font-size:1.1em;margin-bottom:0.5em;">Your Coins: <span id="coinBalance">0</span></div>
-    <div id="shopItems" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1em;"></div>
+    <div id="shopItems" class="shop-grid"></div>
   </div>
   <script>
     (function(){
       const items = [
-        {id:'hat',name:'Cool Hat',cost:50,desc:'Add a hat to your avatar!'},
-        {id:'badge',name:'Master Builder Badge',cost:100,desc:'Show off your building skills!'},
-        {id:'petSkin',name:'Pet Skin: Ender Cat',cost:80,desc:'Change your pet to an Ender Cat!'},
-        {id:'theme',name:'Unlock Nether Theme',cost:60,desc:'Use the Nether color theme!'},
-        {id:'effect',name:'Confetti Effect',cost:40,desc:'Celebrate with confetti!'}
+        {id:'hat',name:'Cool Hat',cost:10,desc:'Add a hat to your avatar!'},
+        {id:'badge',name:'Master Builder Badge',cost:15,desc:'Show off your building skills!'},
+        {id:'petSkin',name:'Pet Skin: Ender Cat',cost:12,desc:'Change your pet to an Ender Cat!'},
+        {id:'theme',name:'Unlock Nether Theme',cost:8,desc:'Use the Nether color theme!'},
+        {id:'effect',name:'Confetti Effect',cost:5,desc:'Celebrate with confetti!'},
+        {id:'balloon',name:'Balloon Buddy',cost:7,desc:'A floating balloon follows you!'},
+        {id:'music',name:'Music Disc: Pigstep',cost:6,desc:'Play the Pigstep music disc!'},
+        {id:'cape',name:'Hero Cape',cost:9,desc:'Wear a flowing hero cape!'},
+        {id:'fireworks',name:'Fireworks Show',cost:4,desc:'Launch a fireworks show!'},
+        {id:'cookie',name:'Cookie Snack',cost:2,desc:'Yum! Get a virtual cookie.'},
+        {id:'petBee',name:'Pet Bee',cost:11,desc:'A friendly bee buzzes around you!'},
+        {id:'glow',name:'Glow Effect',cost:3,desc:'Make your avatar glow!'}
       ];
       const shop = document.getElementById('shopItems');
       const coinBal = document.getElementById('coinBalance');
@@ -40,9 +170,9 @@
         shop.innerHTML = '';
         items.forEach(item=>{
           const div = document.createElement('div');
-          div.className = 'info-card';
+          div.className = 'shop-item';
           const has = owned.includes(item.id);
-          div.innerHTML = `<b>${item.name}</b><br>${item.desc}<br>Cost: <span style='color:var(--diamond);'>${item.cost} coins</span><br><button class='buyBtn' data-id='${item.id}' ${has?'disabled':''}>${has?'Owned':'Buy'}</button>`;
+          div.innerHTML = `<b>${item.name}</b><br>${item.desc}<br>Cost: <span style='color:var(--diamond);font-weight:bold;'>${item.cost} coins</span><br><button class='buyBtn' data-id='${item.id}' ${has?'disabled':''}>${has?'Owned':'Buy'}</button>`;
           shop.appendChild(div);
         });
         document.querySelectorAll('.buyBtn').forEach(btn=>{
