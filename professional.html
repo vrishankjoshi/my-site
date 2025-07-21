@@ -123,7 +123,35 @@
     <a href="#contact">Contact</a>
     <a href="#privacy">Privacy Policy</a>
     <a href="#resources">Resources</a>
+    <a href="#" id="adminNavBtn" style="margin-left:auto;background:#222;color:#fff;padding:0.4em 1.2em;border-radius:8px;">Admin</a>
   </nav>
+  <div id="adminLoginModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);z-index:30000;align-items:center;justify-content:center;">
+    <div style="background:#fff;color:#222;max-width:350px;margin:10vh auto;border-radius:16px;padding:2.5em 2em;text-align:center;box-shadow:0 4px 32px rgba(0,0,0,0.15);">
+      <h2 style="margin-top:0;color:#0057b8;">Admin Login</h2>
+      <input id="adminPassword" type="password" placeholder="Enter password" style="width:100%;padding:0.8em;margin:1em 0;border-radius:8px;border:1px solid #ccc;font-size:1.1em;">
+      <div id="adminLoginError" style="color:#c00;font-size:1em;display:none;">Incorrect password.</div>
+      <button id="adminLoginBtn" style="width:100%;padding:1em;font-size:1.1em;font-weight:700;border:none;border-radius:8px;cursor:pointer;background:#0057b8;color:#fff;">Login</button>
+      <button id="adminLoginCancel" style="width:100%;margin-top:0.7em;padding:0.7em;font-size:1em;border:none;border-radius:8px;cursor:pointer;background:#eee;color:#222;">Cancel</button>
+    </div>
+  </div>
+  <div id="adminPanel" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.85);z-index:40000;overflow:auto;">
+    <div style="background:#fff;max-width:600px;margin:5vh auto;border-radius:16px;padding:2.5em 2em;box-shadow:0 8px 32px rgba(0,0,0,0.25);position:relative;">
+      <button id="adminPanelClose" style="position:absolute;top:16px;right:16px;background:#eee;border:none;border-radius:50%;width:36px;height:36px;font-size:1.3em;cursor:pointer;">❌</button>
+      <h2 style="color:#0057b8;margin-top:0;">Admin Panel</h2>
+      <div style="margin-bottom:1.5em;color:#333;">Welcome, Admin! Here you can manage private notes, view stats, or add admin-only info.</div>
+      <div style="background:#e9f2fb;padding:1.2em;border-radius:8px;margin-bottom:1em;">
+        <b>Private Notes:</b>
+        <textarea style="width:100%;min-height:80px;margin-top:0.7em;border-radius:6px;border:1px solid #ccc;padding:0.7em;font-size:1em;resize:vertical;">(Your private notes here...)</textarea>
+      </div>
+      <div style="background:#f7f9fa;padding:1.2em;border-radius:8px;">
+        <b>Stats (example):</b>
+        <ul style="margin:0.7em 0 0 1.2em;padding:0;">
+          <li>Site visits: <span id="adminSiteVisits">123</span></li>
+          <li>Newsletter signups: <span id="adminNewsletter">5</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
   <button id="backToKid" style="position:fixed;top:20px;left:20px;z-index:2000;padding:0.7em 1.2em;font-size:1.1em;background:#7cfc00;color:#222;border:none;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);cursor:pointer;transition:background 0.2s;">Back to Kid Site</button>
   <button id="darkModeToggle" style="position:fixed;top:20px;right:20px;z-index:2000;padding:0.7em 1.2em;font-size:1.1em;background:#222;color:#fff;border:none;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);cursor:pointer;transition:background 0.2s;">🌙</button>
   <script>
@@ -138,6 +166,35 @@
     if (localStorage.getItem('profDarkMode') === 'true') {
       document.body.classList.add('dark-mode');
     }
+    // Admin Panel logic
+    const adminNavBtn = document.getElementById('adminNavBtn');
+    const adminLoginModal = document.getElementById('adminLoginModal');
+    const adminLoginBtn = document.getElementById('adminLoginBtn');
+    const adminLoginCancel = document.getElementById('adminLoginCancel');
+    const adminPassword = document.getElementById('adminPassword');
+    const adminLoginError = document.getElementById('adminLoginError');
+    const adminPanel = document.getElementById('adminPanel');
+    const adminPanelClose = document.getElementById('adminPanelClose');
+    adminNavBtn.onclick = function(e) {
+      e.preventDefault();
+      adminLoginModal.style.display = 'flex';
+      adminPassword.value = '';
+      adminLoginError.style.display = 'none';
+    };
+    adminLoginBtn.onclick = function() {
+      if (adminPassword.value === '230309') {
+        adminLoginModal.style.display = 'none';
+        adminPanel.style.display = 'block';
+      } else {
+        adminLoginError.style.display = 'block';
+      }
+    };
+    adminLoginCancel.onclick = function() {
+      adminLoginModal.style.display = 'none';
+    };
+    adminPanelClose.onclick = function() {
+      adminPanel.style.display = 'none';
+    };
   </script>
   <style>
     body.dark-mode {

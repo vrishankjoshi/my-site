@@ -5412,5 +5412,65 @@
     });
     // ... existing code ...
   </script>
+
+  <!-- Admin Button -->
+  <button id="kidAdminBtn" style="position:fixed;top:20px;left:20px;z-index:2001;padding:0.7em 1.2em;font-size:1.1em;background:#8B4513;color:#fff;border:3px solid #ffd700;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,0.25);cursor:pointer;transition:background 0.2s;">👑 Admin</button>
+  <!-- Admin Login Modal -->
+  <div id="kidAdminLoginModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);z-index:30001;align-items:center;justify-content:center;">
+    <div style="background:#fff;color:#222;max-width:350px;margin:10vh auto;border-radius:16px;padding:2.5em 2em;text-align:center;box-shadow:0 4px 32px rgba(0,0,0,0.15);">
+      <h2 style="margin-top:0;color:#228B22;">Admin Login</h2>
+      <input id="kidAdminPassword" type="password" placeholder="Enter password" style="width:100%;padding:0.8em;margin:1em 0;border-radius:8px;border:2px solid #8B4513;font-size:1.1em;">
+      <div id="kidAdminLoginError" style="color:#c00;font-size:1em;display:none;">Incorrect password.</div>
+      <button id="kidAdminLoginBtn" style="width:100%;padding:1em;font-size:1.1em;font-weight:700;border:none;border-radius:8px;cursor:pointer;background:#228B22;color:#fff;">Login</button>
+      <button id="kidAdminLoginCancel" style="width:100%;margin-top:0.7em;padding:0.7em;font-size:1em;border:none;border-radius:8px;cursor:pointer;background:#eee;color:#222;">Cancel</button>
+    </div>
+  </div>
+  <!-- Admin Panel -->
+  <div id="kidAdminPanel" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.85);z-index:40001;overflow:auto;">
+    <div style="background:#fff;max-width:600px;margin:5vh auto;border-radius:16px;padding:2.5em 2em;box-shadow:0 8px 32px rgba(0,0,0,0.25);position:relative;">
+      <button id="kidAdminPanelClose" style="position:absolute;top:16px;right:16px;background:#eee;border:none;border-radius:50%;width:36px;height:36px;font-size:1.3em;cursor:pointer;">❌</button>
+      <h2 style="color:#228B22;margin-top:0;">Kid Site Admin Panel</h2>
+      <div style="margin-bottom:1.5em;color:#333;">Welcome, Admin! Here you can see secret codes, fun stats, and manage kid-site-only info.</div>
+      <div style="background:#e9f2fb;padding:1.2em;border-radius:8px;margin-bottom:1em;">
+        <b>Secret Code:</b>
+        <div style="font-size:1.3em;color:#8B4513;margin:0.7em 0;">MINECRAFT-2024</div>
+      </div>
+      <div style="background:#fffbe6;padding:1.2em;border-radius:8px;">
+        <b>Fun Fact:</b>
+        <div style="margin-top:0.7em;">Did you know? The rarest item in Minecraft is the Dragon Egg!</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Kid Admin Panel logic
+    const kidAdminBtn = document.getElementById('kidAdminBtn');
+    const kidAdminLoginModal = document.getElementById('kidAdminLoginModal');
+    const kidAdminLoginBtn = document.getElementById('kidAdminLoginBtn');
+    const kidAdminLoginCancel = document.getElementById('kidAdminLoginCancel');
+    const kidAdminPassword = document.getElementById('kidAdminPassword');
+    const kidAdminLoginError = document.getElementById('kidAdminLoginError');
+    const kidAdminPanel = document.getElementById('kidAdminPanel');
+    const kidAdminPanelClose = document.getElementById('kidAdminPanelClose');
+    kidAdminBtn.onclick = function(e) {
+      e.preventDefault();
+      kidAdminLoginModal.style.display = 'flex';
+      kidAdminPassword.value = '';
+      kidAdminLoginError.style.display = 'none';
+    };
+    kidAdminLoginBtn.onclick = function() {
+      if (kidAdminPassword.value === '230309') {
+        kidAdminLoginModal.style.display = 'none';
+        kidAdminPanel.style.display = 'block';
+      } else {
+        kidAdminLoginError.style.display = 'block';
+      }
+    };
+    kidAdminLoginCancel.onclick = function() {
+      kidAdminLoginModal.style.display = 'none';
+    };
+    kidAdminPanelClose.onclick = function() {
+      kidAdminPanel.style.display = 'none';
+    };
+  </script>
 </body>
 </html> 
