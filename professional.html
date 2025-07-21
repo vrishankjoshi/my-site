@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vrishank | Professional Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: #f7f9fa;
+      color: #222;
+    }
+    .navbar {
+      background: #0057b8;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2em;
+      padding: 1em 0;
+      font-size: 1.1em;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .navbar a {
+      color: #fff;
+      text-decoration: none;
+      padding: 0.4em 1.2em;
+      border-radius: 6px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .navbar a.active, .navbar a:hover {
+      background: #e9f2fb;
+      color: #0057b8;
+    }
+    .hero {
+      background: #fff;
+      padding: 3em 1em 2em 1em;
+      text-align: center;
+      border-bottom: 6px solid #0057b8;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+    }
+    .hero-title {
+      font-size: 2.5em;
+      font-weight: 700;
+      color: #0057b8;
+      margin-bottom: 0.3em;
+      letter-spacing: 1px;
+    }
+    .hero-desc {
+      font-size: 1.3em;
+      color: #333;
+      margin-bottom: 1.5em;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .main-content {
+      max-width: 900px;
+      margin: 2em auto 0 auto;
+      padding: 0 1em 2em 1em;
+    }
+    .section {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      margin-bottom: 2em;
+      padding: 2em 1.5em;
+    }
+    .section h2 {
+      color: #0057b8;
+      font-size: 1.5em;
+      margin-top: 0;
+      margin-bottom: 0.7em;
+    }
+    .about-list, .achievements-list, .journey-list {
+      list-style: none;
+      padding: 0;
+      font-size: 1.1em;
+      line-height: 1.7;
+    }
+    .about-list li, .achievements-list li, .journey-list li {
+      margin-bottom: 0.5em;
+    }
+    .contact-link {
+      color: #0057b8;
+      text-decoration: underline;
+    }
+    .footer {
+      background: #0057b8;
+      color: #fff;
+      text-align: center;
+      padding: 1.2em 0 1em 0;
+      font-size: 1em;
+      margin-top: 2em;
+      letter-spacing: 1px;
+      border-top: 4px solid #e9f2fb;
+      box-shadow: 0 -4px 8px rgba(0,0,0,0.03);
+    }
+    @media (max-width: 700px) {
+      .main-content { padding: 0 0.5em 2em 0.5em; }
+      .section { padding: 1.2em 0.7em; }
+      .hero-title { font-size: 1.3em; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="#hero" class="active">Home</a>
+    <a href="#about">About</a>
+    <a href="#fooda">fooda</a>
+    <a href="#achievements">Achievements</a>
+    <a href="#journey">Journey</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <div id="hero" class="hero">
+    <div class="hero-title">Vrishank</div>
+    <div class="hero-desc">Founder of <b>fooda</b> | Minecraft Fan | Chess Player | Healthy Living Advocate | Young Entrepreneur</div>
+  </div>
+  <div class="main-content">
+    <section id="about" class="section">
+      <h2>About Me</h2>
+      <ul class="about-list">
+        <li><b>Name:</b> Vrishank</li>
+        <li><b>Age:</b> 8</li>
+        <li><b>Interests:</b> Minecraft, Chess, Coding, Healthy Food, Helping Others</li>
+        <li><b>Mission:</b> Make healthy food fun and easy for everyone, and build awesome things in Minecraft!</li>
+      </ul>
+    </section>
+    <section id="fooda" class="section">
+      <h2>About fooda</h2>
+      <p>fooda is my company dedicated to making healthy food choices fun and accessible for everyone! We use technology and creativity to inspire healthy living for all ages.</p>
+    </section>
+    <section id="achievements" class="section">
+      <h2>Achievements</h2>
+      <ul class="achievements-list">
+        <li>Young Entrepreneur Award: Started fooda at age 8</li>
+        <li>Healthy Living Advocate: Helping families eat better</li>
+        <li>Innovation in Health: Using technology for good</li>
+        <li>Educational Pioneer: Teaching kids about healthy eating</li>
+        <li>Future Leader: Leading the way in healthy food innovation</li>
+      </ul>
+    </section>
+    <section id="journey" class="section">
+      <h2>Professional Journey</h2>
+      <ul class="journey-list">
+        <li>2024: Started fooda - Launched my healthy food company at age 8</li>
+        <li>2023: Chess Champion - Won my first chess tournament</li>
+        <li>2022: Minecraft Master - Built my first epic castle in Minecraft</li>
+        <li>2021: First Code - Started learning to code and program</li>
+      </ul>
+    </section>
+    <section id="contact" class="section">
+      <h2>Contact</h2>
+      <p>Email: <a href="mailto:vrishankjo@gmail.com" class="contact-link">vrishankjo@gmail.com</a></p>
+      <p>Website: <a href="https://aihealthy.org" target="_blank" class="contact-link">aihealthy.org</a></p>
+    </section>
+  </div>
+  <footer class="footer">
+    &copy; 2024 Vrishank | fooda | <a href="https://aihealthy.org" style="color:#fff;text-decoration:underline;">aihealthy.org</a>
+  </footer>
+</body>
+</html> 
