@@ -368,6 +368,62 @@
         <li><a href="#">Parenting Tips (coming soon)</a></li>
       </ul>
     </section>
+    <section id="contactform" class="section">
+      <h2>Contact Form</h2>
+      <form id="parentContactForm" style="max-width:400px;margin:0 auto;">
+        <input type="text" name="name" placeholder="Your Name" required style="width:100%;padding:0.8em;margin-bottom:1em;border-radius:8px;border:1px solid #ccc;">
+        <input type="email" name="email" placeholder="Your Email" required style="width:100%;padding:0.8em;margin-bottom:1em;border-radius:8px;border:1px solid #ccc;">
+        <textarea name="message" placeholder="Your Message" required style="width:100%;padding:0.8em;margin-bottom:1em;border-radius:8px;border:1px solid #ccc;min-height:80px;"></textarea>
+        <button type="submit" style="width:100%;padding:1em;font-size:1.1em;font-weight:700;border:none;border-radius:8px;cursor:pointer;background:#0057b8;color:#fff;">Send Message</button>
+        <div id="parentContactSuccess" style="display:none;color:#228B22;margin-top:1em;text-align:center;">Thank you! Your message has been received.</div>
+      </form>
+    </section>
+    <section id="faq" class="section">
+      <h2>FAQ</h2>
+      <ul style="font-size:1.1em;line-height:1.7;">
+        <li><b>What is fooda?</b> fooda is a company dedicated to making healthy food choices fun and accessible for everyone.</li>
+        <li><b>Is this site safe for kids?</b> Yes! The kid site is designed for safety and fun, with no personal data collection.</li>
+        <li><b>How can I contact Vrishank?</b> Use the contact form above or email <a href="mailto:vrishankjo@gmail.com">vrishankjo@gmail.com</a>.</li>
+        <li><b>How do I download the resume?</b> Click the 'Download Resume' button in the About section.</li>
+      </ul>
+    </section>
+    <section id="testimonials" class="section">
+      <h2>Testimonials</h2>
+      <blockquote style="border-left:4px solid #0057b8;padding-left:1em;margin:1em 0;color:#333;">“Vrishank’s passion for healthy living and creativity is inspiring!”<br><span style="font-size:0.95em;color:#888;">– Parent</span></blockquote>
+      <blockquote style="border-left:4px solid #0057b8;padding-left:1em;margin:1em 0;color:#333;">“fooda makes learning about nutrition fun for my kids.”<br><span style="font-size:0.95em;color:#888;">– Teacher</span></blockquote>
+    </section>
+    <section id="resources-downloads" class="section">
+      <h2>Resource Downloads</h2>
+      <ul>
+        <li><a href="healthy-eating-guide.pdf" download>Healthy Eating Guide (PDF)</a></li>
+        <li><a href="minecraft-safety-tips.pdf" download>Minecraft Safety Tips (PDF)</a></li>
+        <li><a href="#">Printable Activities (coming soon)</a></li>
+      </ul>
+    </section>
+    <section id="calendar" class="section">
+      <h2>Calendar / Events</h2>
+      <ul>
+        <li><b>June 15, 2024:</b> fooda Webinar: Healthy Snacks for Kids</li>
+        <li><b>July 10, 2024:</b> Minecraft Build Competition (online)</li>
+        <li><b>August 5, 2024:</b> Back-to-School Nutrition Tips (newsletter)</li>
+      </ul>
+    </section>
+    <section id="newsletter" class="section">
+      <h2>Newsletter Signup</h2>
+      <form id="parentNewsletterForm" style="max-width:400px;margin:0 auto;">
+        <input type="email" name="email" placeholder="Your Email" required style="width:100%;padding:0.8em;margin-bottom:1em;border-radius:8px;border:1px solid #ccc;">
+        <button type="submit" style="width:100%;padding:1em;font-size:1.1em;font-weight:700;border:none;border-radius:8px;cursor:pointer;background:#0057b8;color:#fff;">Subscribe</button>
+        <div id="parentNewsletterSuccess" style="display:none;color:#228B22;margin-top:1em;text-align:center;">Thank you for subscribing!</div>
+      </form>
+    </section>
+    <section id="photo-gallery" class="section">
+      <h2>Photo Gallery</h2>
+      <div style="display:flex;flex-wrap:wrap;gap:1em;justify-content:center;">
+        <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Apple_JE3_BE2.png" alt="Healthy Food" style="width:120px;height:120px;border-radius:12px;object-fit:cover;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+        <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Stone_Bricks_JE3.png" alt="Minecraft Build" style="width:120px;height:120px;border-radius:12px;object-fit:cover;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+        <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/6/6e/Apple_JE3_BE2.png" alt="Event" style="width:120px;height:120px;border-radius:12px;object-fit:cover;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+      </div>
+    </section>
   </div>
   <footer class="footer">
     <div class="footer-links">
@@ -378,5 +434,95 @@
     </div>
     &copy; 2024 Vrishank | fooda | <a href="https://aihealthy.org" style="color:#fff;text-decoration:underline;">aihealthy.org</a>
   </footer>
+  <!-- Admin Panel Upgrades: Add tabs/sections for contact submissions, resources, analytics -->
+  <style>
+    .admin-tabs { display: flex; gap: 1em; margin-bottom: 1em; }
+    .admin-tab-btn { background: #e9f2fb; color: #0057b8; border: none; border-radius: 6px; padding: 0.5em 1.2em; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+    .admin-tab-btn.active { background: #0057b8; color: #fff; }
+    .admin-tab-content { display: none; }
+    .admin-tab-content.active { display: block; }
+  </style>
+  <script>
+    // Contact Form logic
+    document.getElementById('parentContactForm').onsubmit = function(e) {
+      e.preventDefault();
+      document.getElementById('parentContactSuccess').style.display = 'block';
+      // Store submission for admin panel
+      let submissions = JSON.parse(localStorage.getItem('parentContactSubmissions')||'[]');
+      submissions.push({
+        name: this.name.value,
+        email: this.email.value,
+        message: this.message.value,
+        date: new Date().toLocaleString()
+      });
+      localStorage.setItem('parentContactSubmissions', JSON.stringify(submissions));
+      this.reset();
+      setTimeout(()=>{document.getElementById('parentContactSuccess').style.display='none';}, 3000);
+    };
+    // Newsletter logic
+    document.getElementById('parentNewsletterForm').onsubmit = function(e) {
+      e.preventDefault();
+      document.getElementById('parentNewsletterSuccess').style.display = 'block';
+      // Store email for admin panel
+      let emails = JSON.parse(localStorage.getItem('parentNewsletterEmails')||'[]');
+      emails.push(this.email.value);
+      localStorage.setItem('parentNewsletterEmails', JSON.stringify(emails));
+      this.reset();
+      setTimeout(()=>{document.getElementById('parentNewsletterSuccess').style.display='none';}, 3000);
+    };
+    // Admin Panel Tabs
+    const adminPanelTabs = document.getElementById('adminPanel');
+    if (adminPanelTabs) {
+      const tabsHtml = `
+        <div class="admin-tabs">
+          <button class="admin-tab-btn active" data-tab="notes">Notes</button>
+          <button class="admin-tab-btn" data-tab="contact">Contact Submissions</button>
+          <button class="admin-tab-btn" data-tab="newsletter">Newsletter</button>
+          <button class="admin-tab-btn" data-tab="resources">Resources</button>
+          <button class="admin-tab-btn" data-tab="analytics">Analytics</button>
+        </div>
+        <div class="admin-tab-content active" id="adminTab-notes"></div>
+        <div class="admin-tab-content" id="adminTab-contact"></div>
+        <div class="admin-tab-content" id="adminTab-newsletter"></div>
+        <div class="admin-tab-content" id="adminTab-resources"></div>
+        <div class="admin-tab-content" id="adminTab-analytics"></div>
+      `;
+      const panelContent = adminPanelTabs.querySelector('div[style*="background:#fff"]');
+      if (panelContent) {
+        panelContent.innerHTML = panelContent.innerHTML.replace(/<div style="background:#e9f2fb[\s\S]*?\(Your private notes here\.\.\.\)<\/textarea>\s*<\/div>/, '<div style="background:#e9f2fb;padding:1.2em;border-radius:8px;margin-bottom:1em;"><b>Private Notes:</b><textarea style="width:100%;min-height:80px;margin-top:0.7em;border-radius:6px;border:1px solid #ccc;padding:0.7em;font-size:1em;resize:vertical;">(Your private notes here...)</textarea></div>' + tabsHtml);
+      }
+      // Tab switching logic
+      const tabBtns = adminPanelTabs.querySelectorAll('.admin-tab-btn');
+      const tabContents = adminPanelTabs.querySelectorAll('.admin-tab-content');
+      tabBtns.forEach(btn => {
+        btn.onclick = function() {
+          tabBtns.forEach(b=>b.classList.remove('active'));
+          tabContents.forEach(tc=>tc.classList.remove('active'));
+          btn.classList.add('active');
+          adminPanelTabs.querySelector('#adminTab-'+btn.dataset.tab).classList.add('active');
+        };
+      });
+      // Fill Contact Submissions
+      const contactSubmissions = JSON.parse(localStorage.getItem('parentContactSubmissions')||'[]');
+      let contactHtml = '<ul style="padding-left:1.2em;">';
+      contactSubmissions.forEach(sub => {
+        contactHtml += `<li><b>${sub.name}</b> (${sub.email})<br>${sub.message}<br><span style='color:#888;font-size:0.95em;'>${sub.date}</span></li>`;
+      });
+      contactHtml += '</ul>';
+      adminPanelTabs.querySelector('#adminTab-contact').innerHTML = contactHtml;
+      // Fill Newsletter
+      const newsletterEmails = JSON.parse(localStorage.getItem('parentNewsletterEmails')||'[]');
+      let newsletterHtml = '<ul style="padding-left:1.2em;">';
+      newsletterEmails.forEach(email => {
+        newsletterHtml += `<li>${email}</li>`;
+      });
+      newsletterHtml += '</ul>';
+      adminPanelTabs.querySelector('#adminTab-newsletter').innerHTML = newsletterHtml;
+      // Fill Resources
+      adminPanelTabs.querySelector('#adminTab-resources').innerHTML = '<ul><li><a href="healthy-eating-guide.pdf" download>Healthy Eating Guide (PDF)</a></li><li><a href="minecraft-safety-tips.pdf" download>Minecraft Safety Tips (PDF)</a></li></ul>';
+      // Fill Analytics (example)
+      adminPanelTabs.querySelector('#adminTab-analytics').innerHTML = '<ul><li>Site visits: 123</li><li>Newsletter signups: '+newsletterEmails.length+'</li><li>Contact form submissions: '+contactSubmissions.length+'</li></ul>';
+    }
+  </script>
 </body>
 </html> 
