@@ -2335,21 +2335,13 @@
     </div>
   </div>
   <script>
-    // Show modal after loading screen disappears
     window.addEventListener('DOMContentLoaded', function() {
-      var loadingScreen = document.getElementById('loadingScreen');
       var modal = document.getElementById('kidParentModal');
       var kidBtn = document.getElementById('kidBtn');
       var parentBtn = document.getElementById('parentBtn');
-      // Wait for loading screen to hide (simulate with timeout if needed)
-      function showModalAfterLoading() {
-        if (loadingScreen && loadingScreen.style.display === 'none') {
-          modal.style.display = 'flex';
-        } else {
-          setTimeout(showModalAfterLoading, 200);
-        }
-      }
-      showModalAfterLoading();
+      setTimeout(function() {
+        modal.style.display = 'flex';
+      }, 2000);
       kidBtn.onclick = function() {
         modal.style.display = 'none';
       };
