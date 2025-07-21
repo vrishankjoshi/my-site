@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop | Vrishank's Minecraft World</title>
+  <style>
+    body { font-family: 'Montserrat', Arial, sans-serif; background: #f8f8f8; color: #222; margin: 0; }
+    .navbar { background: #228B22; color: #fff; padding: 1em; display: flex; gap: 2em; }
+    .navbar a { color: #fff; text-decoration: none; font-weight: bold; }
+    .info-card { background: #fff; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.15); border: 4px solid #8B4513; max-width: 500px; margin: 2em auto; padding: 1.5em 1.2em; text-align: left; }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html">🏠 Home</a>
+    <a href="shop.html" class="active">🛒 Shop</a>
+    <a href="vote.html">🗳️ Vote</a>
+  </nav>
+  <div class="info-card">
+    <h2>🛒 Virtual Shop</h2>
+    <div style="font-size:1.1em;margin-bottom:0.5em;">Your Coins: <span id="coinBalance">0</span></div>
+    <div id="shopItems" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1em;"></div>
+  </div>
+  <script>
+    (function(){
+      const items = [
+        {id:'hat',name:'Cool Hat',cost:50,desc:'Add a hat to your avatar!'},
+        {id:'badge',name:'Master Builder Badge',cost:100,desc:'Show off your building skills!'},
+        {id:'petSkin',name:'Pet Skin: Ender Cat',cost:80,desc:'Change your pet to an Ender Cat!'},
+        {id:'theme',name:'Unlock Nether Theme',cost:60,desc:'Use the Nether color theme!'},
+        {id:'effect',name:'Confetti Effect',cost:40,desc:'Celebrate with confetti!'}
+      ];
+      const shop = document.getElementById('shopItems');
+      const coinBal = document.getElementById('coinBalance');
+      let coins = parseInt(localStorage.getItem('coins')||'0',10);
+      let owned = JSON.parse(localStorage.getItem('shopOwned')||'[]');
+      function render() {
+        coinBal.textContent = coins;
+        shop.innerHTML = '';
+        items.forEach(item=>{
+          const div = document.createElement('div');
+          div.className = 'info-card';
+          const has = owned.includes(item.id);
+          div.innerHTML = `<b>${item.name}</b><br>${item.desc}<br>Cost: <span style='color:var(--diamond);'>${item.cost} coins</span><br><button class='buyBtn' data-id='${item.id}' ${has?'disabled':''}>${has?'Owned':'Buy'}</button>`;
+          shop.appendChild(div);
+        });
+        document.querySelectorAll('.buyBtn').forEach(btn=>{
+          btn.onclick = function(){
+            const id = btn.getAttribute('data-id');
+            const item = items.find(i=>i.id===id);
+            if (!item) return;
+            if (owned.includes(id)) return;
+            if (coins<item.cost) { alert('Not enough coins!'); return; }
+            coins -= item.cost;
+            owned.push(id);
+            localStorage.setItem('coins', coins);
+            localStorage.setItem('shopOwned', JSON.stringify(owned));
+            render();
+            alert('Purchased! Enjoy your new item.');
+          };
+        });
+      }
+      render();
+    })();
+  </script>
+</body>
+</html> 

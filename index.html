@@ -2351,6 +2351,8 @@
     <a href="#news" id="nav-news">📰 News</a>
     <a href="#contact" id="nav-contact">📞 Contact</a>
     <a href="#" id="nav-builds">🛠️ Builds</a>
+    <a href="shop.html" id="nav-shop">🛒 Shop</a>
+    <a href="vote.html" id="nav-vote">🗳️ Vote</a>
     <div class="dropdown" style="position:relative;">
       <a href="#" id="nav-funextras" style="padding-right:2em;">🎉 Fun & Extras ▼</a>
       <div id="funExtrasMenu" style="display:none; position:absolute; top:2.5em; left:0; background:var(--dirt); color:var(--light); border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.2); min-width:220px; z-index:1001;">
@@ -5204,24 +5206,20 @@
     </script>
   </div>
   <div id="coinLeaderboard" style="display:none;" class="info-card">
-    <h2>🏅 Coin Leaderboard</h2>
+    <h2>🏅 Project Leaderboard</h2>
     <div id="coinLeaders" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1em;"></div>
     <script>
       (function(){
-        // Demo users
-        let demo = [];
-        for(let i=1;i<=100;i++){
-          demo.push({name:'User'+i,coins:1000-Math.floor(i*7.5),avatar:'😀'});
-        }
-        // Current user
-        let coins = parseInt(localStorage.getItem('coins')||'0',10);
-        let username = localStorage.getItem('username')||'You';
-        demo.unshift({name:username,coins,avatar:'😎'});
-        demo.sort((a,b)=>b.coins-a.coins);
+        // Use real project submitters from localStorage
+        let projects = JSON.parse(localStorage.getItem('minecraftProjects')||'[]');
+        // Aggregate votes (add a 'votes' property if not present)
+        projects.forEach(p=>{if(typeof p.votes!=="number")p.votes=0;});
+        // Sort by votes
+        projects.sort((a,b)=>b.votes-a.votes);
         const leaders = document.getElementById('coinLeaders');
         leaders.innerHTML = '';
-        demo.slice(0,100).forEach((u,i)=>{
-          leaders.innerHTML += `<div class='info-card' style='text-align:center;'><div style='font-size:2em;'>${u.avatar}</div><b>${u.name}</b><br>Coins: <span style='color:var(--diamond);'>${u.coins}</span><br>Rank: #${i+1}</div>`;
+        projects.forEach((p,i)=>{
+          leaders.innerHTML += `<div class='info-card' style='text-align:center;'><b>${p.name}</b><br>Project: ${p.title}<br>Votes: <span style='color:var(--diamond);'>${p.votes}</span><br>Rank: #${i+1}</div>`;
         });
       })();
     </script>
