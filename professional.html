@@ -111,14 +111,30 @@
   </style>
 </head>
 <body>
+  <div style="background:#e9f2fb;padding:0.5em 0;text-align:center;font-size:1.1em;font-weight:700;letter-spacing:1px;">
+    <span style="background:#0057b8;color:#fff;padding:0.3em 1.2em;border-radius:20px;box-shadow:0 2px 8px rgba(0,0,0,0.07);font-size:1em;">Parent Portal</span>
+  </div>
+  <nav class="navbar">
+    <a href="#hero" class="active">Home</a>
+    <a href="#about">About Vrishank</a>
+    <a href="#fooda">About fooda</a>
+    <a href="#achievements">Achievements</a>
+    <a href="#journey">Journey</a>
+    <a href="#contact">Contact</a>
+    <a href="#privacy">Privacy Policy</a>
+    <a href="#resources">Resources</a>
+  </nav>
+  <button id="backToKid" style="position:fixed;top:20px;left:20px;z-index:2000;padding:0.7em 1.2em;font-size:1.1em;background:#7cfc00;color:#222;border:none;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);cursor:pointer;transition:background 0.2s;">Back to Kid Site</button>
   <button id="darkModeToggle" style="position:fixed;top:20px;right:20px;z-index:2000;padding:0.7em 1.2em;font-size:1.1em;background:#222;color:#fff;border:none;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);cursor:pointer;transition:background 0.2s;">🌙</button>
   <script>
+    document.getElementById('backToKid').onclick = function() {
+      window.location.href = 'index.html';
+    };
     const toggle = document.getElementById('darkModeToggle');
     toggle.onclick = function() {
       document.body.classList.toggle('dark-mode');
       localStorage.setItem('profDarkMode', document.body.classList.contains('dark-mode'));
     };
-    // On load, check localStorage
     if (localStorage.getItem('profDarkMode') === 'true') {
       document.body.classList.add('dark-mode');
     }
@@ -158,28 +174,96 @@
     body.dark-mode .contact-link {
       color: #7cfc00;
     }
+    #darkModeToggle {
+      opacity: 0.85;
+      font-size: 1.2em;
+      background: #222;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: background 0.2s, opacity 0.2s;
+    }
+    #darkModeToggle:hover {
+      opacity: 1;
+      background: #0057b8;
+      color: #fff;
+    }
+    #backToKid {
+      opacity: 0.85;
+      font-size: 1.1em;
+      background: #7cfc00;
+      color: #222;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: background 0.2s, opacity 0.2s;
+    }
+    #backToKid:hover {
+      opacity: 1;
+      background: #228B22;
+      color: #fff;
+    }
+    .section {
+      margin-bottom: 2.5em;
+      border: 1px solid #e0e6ed;
+    }
+    .section h2 {
+      border-bottom: 1px solid #e0e6ed;
+      padding-bottom: 0.5em;
+      margin-bottom: 1em;
+    }
+    .download-resume {
+      display: inline-block;
+      margin-top: 1em;
+      padding: 0.7em 1.5em;
+      background: #0057b8;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1em;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .download-resume:hover {
+      background: #003a75;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2em;
+      margin: 1em 0;
+      flex-wrap: wrap;
+    }
+    .footer-links a {
+      color: #fff;
+      text-decoration: underline;
+      transition: color 0.2s;
+      padding: 0.3em 0.8em;
+      border-radius: 4px;
+      border: 1px solid transparent;
+    }
+    .footer-links a:hover {
+      color: #7cfc00;
+      border-color: #7cfc00;
+    }
   </style>
-  <nav class="navbar">
-    <a href="#hero" class="active">Home</a>
-    <a href="#about">About</a>
-    <a href="#fooda">fooda</a>
-    <a href="#achievements">Achievements</a>
-    <a href="#journey">Journey</a>
-    <a href="#contact">Contact</a>
-  </nav>
   <div id="hero" class="hero">
     <div class="hero-title">Vrishank</div>
     <div class="hero-desc">Founder of <b>fooda</b> | Minecraft Fan | Chess Player | Healthy Living Advocate | Young Entrepreneur</div>
   </div>
   <div class="main-content">
     <section id="about" class="section">
-      <h2>About Me</h2>
+      <h2>About Vrishank</h2>
       <ul class="about-list">
         <li><b>Name:</b> Vrishank</li>
         <li><b>Age:</b> 8</li>
         <li><b>Interests:</b> Minecraft, Chess, Coding, Healthy Food, Helping Others</li>
         <li><b>Mission:</b> Make healthy food fun and easy for everyone, and build awesome things in Minecraft!</li>
       </ul>
+      <a href="#" class="download-resume">Download Resume (PDF)</a>
     </section>
     <section id="fooda" class="section">
       <h2>About fooda</h2>
@@ -209,8 +293,32 @@
       <p>Email: <a href="mailto:vrishankjo@gmail.com" class="contact-link">vrishankjo@gmail.com</a></p>
       <p>Website: <a href="https://aihealthy.org" target="_blank" class="contact-link">aihealthy.org</a></p>
     </section>
+    <section id="privacy" class="section">
+      <h2>Privacy Policy</h2>
+      <p>Your privacy is important! This site does not collect or share your personal information with anyone. All guestbook messages and newsletter emails are stored only in your browser and are not sent to any server.</p>
+      <ul>
+        <li>We do not track you or use cookies for advertising.</li>
+        <li>Newsletter and guestbook data is not shared or sold.</li>
+        <li>For questions, contact <a href="mailto:vrishankjo@gmail.com">vrishankjo@gmail.com</a></li>
+      </ul>
+      <p>This is a demo site for fun and learning. For a real privacy policy, please contact the admin.</p>
+    </section>
+    <section id="resources" class="section">
+      <h2>Resources</h2>
+      <ul>
+        <li><a href="https://aihealthy.org" target="_blank">aihealthy.org</a> - Official fooda website</li>
+        <li><a href="mailto:vrishankjo@gmail.com">Contact Vrishank</a></li>
+        <li><a href="#">Parenting Tips (coming soon)</a></li>
+      </ul>
+    </section>
   </div>
   <footer class="footer">
+    <div class="footer-links">
+      <a href="#privacy">Privacy Policy</a>
+      <a href="#resources">Resources</a>
+      <a href="https://aihealthy.org">aihealthy.org</a>
+      <a href="mailto:vrishankjo@gmail.com">Contact</a>
+    </div>
     &copy; 2024 Vrishank | fooda | <a href="https://aihealthy.org" style="color:#fff;text-decoration:underline;">aihealthy.org</a>
   </footer>
 </body>
