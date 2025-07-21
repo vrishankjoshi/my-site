@@ -2326,6 +2326,38 @@
       <div class="loading-progress" id="loadingProgress"></div>
     </div>
   </div>
+  <!-- Kid/Parent Modal -->
+  <div id="kidParentModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);z-index:30000;align-items:center;justify-content:center;">
+    <div style="background:#fff;color:#222;max-width:350px;margin:10vh auto;border-radius:16px;padding:2.5em 2em;text-align:center;box-shadow:0 4px 32px rgba(0,0,0,0.15);">
+      <h2 style="margin-top:0;color:#0057b8;">Are you a kid or a parent?</h2>
+      <button id="kidBtn" style="display:block;width:100%;margin:1em 0;padding:1em;font-size:1.1em;font-weight:700;border:none;border-radius:8px;cursor:pointer;background:#7cfc00;color:#222;">Kid</button>
+      <button id="parentBtn" style="display:block;width:100%;margin:1em 0;padding:1em;font-size:1.1em;font-weight:700;border:none;border-radius:8px;cursor:pointer;background:#0057b8;color:#fff;">Parent</button>
+    </div>
+  </div>
+  <script>
+    // Show modal after loading screen disappears
+    window.addEventListener('DOMContentLoaded', function() {
+      var loadingScreen = document.getElementById('loadingScreen');
+      var modal = document.getElementById('kidParentModal');
+      var kidBtn = document.getElementById('kidBtn');
+      var parentBtn = document.getElementById('parentBtn');
+      // Wait for loading screen to hide (simulate with timeout if needed)
+      function showModalAfterLoading() {
+        if (loadingScreen && loadingScreen.style.display === 'none') {
+          modal.style.display = 'flex';
+        } else {
+          setTimeout(showModalAfterLoading, 200);
+        }
+      }
+      showModalAfterLoading();
+      kidBtn.onclick = function() {
+        modal.style.display = 'none';
+      };
+      parentBtn.onclick = function() {
+        window.location.href = 'professional.html';
+      };
+    });
+  </script>
   
   <!-- Weather Effects -->
   <div class="weather-container" id="weatherContainer"></div>
