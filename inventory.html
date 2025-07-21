@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shop | Vrishank's Minecraft World</title>
+  <title>Inventory | Vrishank's Minecraft World</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -30,7 +30,7 @@
       transition: all 0.3s ease;
     }
     .navbar {
-      background: var(--dirt);   
+      background: var(--dirt);
       color: var(--light);
       display: flex;
       justify-content: center;
@@ -64,7 +64,7 @@
       border-radius: 12px;
       box-shadow: 0 4px 16px rgba(0,0,0,0.15);
       border: 4px solid var(--card-border);
-      max-width: 500px;
+      max-width: 600px;
       margin: 2em auto;
       padding: 1.5em 1.2em;
       text-align: left;
@@ -96,12 +96,13 @@
       letter-spacing: 1px;
       text-shadow: 1px 1px #fff;
     }
-    .shop-grid {
+    .inventory-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
       gap: 1em;
+      margin-top: 1em;
     }
-    .shop-item {
+    .inventory-item {
       background: var(--card-bg);
       border-radius: 10px;
       border: 2px solid var(--wood);
@@ -109,91 +110,70 @@
       padding: 1em;
       text-align: center;
       position: relative;
-      min-height: 140px;
+      min-height: 100px;
     }
-    .shop-item .buyBtn {
-      margin-top: 0.7em;
-      background: var(--primary);
-      color: white;
-      border: 2px solid var(--gold);
-      border-radius: 6px;
-      padding: 0.5em 1.2em;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.2s;
+    .inventory-item b {
+      color: var(--primary);
+      font-size: 1.1em;
     }
-    .shop-item .buyBtn:disabled {
-      background: #ccc;
+    .empty-msg {
+      text-align: center;
       color: #888;
-      border-color: #aaa;
-      cursor: not-allowed;
-    }
-    .shop-item .buyBtn:hover:not(:disabled) {
-      background: var(--accent);
-      color: var(--dark);
+      margin-top: 2em;
+      font-size: 1.1em;
     }
   </style>
 </head>
 <body>
   <nav class="navbar">
     <a href="index.html">🏠 Home</a>
-    <a href="shop.html" class="active">🛒 Shop</a>
+    <a href="shop.html">🛒 Shop</a>
     <a href="vote.html">🗳️ Vote</a>
-    <a href="inventory.html">🎒 Inventory</a>
+    <a href="inventory.html" class="active">🎒 Inventory</a>
   </nav>
   <div class="info-card">
-    <h2>🛒 Virtual Shop</h2>
-    <div style="font-size:1.1em;margin-bottom:0.5em;">Your Coins: <span id="coinBalance">0</span></div>
-    <div id="shopItems" class="shop-grid"></div>
+    <h2>🎒 My Inventory</h2>
+    <div id="inventoryGrid" class="inventory-grid"></div>
+    <div id="emptyMsg" class="empty-msg" style="display:none;">You don't own any items yet. Visit the <a href='shop.html'>shop</a> to get some!</div>
   </div>
   <script>
     (function(){
+      // These should match the shop items
       const items = [
-        {id:'hat',name:'Cool Hat',cost:10,desc:'Add a hat to your avatar!'},
-        {id:'badge',name:'Master Builder Badge',cost:15,desc:'Show off your building skills!'},
-        {id:'petSkin',name:'Pet Skin: Ender Cat',cost:12,desc:'Change your pet to an Ender Cat!'},
-        {id:'theme',name:'Unlock Nether Theme',cost:8,desc:'Use the Nether color theme!'},
-        {id:'effect',name:'Confetti Effect',cost:5,desc:'Celebrate with confetti!'},
-        {id:'balloon',name:'Balloon Buddy',cost:7,desc:'A floating balloon follows you!'},
-        {id:'music',name:'Music Disc: Pigstep',cost:6,desc:'Play the Pigstep music disc!'},
-        {id:'cape',name:'Hero Cape',cost:9,desc:'Wear a flowing hero cape!'},
-        {id:'fireworks',name:'Fireworks Show',cost:4,desc:'Launch a fireworks show!'},
-        {id:'cookie',name:'Cookie Snack',cost:2,desc:'Yum! Get a virtual cookie.'},
-        {id:'petBee',name:'Pet Bee',cost:11,desc:'A friendly bee buzzes around you!'},
-        {id:'glow',name:'Glow Effect',cost:3,desc:'Make your avatar glow!'}
+        {id:'hat',name:'Cool Hat',desc:'Add a hat to your avatar!'},
+        {id:'badge',name:'Master Builder Badge',desc:'Show off your building skills!'},
+        {id:'petSkin',name:'Pet Skin: Ender Cat',desc:'Change your pet to an Ender Cat!'},
+        {id:'theme',name:'Unlock Nether Theme',desc:'Use the Nether color theme!'},
+        {id:'effect',name:'Confetti Effect',desc:'Celebrate with confetti!'},
+        {id:'balloon',name:'Balloon Buddy',desc:'A floating balloon follows you!'},
+        {id:'music',name:'Music Disc: Pigstep',desc:'Play the Pigstep music disc!'},
+        {id:'cape',name:'Hero Cape',desc:'Wear a flowing hero cape!'},
+        {id:'fireworks',name:'Fireworks Show',desc:'Launch a fireworks show!'},
+        {id:'cookie',name:'Cookie Snack',desc:'Yum! Get a virtual cookie.'},
+        {id:'petBee',name:'Pet Bee',desc:'A friendly bee buzzes around you!'},
+        {id:'glow',name:'Glow Effect',desc:'Make your avatar glow!'}
       ];
-      const shop = document.getElementById('shopItems');
-      const coinBal = document.getElementById('coinBalance');
-      let coins = parseInt(localStorage.getItem('coins')||'0',10);
+      const grid = document.getElementById('inventoryGrid');
+      const emptyMsg = document.getElementById('emptyMsg');
       let owned = JSON.parse(localStorage.getItem('shopOwned')||'[]');
       function render() {
-        coinBal.textContent = coins;
-        shop.innerHTML = '';
-        items.forEach(item=>{
+        grid.innerHTML = '';
+        const ownedItems = items.filter(item=>owned.includes(item.id));
+        if (ownedItems.length === 0) {
+          emptyMsg.style.display = '';
+          return;
+        } else {
+          emptyMsg.style.display = 'none';
+        }
+        ownedItems.forEach(item=>{
           const div = document.createElement('div');
-          div.className = 'shop-item';
-          const has = owned.includes(item.id);
-          div.innerHTML = `<b>${item.name}</b><br>${item.desc}<br>Cost: <span style='color:var(--diamond);font-weight:bold;'>${item.cost} coins</span><br><button class='buyBtn' data-id='${item.id}' ${has?'disabled':''}>${has?'Owned':'Buy'}</button>`;
-          shop.appendChild(div);
-        });
-        document.querySelectorAll('.buyBtn').forEach(btn=>{
-          btn.onclick = function(){
-            const id = btn.getAttribute('data-id');
-            const item = items.find(i=>i.id===id);
-            if (!item) return;
-            if (owned.includes(id)) return;
-            if (coins<item.cost) { alert('Not enough coins!'); return; }
-            coins -= item.cost;
-            owned.push(id);
-            localStorage.setItem('coins', coins);
-            localStorage.setItem('shopOwned', JSON.stringify(owned));
-            render();
-            alert('Purchased! Enjoy your new item.');
-          };
+          div.className = 'inventory-item';
+          div.innerHTML = `<b>${item.name}</b><br>${item.desc}`;
+          grid.appendChild(div);
         });
       }
       render();
     })();
   </script>
 </body>
-</html>
+</html> 
